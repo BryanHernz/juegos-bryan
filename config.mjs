@@ -1,0 +1,44 @@
+export const APPS = [
+  {
+    id: 'nova-star', name: 'Nova Star', repo: 'BryanHernz/novastar-versiones',
+    web: {
+      url: 'https://nova-star-bd0d9.web.app/',
+      label: 'Micrófono y catálogo web',
+      description: 'Usa el teléfono como complemento de tu PC o TV. No es una partida completa de karaoke en el navegador.'
+    },
+    snapshot: {
+      tag_name: 'v1.0.24', published_at: '2026-09-27T16:54:20Z',
+      html_url: 'https://github.com/BryanHernz/novastar-versiones/releases/tag/v1.0.24',
+      body: '', assets: [
+        ['NovaStar-telefono.apk', 61721712], ['NovaStar-tele.apk', 51513072],
+        ['NovaStar-1.0.24-windows-x64.zip', 61762697],
+        ['NovaStar-1.0.24-arm64-v8a.apk', 61721712],
+        ['NovaStar-1.0.24-armeabi-v7a.apk', 51513072],
+        ['NovaStar-1.0.24-x86_64.apk', 71601244]
+      ]
+    }
+  },
+  {
+    id: 'carton-lleno', name: 'Cartón Lleno', repo: 'BryanHernz/carton-lleno-versiones',
+    web: {
+      url: '', label: 'Abrir versión web',
+      description: 'El enlace web todavía no está configurado. Puedes descargar la aplicación para tu dispositivo.'
+    },
+    snapshot: {
+      tag_name: 'v1.0.36', published_at: '2026-09-27T19:30:08Z',
+      html_url: 'https://github.com/BryanHernz/carton-lleno-versiones/releases/tag/v1.0.36',
+      body: '', assets: [
+        ['CartonLleno-windows-instalador.exe', 30276881],
+        ['CartonLleno-1.0.36-instalador.exe', 30276881],
+        ['CartonLleno-windows.zip', 36236462],
+        ['CartonLleno-1.0.36-windows.zip', 36236462],
+        ['CartonLleno-telefono.apk', 51409605], ['CartonLleno-tele.apk', 47328567],
+        ['CartonLleno-1.0.36-arm64-v8a.apk', 51409605],
+        ['CartonLleno-1.0.36-armeabi-v7a.apk', 47328567],
+        ['CartonLleno-1.0.36-x86_64.apk', 53834432]
+      ]
+    }
+  }
+];
+
+export const SNAPSHOT_CHECKED_AT = '2026-09-28';
