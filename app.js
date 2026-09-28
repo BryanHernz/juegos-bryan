@@ -1,6 +1,10 @@
+import { initMotion, loadLocalLogos } from './motion.mjs';
 import { APPS, SNAPSHOT_CHECKED_AT } from './config.mjs';
 import { safeHttps, snapshotRelease, selectDownloads, assetLabel, formatBytes,
   formatDate, fetchLatest, readCached, writeCached } from './releases.mjs';
+
+initMotion();
+loadLocalLogos();
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const state = new Map();
