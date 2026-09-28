@@ -23,12 +23,10 @@ jobs:
           node-version: '22'
       - name: Pruebas de descargas
         run: npm test
+      - name: Comprobar sintaxis
+        run: npm run check
       - name: Preparar sitio estático
-        run: |
-          mkdir -p _site/assets
-          cp index.html styles.css app.js motion.mjs config.mjs releases.mjs _site/
-          cp -R assets/. _site/assets/
-          touch _site/.nojekyll
+        run: npm run build
       - name: Guardar sitio
         uses: actions/upload-pages-artifact@v4
         with:

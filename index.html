@@ -1,102 +1,107 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#101214">
-  <meta name="description" content="Sala Uno. Nova Star y Cartón Lleno: karaoke, bingo y descargas para Windows, Android y Android TV.">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.github.com; object-src 'none'; base-uri 'self'; form-action 'none'">
-  <meta name="referrer" content="no-referrer">
-  <title>Sala Uno — Nova Star y Cartón Lleno</title>
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css">
-  <script type="module" src="app.js"></script>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#071018">
+<meta name="description" content="Sala Uno reúne Nova Star y Cartón Lleno. Karaoke, bingo, micrófono Wi-Fi y descargas de las versiones publicadas para PC, Android y TV.">
+<title>Sala Uno — Nova Star y Cartón Lleno</title>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<svg class="icon-sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><symbol id="ui-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m-5-5 5 5 5-5M4 16v4h16v-4"/></symbol><symbol id="ui-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="13" rx="4"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8"/></symbol><symbol id="ui-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M9 3v18m6-18v18M3 9h18M3 15h18"/></symbol><symbol id="ui-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol><symbol id="ui-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5l8-1v8H3zm10-1 8-1v9h-8zM3 14h8v7l-8-1zm10 0h8v8l-8-1z"/></symbol><symbol id="ui-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10 5h4m-3 14h2"/></symbol><symbol id="ui-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 22h8m-4-4v4"/></symbol><symbol id="ui-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H5v20h14V7zM14 2v6h5M9 3v2m2 2v2m-2 2v2m2 2v3H9v-3"/></symbol><symbol id="ui-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/></symbol><symbol id="ui-9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7v5h-5M4 17v-5h5M5.6 7a7.5 7.5 0 0 1 12-2L20 8M4 16l2.4 3a7.5 7.5 0 0 0 12-2"/></symbol></svg>
-<a class="skip-link" href="#juegos">Saltar a los juegos</a>
-<header class="header">
-  <div class="header-inner wrap">
-    <a class="brand" href="#inicio" aria-label="Sala Uno, inicio"><span class="brand-symbol" aria-hidden="true"><i></i><i></i><i></i></span><span>SALA UNO</span></a>
-    <nav aria-label="Navegación principal"><a href="#juegos">Juegos</a><a href="#descargas">Descargas</a><a href="#ayuda">Ayuda</a></nav>
-    <button class="motion-toggle" data-motion-toggle type="button" aria-pressed="true" aria-label="Desactivar animaciones"><span class="motion-dot" aria-hidden="true"></span><span data-motion-label>Movimiento</span></button>
-  </div>
-  <div class="scroll-progress" aria-hidden="true"><i data-scroll-progress></i></div>
-</header>
-<main>
-  <section class="hero wrap" id="inicio" aria-labelledby="hero-title">
-    <div class="hero-top"><span class="eyebrow">KARAOKE / BINGO / BUENA COMPAÑÍA</span><span class="edition">NOVA STAR + CARTÓN LLENO</span></div>
-    <div class="hero-copy">
-      <h1 id="hero-title">La sala<br>está lista.</h1>
-      <div class="hero-side"><p>Una canción más.<br>Una ronda más.<br>Elige cómo empieza la noche.</p><a class="round-link" href="#juegos" aria-label="Explorar los juegos"><svg class="icon" aria-hidden="true"><use href="#ui-3"/></svg></a></div>
-    </div>
-    <div class="hero-stage" aria-label="Elige una aplicación">
-      <a class="hero-choice hero-nova" href="#nova-star"><div class="choice-top"><span>01 / KARAOKE</span><svg class="icon" aria-hidden="true"><use href="#ui-3"/></svg></div><span class="choice-word" data-parallax="0.08">NOVA<br>STAR</span><div class="choice-bottom"><span>Tu voz. Tu escenario.</span><span>EXPLORAR</span></div></a>
-      <a class="hero-choice hero-carton" href="#carton-lleno"><div class="choice-top"><span>02 / BINGO</span><svg class="icon" aria-hidden="true"><use href="#ui-3"/></svg></div><span class="choice-word" data-parallax="-0.06">CARTÓN<br>LLENO</span><div class="choice-bottom"><span>Nos vemos en la próxima ronda.</span><span>EXPLORAR</span></div></a>
-    </div>
-    <div class="hero-bottom"><span>Windows · Android · Android TV</span><a href="#juegos">Sigue bajando <span aria-hidden="true">↓</span></a></div>
-  </section>
-  <div class="chapter-nav" id="juegos"><div class="wrap"><span>EN ESTA SALA</span><nav aria-label="Elegir juego"><a href="#nova-star" data-chapter="nova-star"><span>01</span> Nova Star</a><a href="#carton-lleno" data-chapter="carton-lleno"><span>02</span> Cartón Lleno</a></nav></div></div>
-  <div id="descargas" class="anchor"></div>
-  <section class="game-section nova" id="nova-star" aria-labelledby="nova-title">
-    <div class="wrap game-layout">
-      <div class="game-story">
-        <p class="eyebrow">01 / NOVA STAR</p>
-        <h2 id="nova-title" data-reveal>El escenario<br>es tuyo.</h2>
-        <p class="story-description" data-reveal>Karaoke con puntuación por afinación, duetos y torneos. En el PC o la tele, con el teléfono como micrófono.</p>
-        <div class="brand-stage nova-brand-stage" data-reveal>
-          <div class="stage-corner top-left" aria-hidden="true"></div><div class="stage-corner bottom-right" aria-hidden="true"></div>
-          <div class="original-logo" data-local-logo="assets/nova-star-logo.png" data-parallax="0.10"><span class="logo-fallback" aria-label="Nova Star">NOVA<br>STAR</span></div>
-          <div class="stage-caption"><span>NOVA STAR</span><span>KARAOKE</span></div>
-        </div>
-        <div class="feature-lines"><div><span>01</span><p><strong>Canta a tu manera.</strong><br>Canto libre y duetos.</p></div><div><span>02</span><p><strong>Una ronda más.</strong><br>Torneos y modos de fiesta.</p></div><div><span>03</span><p><strong>El móvil se suma.</strong><br>Micrófono y catálogo web.</p></div></div>
-      </div>
-      <div class="downloads" id="nova-star-descargas">
-      <div class="download-heading"><h3>Elige dónde jugar.</h3><span class="version" data-version>Consultar versión</span></div>
-      <div class="download-list"><a class="download" data-download="windows" aria-disabled="true" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#ui-4"/></svg><span class="download-copy"><strong>Windows</strong><small>Instalador .exe</small></span><span class="download-end"><span data-size>Consultando…</span><svg class="icon" aria-hidden="true"><use href="#ui-0"/></svg></span></a><a class="download" data-download="phone" aria-disabled="true" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#ui-5"/></svg><span class="download-copy"><strong>Android</strong><small>Teléfono · ARM64</small></span><span class="download-end"><span data-size>Consultando…</span><svg class="icon" aria-hidden="true"><use href="#ui-0"/></svg></span></a><a class="download" data-download="tv" aria-disabled="true" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#ui-6"/></svg><span class="download-copy"><strong>Android TV</strong><small>TV / Google TV · ARMv7</small></span><span class="download-end"><span data-size>Consultando…</span><svg class="icon" aria-hidden="true"><use href="#ui-0"/></svg></span></a><a class="download" data-download="portable" aria-disabled="true" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#ui-7"/></svg><span class="download-copy"><strong>Windows portátil</strong><small>Carpeta completa · ZIP</small></span><span class="download-end"><span data-size>Consultando…</span><svg class="icon" aria-hidden="true"><use href="#ui-0"/></svg></span></a></div>
-      <div class="web-block"><a class="web-link" data-web aria-disabled="true" tabindex="-1" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#ui-8"/></svg><span data-web-label>Abrir web</span><svg class="icon" aria-hidden="true"><use href="#ui-3"/></svg></a><p data-web-note></p></div>
-      <details class="file-details"><summary>Otras descargas <span data-asset-count></span></summary><div class="asset-list" data-assets></div></details>
-      <details class="release-details"><summary>Novedades <span data-date></span></summary><p class="notes" data-notes></p><a data-notes-link href="https://github.com/BryanHernz/novastar-versiones/releases/latest" target="_blank" rel="noopener noreferrer">Ver publicación <svg class="icon" aria-hidden="true"><use href="#ui-3"/></svg></a></details>
-      <div class="release-status"><p data-status role="status" aria-live="polite">Consultando publicación…</p><button data-refresh type="button" aria-label="Actualizar versión de Nova Star" title="Volver a consultar"><svg class="icon" aria-hidden="true"><use href="#ui-9"/></svg></button></div>
-      <a class="history-link" href="https://github.com/BryanHernz/novastar-versiones/releases" target="_blank" rel="noopener noreferrer">Versiones anteriores <svg class="icon" aria-hidden="true"><use href="#ui-3"/></svg></a>
-    </div>
-    </div>
-  </section>
-  <section class="interlude" aria-label="Sala Uno"><div class="wrap"><span class="eyebrow">LA SIGUIENTE RONDA</span><p data-parallax="0.09" aria-hidden="true">SALA UNO</p><span>La misma sala. Otro juego.</span></div></section>
-  <section class="game-section carton" id="carton-lleno" aria-labelledby="carton-title">
-    <div class="wrap game-layout">
-      <div class="game-story">
-        <p class="eyebrow">02 / CARTÓN LLENO</p>
-        <h2 id="carton-title" data-reveal>Que siga<br>la ronda.</h2>
-        <p class="story-description" data-reveal>Cartón Lleno, en tu PC, teléfono o Android TV. Encuentra aquí la aplicación y sus versiones publicadas.</p>
-        <div class="brand-stage carton-brand-stage" data-reveal>
-          <span class="neutral-wordmark" data-parallax="-0.08">CARTÓN<br>LLENO</span>
-          <div class="stage-caption"><span>BINGO</span><span>WINDOWS / ANDROID</span></div>
-        </div>
-        <p class="source-pending">Identidad de Cartón Lleno pendiente de integrar desde su repositorio. No se muestran cartones ni pantallas recreadas.</p>
-      </div>
-      <div class="downloads" id="carton-lleno-descargas">
-      <div class="download-heading"><h3>Elige dónde jugar.</h3><span class="version" data-version>Consultar versión</span></div>
-      <div class="download-list"><a class="download" data-download="windows" aria-disabled="true" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#ui-4"/></svg><span class="download-copy"><strong>Windows</strong><small>Instalador .exe</small></span><span class="download-end"><span data-size>Consultando…</span><svg class="icon" aria-hidden="true"><use href="#ui-0"/></svg></span></a><a class="download" data-download="phone" aria-disabled="true" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#ui-5"/></svg><span class="download-copy"><strong>Android</strong><small>Teléfono · ARM64</small></span><span class="download-end"><span data-size>Consultando…</span><svg class="icon" aria-hidden="true"><use href="#ui-0"/></svg></span></a><a class="download" data-download="tv" aria-disabled="true" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#ui-6"/></svg><span class="download-copy"><strong>Android TV</strong><small>TV / Google TV · ARMv7</small></span><span class="download-end"><span data-size>Consultando…</span><svg class="icon" aria-hidden="true"><use href="#ui-0"/></svg></span></a><a class="download" data-download="portable" aria-disabled="true" tabindex="-1"><svg class="icon" aria-hidden="true"><use href="#ui-7"/></svg><span class="download-copy"><strong>Windows portátil</strong><small>Carpeta completa · ZIP</small></span><span class="download-end"><span data-size>Consultando…</span><svg class="icon" aria-hidden="true"><use href="#ui-0"/></svg></span></a></div>
-      <div class="web-block"><a class="web-link" data-web aria-disabled="true" tabindex="-1" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#ui-8"/></svg><span data-web-label>Abrir web</span><svg class="icon" aria-hidden="true"><use href="#ui-3"/></svg></a><p data-web-note></p></div>
-      <details class="file-details"><summary>Otras descargas <span data-asset-count></span></summary><div class="asset-list" data-assets></div></details>
-      <details class="release-details"><summary>Novedades <span data-date></span></summary><p class="notes" data-notes></p><a data-notes-link href="https://github.com/BryanHernz/carton-lleno-versiones/releases/latest" target="_blank" rel="noopener noreferrer">Ver publicación <svg class="icon" aria-hidden="true"><use href="#ui-3"/></svg></a></details>
-      <div class="release-status"><p data-status role="status" aria-live="polite">Consultando publicación…</p><button data-refresh type="button" aria-label="Actualizar versión de Cartón Lleno" title="Volver a consultar"><svg class="icon" aria-hidden="true"><use href="#ui-9"/></svg></button></div>
-      <a class="history-link" href="https://github.com/BryanHernz/carton-lleno-versiones/releases" target="_blank" rel="noopener noreferrer">Versiones anteriores <svg class="icon" aria-hidden="true"><use href="#ui-3"/></svg></a>
-    </div>
-    </div>
-  </section>
-  <section class="help wrap" id="ayuda" aria-labelledby="help-title">
-    <div class="help-layout"><div class="help-heading"><p class="eyebrow">ANTES DE EMPEZAR</p><h2 id="help-title" data-reveal>Lo justo<br>para jugar.</h2><p>Elige tu dispositivo.<br>Descarga desde la publicación original.</p></div>
-    <div class="faq-list">
-      <details><summary><span>01</span>Windows: ¿instalador o ZIP?<b aria-hidden="true">+</b></summary><div><p>El instalador crea los accesos directos. La versión portátil es una carpeta: extrae el ZIP completo y conserva todos los archivos junto al ejecutable.</p></div></details>
-      <details><summary><span>02</span>¿Qué APK corresponde a mi equipo?<b aria-hidden="true">+</b></summary><div><p>Teléfono usa el APK ARM64; Android TV, la variante ARMv7 publicada para TV. Comprueba la arquitectura de tu equipo. Las otras variantes están en Otras descargas.</p><p>Los APK son para Android, no para iPhone, Tizen ni webOS.</p></div></details>
-      <details><summary><span>03</span>¿Qué puedo hacer desde la web?<b aria-hidden="true">+</b></summary><div><p>Nova Star ofrece micrófono y catálogo como complemento del PC o televisor. No es el karaoke completo en el navegador.</p><p>El acceso web de Cartón Lleno continúa pendiente de configuración.</p></div></details>
-      <details><summary><span>04</span>¿Dónde encuentro las nuevas versiones?<b aria-hidden="true">+</b></summary><div><p>Al abrir el portal se consulta la última publicación estable de cada juego. El botón de actualizar permite volver a consultar. Si GitHub no responde, se indica que los enlaces son información guardada.</p></div></details>
-    </div></div>
-  </section>
-  <noscript><div class="noscript wrap">Sin JavaScript, descarga desde <a href="https://github.com/BryanHernz/novastar-versiones/releases/latest">Nova Star</a> o <a href="https://github.com/BryanHernz/carton-lleno-versiones/releases/latest">Cartón Lleno</a>.</div></noscript>
+<svg class="symbol-bank" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-5-5 5 5-5 5"/></symbol><symbol id="i-down" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v4h16v-4"/></symbol><symbol id="i-play" viewBox="0 0 24 24"><path d="m9 5 11 7-11 7Z" fill="currentColor" stroke="none"/></symbol><symbol id="i-mic" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="13" rx="4"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8"/></symbol><symbol id="i-wifi" viewBox="0 0 24 24"><path d="M2 8a16 16 0 0 1 20 0M5 12a11 11 0 0 1 14 0m-11 4a6 6 0 0 1 8 0"/><circle cx="12" cy="20" r="1" fill="currentColor" stroke="none"/></symbol><symbol id="i-music" viewBox="0 0 24 24"><path d="M9 17V5l11-2v12M9 9l11-2"/><ellipse cx="6" cy="18" rx="3" ry="2"/><ellipse cx="17" cy="16" rx="3" ry="2"/></symbol><symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="7" r="3"/><path d="M2 21v-3a7 7 0 0 1 14 0v3M17 4a3 3 0 0 1 0 6m2 4a5 5 0 0 1 3 5v2"/></symbol><symbol id="i-cup" viewBox="0 0 24 24"><path d="M7 3h10v5a5 5 0 0 1-10 0ZM7 5H3v3a4 4 0 0 0 4 4m10-7h4v3a4 4 0 0 1-4 4m-5 1v6m-5 2h10"/></symbol><symbol id="i-screen" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M12 17v4m-5 0h10"/></symbol><symbol id="i-windows" viewBox="0 0 24 24"><path d="M2 4.5 10.5 3.4v8H2Zm10-1.3L22 2v9.4H12ZM2 13h8.5v8L2 19.8Zm10 0h10V23l-10-1.8Z" fill="currentColor" stroke="none"/></symbol><symbol id="i-android" viewBox="0 0 24 24"><path d="m7 4-2-3m12 3 2-3M4 10a8 8 0 0 1 16 0Zm0 2h16v7H4ZM8 19v3m8-3v3M1 12v6m22-6v6"/><path d="M8 6h.1m7.9 0h.1"/></symbol><symbol id="i-web" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 7h14M5 17h14"/></symbol><symbol id="i-print" viewBox="0 0 24 24"><path d="M6 8V2h12v6M6 18H3V8h18v10h-3M6 14h12v8H6Z"/><path d="M17 11h.1"/></symbol><symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol><symbol id="i-remote" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="15" rx="3"/><path d="M6 4a9 9 0 0 1 12 0m-8 8h4m-2-2v4m0 4h.1"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="m5 5 14 14M5 19 19 5"/></symbol><symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol><symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 6v5h-5M4 18v-5h5M5 7a8 8 0 0 1 14-1l1 5M4 13l1 5a8 8 0 0 0 14-1"/></symbol><symbol id="i-expand" viewBox="0 0 24 24"><path d="M9 3H3v6m12-6h6v6M3 15v6h6m12-6v6h-6"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol></svg>
+<a class="skip-link" href="#contenido">Ir al contenido</a>
+<header class="header" id="site-header"><div class="header-inner">
+<a class="brand" href="#inicio" aria-label="Sala Uno, inicio"><svg class="brand-icon" viewBox="0 0 40 44" aria-hidden="true"><path d="M5 3 12 7v20c0 6 4 9 8 10V25l8-5V7l7-4v25c0 8-8 13-15 16C13 41 5 36 5 28Z" fill="currentColor"/></svg><span>Sala Uno</span></a>
+<nav id="site-nav" class="navigation" aria-label="Principal"><a href="#nova-star" data-chapter="nova-star">Nova Star</a><a href="#carton-lleno" data-chapter="carton-lleno">Cartón Lleno</a><a href="#descargas" data-chapter="descargas">Descargas</a><a href="#ayuda">Ayuda</a></nav>
+<a class="button primary header-cta" href="#nova-star">Explorar aplicaciones <svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+<button class="menu-toggle" aria-controls="site-nav" aria-expanded="false" aria-label="Abrir menú"><span></span><span></span></button>
+</div><div class="reading-progress" data-scroll-progress></div></header>
+<main id="contenido">
+<section class="hero dark-stage" id="inicio" aria-labelledby="hero-title">
+<div class="ambience" data-parallax=".065" aria-hidden="true"><i class="beam beam-a"></i><i class="beam beam-b"></i><i class="beam beam-c"></i><div class="stage-floor"></div></div>
+<div class="section-inner hero-grid">
+<div class="hero-copy"><p class="eyebrow">KARAOKE & BINGO</p><h1 id="hero-title">Tus juegos en<br>un solo lugar.</h1><p class="lead">Una canción más.<br>Una nueva partida.<br>Un buen momento juntos.</p><p class="hero-description">Descubre Nova Star y Cartón Lleno. Elige tu pantalla y empieza a jugar.</p>
+<div class="hero-features"><div class="feature"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-music"/></svg><div><strong>Canta</strong><span>A tu manera</span></div></div><div class="feature"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-users"/></svg><div><strong>Comparte</strong><span>Con tu gente</span></div></div><div class="feature"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-down"/></svg><div><strong>Descarga</strong><span>Para tu equipo</span></div></div></div>
+<div class="hero-links"><a href="#nova-star">Nova Star <svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a><a href="#carton-lleno">Cartón Lleno <svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+</div>
+<div class="hero-art" aria-label="Capturas reales de las aplicaciones">
+<div class="hero-monitor monitor"><div class="device-screen"><img src="assets/screens/nova-duet.webp" width="1600" height="898" alt="Nova Star en una partida de karaoke con dos jugadores" fetchpriority="high"></div><div class="monitor-neck"></div><div class="monitor-foot"></div></div>
+<div class="hero-laptop laptop"><div class="device-screen"><img src="assets/screens/carton-75.webp" width="1600" height="901" alt="Cartón Lleno, tablero de bingo de 75 bolas" fetchpriority="high"></div><div class="laptop-base"></div></div>
+<p class="art-aside">Dos experiencias.<br>Una sola sala.</p>
+</div>
+<a class="scroll-cue" href="#nova-star">Desliza para descubrir <svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-down"/></svg></a>
+</div></section>
+<section class="product nova dark-stage" id="nova-star" data-app="nova-star" aria-labelledby="nova-title">
+<div class="ambience nova-ambience" data-parallax=".05" aria-hidden="true"><i class="beam beam-a"></i><i class="beam beam-b"></i></div>
+<div class="section-inner product-grid">
+<div class="product-copy"><p class="product-brand"><img src="assets/nova-star-logo.png" width="72" height="66" alt=""> <span>NOVA STAR</span></p><p class="eyebrow product-version">KARAOKE · <span data-version></span></p><h2 id="nova-title">Tu voz.<br>Tu escenario.</h2><p class="product-description">Elige una canción, reúne a tus amigos y sigue las notas. El escenario está en tu PC o tele; el micrófono, en tu teléfono.</p>
+<div class="features"><div class="feature"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-mic"/></svg><div><strong>Canto libre</strong><span>Tu biblioteca, tu música</span></div></div><div class="feature"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cup"/></svg><div><strong>Torneo 1v1</strong><span>Duelos y eliminatorias</span></div></div><div class="feature"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-users"/></svg><div><strong>Fiesta</strong><span>Rondas y desafíos</span></div></div><div class="feature"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wifi"/></svg><div><strong>Micrófono Wi-Fi</strong><span>Tu voz en la red local</span></div></div></div>
+<div class="cta-grid">
+<a class="button primary" data-web aria-disabled="true" tabindex="-1" target="_blank" rel="noopener noreferrer"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-web"/></svg><span data-web-label>Abrir versión web</span></a>
+<a class="button secondary" data-download="windows" aria-disabled="true" tabindex="-1"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-windows"/></svg><span>Windows<small data-size></small></span></a>
+<a class="button secondary" data-download="phone" aria-disabled="true" tabindex="-1"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-android"/></svg><span>Android<small data-size></small></span></a>
+<a class="button secondary" href="#descargas-nova-star"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-down"/></svg><span>Todas las descargas</span></a>
+</div><p class="web-note" data-web-note></p>
+</div>
+<div class="product-media nova-media">
+<div class="product-monitor monitor"><button class="device-screen image-open" data-lightbox="assets/screens/nova-library.webp" aria-label="Ampliar la captura de Nova Star"><img id="gallery-nova" role="tabpanel" src="assets/screens/nova-library.webp" width="1600" height="899" alt="Biblioteca de canciones de Nova Star" loading="lazy"><span class="expand-hint"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-expand"/></svg> Ampliar</span></button><div class="monitor-neck"></div><div class="monitor-foot"></div></div>
+<div class="phone nova-phone"><div class="phone-screen"><img src="assets/screens/nova-microphone.webp" width="742" height="1513" alt="Captura original del micrófono activo de Nova Star, girada 180 grados para mostrar la cabeza hacia arriba" loading="lazy"></div></div>
+<p class="phone-caption">Tu teléfono.<br>Tu micrófono.</p>
+<div class="gallery-controls" role="tablist" aria-label="Vistas de Nova Star"><button class="gallery-tab" role="tab" aria-controls="gallery-nova" aria-selected="true" tabindex="0" data-gallery="nova" data-image="assets/screens/nova-library.webp" data-caption="Biblioteca">Biblioteca</button><button class="gallery-tab" role="tab" aria-controls="gallery-nova" aria-selected="false" tabindex="-1" data-gallery="nova" data-image="assets/screens/nova-duet.webp" data-caption="Canto">Canto</button><button class="gallery-tab" role="tab" aria-controls="gallery-nova" aria-selected="false" tabindex="-1" data-gallery="nova" data-image="assets/screens/nova-tournament.webp" data-caption="Torneo">Torneo</button><button class="gallery-tab" role="tab" aria-controls="gallery-nova" aria-selected="false" tabindex="-1" data-gallery="nova" data-image="assets/screens/nova-party.webp" data-caption="Fiesta">Fiesta</button></div>
+</div></div></section>
+<section class="product carton" id="carton-lleno" data-app="carton-lleno" aria-labelledby="carton-title">
+<div class="paper-accent" data-parallax=".045" aria-hidden="true"></div>
+<div class="section-inner product-grid">
+<div class="product-copy"><p class="product-brand"><img class="carton-mark" src="assets/carton-mark.webp" width="72" height="72" alt=""> <span>CARTÓN LLENO</span></p><p class="eyebrow product-version">BINGO · <span data-version></span></p><h2 id="carton-title">Que empiece<br>la buena suerte.</h2><p class="product-description">Reúne los cartones y a tu gente. Nosotros ponemos la voz. Juega con 75 o 90 bolas y lleva el control de la partida desde el teléfono.</p>
+<div class="features"><div class="feature"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-grid"/></svg><div><strong>75 y 90 bolas</strong><span>Dos formas de jugar</span></div></div><div class="feature"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-print"/></svg><div><strong>Cartones impresos</strong><span>Con código y QR</span></div></div><div class="feature"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-remote"/></svg><div><strong>Control remoto</strong><span>La partida en tus manos</span></div></div><div class="feature"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-users"/></svg><div><strong>Juega en compañía</strong><span>Cartones físicos, juntos</span></div></div></div>
+<div class="cta-grid">
+<a class="button primary" data-web aria-disabled="true" tabindex="-1" target="_blank" rel="noopener noreferrer"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-web"/></svg><span data-web-label>Abrir versión web</span></a>
+<a class="button secondary" data-download="windows" aria-disabled="true" tabindex="-1"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-windows"/></svg><span>Windows<small data-size></small></span></a>
+<a class="button secondary" data-download="phone" aria-disabled="true" tabindex="-1"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-android"/></svg><span>Android<small data-size></small></span></a>
+<a class="button secondary" href="#descargas-carton-lleno"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-down"/></svg><span>Todas las descargas</span></a>
+</div><p class="web-note" data-web-note></p>
+<div class="print-links"><span>Conoce los cartones</span><a href="assets/print/cartones-75.pdf" target="_blank" rel="noopener">75 bolas · PDF <svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a><a href="assets/print/cartones-90.pdf" target="_blank" rel="noopener">90 bolas · PDF <svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+</div>
+<div class="product-media carton-media">
+<img class="floating-print" src="assets/print/carton-75-detalle.webp" width="360" height="480" alt="" loading="lazy" aria-hidden="true">
+<div class="product-monitor laptop"><button class="device-screen image-open" data-lightbox="assets/screens/carton-75.webp" aria-label="Ampliar la captura de Cartón Lleno"><img id="gallery-carton" role="tabpanel" src="assets/screens/carton-75.webp" width="1600" height="901" alt="Tablero original de Cartón Lleno, modo de 75 bolas" loading="lazy"><span class="expand-hint"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-expand"/></svg> Ampliar</span></button><div class="laptop-base"></div></div>
+<div class="phone carton-phone"><div class="phone-screen"><img src="assets/screens/carton-remote.webp" width="742" height="1513" alt="Control remoto de Cartón Lleno en un teléfono, conectado a la televisión" loading="lazy"></div></div>
+<p class="phone-caption">Más que un juego.<br>Un buen plan.</p>
+<div class="gallery-controls" role="tablist" aria-label="Vistas de Cartón Lleno"><button class="gallery-tab" role="tab" aria-controls="gallery-carton" aria-selected="true" tabindex="0" data-gallery="carton" data-image="assets/screens/carton-75.webp" data-caption="75 bolas">75 bolas</button><button class="gallery-tab" role="tab" aria-controls="gallery-carton" aria-selected="false" tabindex="-1" data-gallery="carton" data-image="assets/screens/carton-90.webp" data-caption="90 bolas">90 bolas</button><button class="gallery-tab" role="tab" aria-controls="gallery-carton" aria-selected="false" tabindex="-1" data-gallery="carton" data-image="assets/screens/carton-check.webp" data-caption="Comprobar">Comprobar</button><button class="gallery-tab" role="tab" aria-controls="gallery-carton" aria-selected="false" tabindex="-1" data-gallery="carton" data-image="assets/screens/carton-win.webp" data-caption="¡Bingo!">¡Bingo!</button></div>
+</div></div></section>
+<section class="downloads" id="descargas" aria-labelledby="downloads-title"><div class="section-inner">
+<div class="downloads-intro"><div><p class="eyebrow">DESCARGAS Y VERSIONES</p><h2 id="downloads-title">Elige tu pantalla.</h2></div><p>Los archivos se consultan en las publicaciones de cada aplicación. Sin enlaces inventados: solo las versiones y variantes disponibles.</p></div>
+<noscript><p class="notice">Activa JavaScript para consultar las versiones. También puedes acceder a las publicaciones: <a href="https://github.com/BryanHernz/novastar-versiones/releases/latest">Nova Star</a> y <a href="https://github.com/BryanHernz/carton-lleno-versiones/releases/latest">Cartón Lleno</a>.</p></noscript>
+<div class="download-grid"><article class="download-card" id="descargas-nova-star" data-app="nova-star">
+<div class="download-head"><img src="assets/nova-star-logo.png" alt="" width="56" height="56"><div><h3>Nova Star</h3><p><span data-version>Consultando…</span><span class="small-dot">·</span><span data-date></span></p></div><button class="icon-button refresh" data-refresh aria-label="Actualizar versión de Nova Star"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-refresh"/></svg></button></div>
+<p class="release-status" data-status role="status"></p>
+<div class="download-options">
+<a class="download-option" data-download="windows" aria-disabled="true" tabindex="-1"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-windows"/></svg><span><strong>Windows</strong><small>Instalador <span data-size></span></small></span><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-down"/></svg></a>
+<a class="download-option" data-download="portable" aria-disabled="true" tabindex="-1"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-screen"/></svg><span><strong>Windows portátil</strong><small>ZIP <span data-size></span></small></span><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-down"/></svg></a>
+<a class="download-option" data-download="phone" aria-disabled="true" tabindex="-1"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-android"/></svg><span><strong>Teléfono Android</strong><small>APK ARM64 <span data-size></span></small></span><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-down"/></svg></a>
+<a class="download-option" data-download="tv" aria-disabled="true" tabindex="-1"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-screen"/></svg><span><strong>Android TV / Google TV</strong><small>APK ARMv7 <span data-size></span></small></span><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-down"/></svg></a>
+<a class="download-option" data-web aria-disabled="true" tabindex="-1" target="_blank" rel="noopener noreferrer"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-web"/></svg><span><strong data-web-label>Versión web</strong><small data-web-note></small></span><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+</div>
+<details class="release-details"><summary>Otras variantes <span data-asset-count></span></summary><div data-assets></div></details>
+<details class="release-details"><summary>Notas de la versión</summary><pre data-notes></pre><a class="text-link" data-notes-link target="_blank" rel="noopener noreferrer">Ver publicación <svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a></details>
+</article><article class="download-card" id="descargas-carton-lleno" data-app="carton-lleno">
+<div class="download-head"><img src="assets/carton-mark.webp" alt="" width="56" height="56"><div><h3>Cartón Lleno</h3><p><span data-version>Consultando…</span><span class="small-dot">·</span><span data-date></span></p></div><button class="icon-button refresh" data-refresh aria-label="Actualizar versión de Cartón Lleno"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-refresh"/></svg></button></div>
+<p class="release-status" data-status role="status"></p>
+<div class="download-options">
+<a class="download-option" data-download="windows" aria-disabled="true" tabindex="-1"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-windows"/></svg><span><strong>Windows</strong><small>Instalador <span data-size></span></small></span><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-down"/></svg></a>
+<a class="download-option" data-download="portable" aria-disabled="true" tabindex="-1"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-screen"/></svg><span><strong>Windows portátil</strong><small>ZIP <span data-size></span></small></span><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-down"/></svg></a>
+<a class="download-option" data-download="phone" aria-disabled="true" tabindex="-1"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-android"/></svg><span><strong>Teléfono Android</strong><small>APK ARM64 <span data-size></span></small></span><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-down"/></svg></a>
+<a class="download-option" data-download="tv" aria-disabled="true" tabindex="-1"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-screen"/></svg><span><strong>Android TV / Google TV</strong><small>APK ARMv7 <span data-size></span></small></span><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-down"/></svg></a>
+<a class="download-option" data-web aria-disabled="true" tabindex="-1" target="_blank" rel="noopener noreferrer"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-web"/></svg><span><strong data-web-label>Versión web</strong><small data-web-note></small></span><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+</div>
+<details class="release-details"><summary>Otras variantes <span data-asset-count></span></summary><div data-assets></div></details>
+<details class="release-details"><summary>Notas de la versión</summary><pre data-notes></pre><a class="text-link" data-notes-link target="_blank" rel="noopener noreferrer">Ver publicación <svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a></details>
+</article></div>
+<div class="help" id="ayuda"><div><p class="eyebrow">ANTES DE EMPEZAR</p><h2>Todo en su sitio.</h2></div><div class="help-items"><details><summary>¿Qué abre la versión web de Nova Star?</summary><p>El micrófono y el catálogo para acompañar a la aplicación de PC o TV. La partida de karaoke no se ejecuta completa en esta web. Usa el teléfono en la misma Wi-Fi que la pantalla.</p></details><details><summary>¿Qué descarga necesito para Windows?</summary><p>El instalador EXE instala la aplicación. El ZIP portátil conserva la carpeta de archivos: descomprímela completa antes de abrir el ejecutable. No muevas solo el EXE fuera de esa carpeta.</p></details><details><summary>¿Y para teléfono o televisión?</summary><p>Elige el APK correspondiente a tu dispositivo. Android TV / Google TV utiliza una descarga distinta de la de teléfono. No se trata de una aplicación para los sistemas Tizen o webOS. Cuando haya varias arquitecturas, se muestran en «Otras variantes».</p></details></div></div>
+</div></section>
 </main>
-<footer class="footer wrap"><a class="brand" href="#inicio"><span class="brand-symbol" aria-hidden="true"><i></i><i></i><i></i></span><span>SALA UNO</span></a><p>Nova Star + Cartón Lleno<br><small>© <span id="year">2026</span> Sala Uno</small></p><a href="#inicio">Volver arriba ↑</a></footer>
-</body>
-</html>
+<footer class="footer"><div class="section-inner footer-inner"><a class="brand" href="#inicio"><svg class="brand-icon" viewBox="0 0 40 44" aria-hidden="true"><path d="M5 3 12 7v20c0 6 4 9 8 10V25l8-5V7l7-4v25c0 8-8 13-15 16C13 41 5 36 5 28Z" fill="currentColor"/></svg><span>Sala Uno</span></a><p>Karaoke. Bingo. Buena compañía.</p><div class="footer-actions"><button data-motion-toggle aria-pressed="true"><span data-motion-label>Movimiento</span></button><a href="#ayuda">Ayuda</a><a href="#descargas">Versiones</a></div><small>© <span id="year"></span> Sala Uno</small></div></footer>
+<dialog id="image-dialog" class="lightbox" aria-label="Captura de la aplicación ampliada"><button class="lightbox-close icon-button" aria-label="Cerrar imagen"><svg class="icon " viewBox="0 0 24 24" aria-hidden="true"><use href="#i-close"/></svg></button><img alt=""><p></p></dialog>
+<script type="module" src="app.js"></script>
+</body></html>

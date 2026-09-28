@@ -1,24 +1,27 @@
-# Sala Uno · diseño 1.1.0
+# Sala Uno · implementación 1.2.0
 
-Nombre creativo propuesto para el portal; no se ha comprobado disponibilidad de marca o dominio. El repositorio sigue llamándose juegos-bryan y no se cambia ninguna URL de las apps.
+La marca visible es Sala Uno; no incluye un nombre personal. Se mantiene el nombre del repositorio y los orígenes de los instaladores para no romper enlaces.
 
-## Origen del diseño
+## Fuente visual
 
-- Nova Star: `BryanHernz/NovaStar/lib/app/theme/app_colors.dart`, blob `a9b1eb99686d8522a0bec0a78adedb0c6d8118ff`. Fondo #050A13, superficies #08111F, acento #FFB156 y texto blanco.
-- Botones: `lib/app/theme/app_theme.dart`, blob `bc4ec95f28a7a83a34d89db18088ad84db6ec68a`, radio 12 y fondos sin bordes decorativos añadidos.
-- Logo aprobado: `assets/branding/nova_star_logo.png`, blob `13ce5a05aa2e2eab72077585724208c0edabe5c6`. Es el logo transparente para interfaz, no el icono de instalación. Se importa sin modificar sus bytes desde el clon local con `tools/importar-logo.ps1`.
-- Cartón Lleno: el conector sigue devolviendo 404 al consultar el repositorio fuente. Se retiraron TODOS los cartones, bolas y pantallas ficticias. El bloque neutro actual es composición del portal, NO identidad de la aplicación. Integración visual pendiente; el aviso permanece visible.
+Capturas originales de Nova Star y Cartón Lleno enviadas en esta conversación, incluyendo las vistas de teléfono y los PDF 75.pdf y 90.pdf. Los recursos son copias optimizadas WebP y recortes de esas capturas/PDF, no pantallas reconstruidas mediante un generador de imágenes.
 
-## Cambios
+El micrófono es la captura 1000092031.jpg girada 180 grados; no se sustituyó el diseño del micrófono. No se usa la captura que tiene encima la barra flotante de la herramienta de captura del teléfono.
 
-Una familia sans-serif para toda la web. Sin palabras en serif o cursiva, sin gradientes CSS, sin brillo ni blobs decorativos. Secciones amplias, descargas en filas, índice sticky con estado activo y progreso de lectura.
+## Composición
 
-Parallax limitado a 44px en elementos de presentación. Nunca mueve botones, enlaces de descarga, texto informativo, foco ni altera la rueda del ratón. Se desactiva en pantallas de hasta 860px, con movimiento reducido del sistema o mediante el botón de cabecera. El contenido continúa accesible sin JavaScript.
+Portada amplia y dos secciones de producto altas. El monitor de Nova Star queda arriba y el teléfono se superpone más abajo, sin salirse de la sección. Cartón Lleno mantiene fondo cálido, amarillo y negro, y usa las cuadrículas originales en las capturas. Los contornos internos de la app se preservan: el portal no añade contornos decorativos a botones, tarjetas o secciones.
 
-No se han creado capturas ficticias de las aplicaciones. Las composiciones tipográficas de la portada no son pantallas de los juegos. El logo original, cuando está importado, se muestra sin filtros ni deformaciones.
+Los marcos de dispositivo solo representan el hardware. Las pantallas no se recortan para fingir contenido que no existe. Cada captura grande puede ampliarse.
 
-## Validación y pendientes
+## Tipografía y botones
 
-Mantener Node >=22 y el módulo de releases existente. Los nuevos tests comprueban parallax, límites, ausencia de gradientes y eliminación de cartones inventados. La comprobación visual local usa las instantáneas ya incluidas de las releases; no debe presentarse como consulta en directo.
+Una familia de sistema sans-serif, sin cambio de fuente en la última palabra de un título. No se redistribuyen archivos de fuentes. Botones planos y rectangulares con radio 8 px; sin gradientes CSS, bordes o efecto abultado.
 
-Antes de fusionar: importar el logo, permitir lectura de Cartón Lleno, revisar su tema, componentes y assets, e integrar su identidad original. La web de Cartón Lleno no se habilita con una URL adivinada.
+## Movimiento
+
+Solo fondos con movimiento suave y limitado; no secuestro de scroll ni desplazamiento de controles. Se respeta movimiento reducido, hay interruptor manual y en móvil se presenta estático.
+
+## Diferencia frente a las imágenes conceptuales
+
+La implementación usa contenido verdadero y textos verificables. No reproduce los textos deformados, números inventados, cifras de canciones no verificadas ni enlaces de Términos/Contacto/redes sin destino de los bocetos generados. Cartón web permanece pendiente de URL; el acceso web de Nova Star es micrófono/catálogo.
