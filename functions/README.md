@@ -24,9 +24,17 @@ Los tests del frontend se ejecutan por separado con `npm test` desde la raíz.
 No se agregan scripts ni dependencias al `package.json` del frontend.
 
 `lib/`, `node_modules/`, `.env*` y `.secret.local` están ignorados. El lockfile
-fija las dependencias. El override limitado a `gaxios@6.7.1` sustituye su
-dependencia `uuid` vulnerable por `^11.1.1`, que conserva la API CommonJS `v4`
-usada por ese cliente transitivo del Admin SDK.
+fija las dependencias. El override `gaxios -> uuid ^11.1.1` conserva la corrección
+de seguridad y la API CommonJS `v4` usada por ese cliente transitivo del Admin SDK.
+El selector de `gaxios` no incluye versión: con el selector anterior
+`gaxios@6.7.1`, npm 10 rechazaba el lockfile durante `npm ci` por un supuesto
+`uuid@9.0.1` ausente, aunque npm 11 aceptaba las mismas resoluciones.
+Se verificaron instalaciones con `node_modules` ausente bajo Node.js 22.23.3,
+npm 10.9.9 y npm 11.17.0. Las versiones resueltas se mantienen: `uuid 11.1.1`
+y `gaxios 6.7.1`, `7.1.3` y `7.3.1`. Para regenerar el lockfile sin depender de
+una instalación anterior, retirar `node_modules` y ejecutar
+`npm install --package-lock-only --ignore-scripts`, seguido de `npm ci`.
+No editar el lockfile manualmente ni retirar el override para volver a `uuid 9`.
 
 ## Contrato HTTP
 
