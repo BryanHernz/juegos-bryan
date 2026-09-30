@@ -74,11 +74,11 @@ export function portalOrigin(value: string): string {
   try {
     url = new URL(value);
   } catch {
-    throw new Error('SALA_UNO_PORTAL_URL must be an HTTPS origin');
+    throw new Error('NEXO_PORTAL_URL must be an HTTPS origin');
   }
   if (url.protocol !== 'https:' || url.username || url.password ||
       url.pathname !== '/' || url.search || url.hash) {
-    throw new Error('SALA_UNO_PORTAL_URL must be an HTTPS origin');
+    throw new Error('NEXO_PORTAL_URL must be an HTTPS origin');
   }
   return url.origin;
 }

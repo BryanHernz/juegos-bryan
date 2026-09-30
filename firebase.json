@@ -2,7 +2,7 @@
   "functions": [
     {
       "source": "functions",
-      "codebase": "sala-uno",
+      "codebase": "nexo",
       "runtime": "nodejs22",
       "ignore": ["node_modules", ".git", "*.log", ".env*", ".secret.local", "tests", "coverage"],
       "predeploy": [

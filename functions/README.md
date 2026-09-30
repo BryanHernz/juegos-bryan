@@ -1,4 +1,4 @@
-# Sala Uno: backend común de vinculación de TV
+# Nexo: backend común de vinculación de TV
 
 Cloud Functions v2, TypeScript, Node.js 22 y Firebase Admin SDK. Una única
 Function HTTP pública, `api`, sirve a `cartonLleno` y `novaStar` en el proyecto
@@ -49,7 +49,7 @@ Cualquier otro valor devuelve 400. Respuesta 201:
   "code": "482913",
   "pollToken": "<secreto base64url de 256 bits>",
   "app": "cartonLleno",
-  "pairUrl": "<SALA_UNO_PORTAL_URL>/pair/<pairingId>",
+  "pairUrl": "<NEXO_PORTAL_URL>/pair/<pairingId>",
   "expiresAt": "<fecha ISO-8601: ahora + 5 minutos>"
 }
 ```
@@ -153,8 +153,8 @@ acceso global anularía esa protección. Admin SDK opera por IAM, fuera de esas 
 | Nombre | Tipo | Requisito |
 | --- | --- | --- |
 | `TV_PAIRING_CODE_SECRET` | Secret Manager (`defineSecret`) | Secreto aleatorio de al menos 32 bytes, recomendado 32 bytes aleatorios codificados como hex; enlazado sólo a `api` |
-| `SALA_UNO_PORTAL_URL` | Parámetro `defineString` | Origen HTTPS real del portal, sin ruta, credenciales, query ni fragmento; obligatorio, sin URL predeterminada |
-| `SALA_UNO_FUNCTIONS_REGION` | Parámetro `defineString` | Default `southamerica-west1`, donde está el Firestore real; sigue configurable |
+| `NEXO_PORTAL_URL` | Parámetro `defineString` | Origen HTTPS real del portal, sin ruta, credenciales, query ni fragmento; obligatorio, sin URL predeterminada |
+| `NEXO_FUNCTIONS_REGION` | Parámetro `defineString` | Default `southamerica-west1`, donde está el Firestore real; sigue configurable |
 
 El secret sólo se lee durante `onInit`, después de discovery, y nunca se escribe
 en el repositorio. Una rotación invalida los códigos pendientes durante sus cinco

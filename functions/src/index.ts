@@ -9,10 +9,10 @@ import { firestoreStore } from './tv/firestore';
 import { PairingService } from './tv/pairing';
 
 const codeSecret = defineSecret('TV_PAIRING_CODE_SECRET');
-const portalUrl = defineString('SALA_UNO_PORTAL_URL', {
-  description: 'HTTPS origin of Sala Uno; no path, query, or trailing page name.',
+const portalUrl = defineString('NEXO_PORTAL_URL', {
+  description: 'HTTPS origin of Nexo; no path, query, or trailing page name.',
 });
-const region = defineString('SALA_UNO_FUNCTIONS_REGION', { default: 'southamerica-west1' });
+const region = defineString('NEXO_FUNCTIONS_REGION', { default: 'southamerica-west1' });
 
 let handler: ReturnType<typeof createHttpApp>;
 onInit(() => {
