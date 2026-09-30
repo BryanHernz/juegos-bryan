@@ -1,4 +1,4 @@
-# Sala Uno · implementación 1.2.0
+# Sala Uno · implementación 1.2.1
 
 La marca visible es Sala Uno; no incluye un nombre personal. Se mantiene el nombre del repositorio y los orígenes de los instaladores para no romper enlaces.
 
@@ -10,7 +10,7 @@ El micrófono es la captura 1000092031.jpg girada 180 grados; no se sustituyó e
 
 ## Composición
 
-Portada amplia y dos secciones de producto altas. El monitor de Nova Star queda arriba y el teléfono se superpone más abajo, sin salirse de la sección. Cartón Lleno mantiene fondo cálido, amarillo y negro, y usa las cuadrículas originales en las capturas. Los contornos internos de la app se preservan: el portal no añade contornos decorativos a botones, tarjetas o secciones.
+Portada más alta, con las dos pantallas y dos teléfonos originales. Dos secciones de producto altas. El monitor de Nova Star queda arriba y el teléfono se superpone más abajo, sin salirse de la sección. Cartón Lleno mantiene fondo cálido, amarillo y negro, y usa las cuadrículas originales en las capturas. Los contornos internos de la app se preservan: el portal no añade contornos decorativos a botones, tarjetas o secciones.
 
 Los marcos de dispositivo solo representan el hardware. Las pantallas no se recortan para fingir contenido que no existe. Cada captura grande puede ampliarse.
 
@@ -20,7 +20,9 @@ Una familia de sistema sans-serif, sin cambio de fuente en la última palabra de
 
 ## Movimiento
 
-Solo fondos con movimiento suave y limitado; no secuestro de scroll ni desplazamiento de controles. Se respeta movimiento reducido, hay interruptor manual y en móvil se presenta estático.
+Capas con velocidades distintas sobre las pantallas y los teléfonos, sin reemplazar sus transformaciones de perspectiva. Flotación suave en un contenedor interior, entradas al llegar a cada sección y luces ambientales discretas. El scroll sigue siendo nativo; los controles de descarga no son capas parallax.
+
+La amplitud se reduce en móvil. Movimiento reducido del sistema y pausa manual detienen las animaciones sin ocultar contenido. El estado se muestra en el encabezado y en el pie; el trabajo de animación se pausa fuera de la escena visible y al ocultar la pestaña.
 
 ## Diferencia frente a las imágenes conceptuales
 

@@ -1900,3 +1900,224 @@ h2{
   opacity:.04
 }
 
+
+/* [1.2.1] Hero: four real screens, separate depth layers. */
+.hero{
+  min-height:max(1120px,112svh);
+  padding-block:154px 126px
+}
+.hero-grid{
+  grid-template-columns:.9fr 1.5fr;
+  min-height:860px;
+  gap:32px
+}
+.hero-art{
+  height:860px
+}
+.hero-monitor{
+  width:84%;
+  left:1%;
+  top:50px
+}
+.hero-laptop{
+  width:77%;
+  right:10%;
+  top:385px
+}
+.hero .hero-phone{
+  width:22%;
+  min-width:132px;
+  max-width:180px;
+  padding:5px;
+  border-radius:25px;
+  background:transparent;
+  box-shadow:none;
+  z-index:5
+}
+.hero .hero-phone[data-float]>.motion-float{
+  padding:5px;
+  border-radius:25px;
+  background:#07101a;
+  box-shadow:0 24px 35px #0005,4px 2px 0 #28343e
+}
+.hero .hero-phone .phone-screen{
+  border-radius:20px
+}
+.hero .hero-phone-nova{
+  top:228px;
+  right:0;
+  left:auto;
+  transform:perspective(1500px) rotateY(-7deg) rotateZ(4deg)
+}
+.hero .hero-phone-carton{
+  top:498px;
+  left:1%;
+  right:auto;
+  width:20.5%;
+  transform:perspective(1500px) rotateY(6deg) rotateZ(-4deg)
+}
+.hero .hero-phone-carton .phone-screen{
+  background:var(--paper)
+}
+.hero .art-aside{
+  top:0;
+  right:5px
+}
+.hero .scroll-cue{
+  bottom:-56px
+}
+.motion-status{
+  font-size:12px;
+  color:#c2cbd1;
+  max-width:360px;
+  line-height:1.6;
+  margin-top:22px
+}
+.motion-status[hidden]{ display:none }
+.motion-toggle{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  padding:10px 12px;
+  min-height:44px;
+  background:#14222b;
+  color:#cad6df;
+  border-radius:8px;
+  font-size:11px;
+  line-height:1.3;
+  flex:none
+}
+.motion-toggle .icon{
+  width:17px;
+  height:17px;
+  color:var(--accent)
+}
+.motion-toggle[aria-pressed="false"] .icon{ color:currentColor }
+.motion-toggle:disabled{ cursor:default; opacity:.7 }
+.header-inner{ gap:20px }
+.navigation{ gap:23px }
+
+/* [motion] Independent translation preserves each device perspective. */
+[data-parallax]{ translate:0 var(--parallax-y,0px) }
+.motion-ready [data-parallax]{ will-change:translate }
+.motion-float{ width:100%; transform:translateY(0) }
+.phone[data-float]{ padding:0; background:transparent; box-shadow:none }
+.phone[data-float]>.motion-float{
+  padding:7px;
+  border-radius:29px;
+  background:#07101a;
+  box-shadow:0 28px 40px #0006,5px 3px 0 #28343e
+}
+.motion-ready [data-float]>.motion-float{
+  animation:device-float 7s ease-in-out infinite;
+  animation-play-state:paused;
+  --float-distance:-10px
+}
+.motion-ready [data-float="1"]>.motion-float{ animation-delay:-2.8s; animation-duration:8s; --float-distance:8px }
+.motion-ready [data-float="2"]>.motion-float{ animation-delay:-1.4s; animation-duration:6.8s; --float-distance:-8px }
+.motion-ready [data-motion-scene][data-scene-visible="true"]>[data-float]>.motion-float{ animation-play-state:running }
+.motion-ready [data-float]:hover>.motion-float,
+.motion-ready [data-float]:focus-within>.motion-float{ animation-play-state:paused }
+@keyframes device-float{
+  0%,100%{ transform:translate3d(0,0,0) }
+  50%{ transform:translate3d(0,var(--float-distance),0) }
+}
+.motion-ready .beam{
+  animation:light-sway 11s ease-in-out infinite alternate;
+  animation-play-state:paused
+}
+.motion-ready [data-scene-visible="true"]>.ambience .beam{ animation-play-state:running }
+.motion-ready .beam-b{ animation-delay:-4s; animation-duration:14s }
+.motion-ready .beam-c{ animation-delay:-7s; animation-duration:17s }
+@keyframes light-sway{
+  from{ translate:-24px 0; scale:1; opacity:.06 }
+  to{ translate:44px 18px; scale:1.12; opacity:.12 }
+}
+.motion-ready .scroll-cue .icon{ animation:scroll-nudge 2.1s ease-in-out infinite }
+@keyframes scroll-nudge{
+  0%,100%{ transform:translateY(-3px) }
+  50%{ transform:translateY(5px) }
+}
+[data-reveal]{ opacity:1 }
+.motion-ready [data-reveal]{ transition:opacity .8s ease,translate .8s cubic-bezier(.2,.65,.25,1) }
+.motion-ready [data-reveal]:not(.is-visible){ opacity:0 }
+.motion-ready [data-reveal="up"]:not(.is-visible){ translate:0 32px }
+.motion-ready [data-reveal="media"]{ transition-duration:1s; transition-delay:.12s }
+.motion-ready .hero-features .feature{ animation:feature-enter .8s both }
+.motion-ready .hero-features .feature:nth-child(1){ animation-delay:.15s }
+.motion-ready .hero-features .feature:nth-child(2){ animation-delay:.3s }
+.motion-ready .hero-features .feature:nth-child(3){ animation-delay:.45s }
+@keyframes feature-enter{ from{ opacity:0; transform:translateY(16px) } to{ opacity:1; transform:none } }
+.motion-suspended *, .motion-suspended *::before, .motion-suspended *::after{ animation-play-state:paused!important }
+.motion-off [data-parallax]{ translate:none!important }
+.motion-off [data-reveal]{ opacity:1!important; translate:none!important; transition:none!important }
+.motion-off [data-float]>.motion-float{ animation:none; transform:none }
+
+@media(min-width:1600px){
+  .hero{ padding-block:166px 146px; min-height:max(1240px,112svh) }
+  .hero-grid,.hero-art{ min-height:940px; height:940px }
+  .hero-monitor{ top:60px }
+  .hero-laptop{ top:435px }
+  .hero .hero-phone{ max-width:200px }
+  .hero .hero-phone-nova{ top:265px }
+  .hero .hero-phone-carton{ top:538px }
+}
+@media(max-width:1190px){
+  .motion-toggle [data-motion-label]{ display:none }
+  .motion-toggle{ padding:10px; width:44px }
+  .header-inner{ gap:17px }
+  .navigation{ gap:17px }
+  .hero-grid{ grid-template-columns:.92fr 1.25fr; gap:24px; min-height:820px }
+  .hero-art{ height:820px }
+  .hero-monitor{ top:92px; width:90% }
+  .hero-laptop{ top:385px; width:81%; right:7% }
+  .hero .hero-phone{ min-width:130px; width:26% }
+  .hero .hero-phone-nova{ top:252px; right:0 }
+  .hero .hero-phone-carton{ top:503px; left:0; width:24% }
+}
+@media(max-width:900px){
+  .header-inner{ gap:16px }
+  .motion-toggle{ margin-left:auto }
+  .hero{ padding-block:136px 102px; min-height:112svh }
+  .hero-grid{ grid-template-columns:1fr; min-height:initial; gap:60px }
+  .hero-art{ width:min(680px,100%); height:820px }
+  .hero-monitor{ top:50px; width:85%; left:0 }
+  .hero-laptop{ top:374px; width:77%; right:10% }
+  .hero .hero-phone{ min-width:130px; width:23%; max-width:178px }
+  .hero .hero-phone-nova{ top:223px }
+  .hero .hero-phone-carton{ top:482px; width:21% }
+  .hero .scroll-cue{ bottom:-54px }
+  .phone[data-float]>.motion-float{ padding:7px; border-radius:29px }
+  .motion-ready [data-float]>.motion-float{ --float-distance:-5px }
+  .motion-ready [data-float="1"]>.motion-float{ --float-distance:4px }
+  .motion-ready [data-float="2"]>.motion-float{ --float-distance:-4px }
+}
+@media(max-width:600px){
+  .hero{ padding-block:124px 100px; min-height:112svh }
+  .hero-grid{ gap:52px }
+  .hero-art{ height:584px; margin-top:16px }
+  .hero-monitor{ top:22px; width:91%; left:0 }
+  .hero-laptop{ top:275px; width:78%; right:1% }
+  .hero .hero-phone{ min-width:0; width:29%; max-width:142px; padding:0 }
+  .hero .hero-phone[data-float]>.motion-float{ padding:4px; border-radius:18px; box-shadow:0 17px 24px #0004,3px 2px 0 #28343e }
+  .hero .hero-phone .phone-screen{ border-radius:14px }
+  .hero .hero-phone-nova{ top:125px; right:2px }
+  .hero .hero-phone-carton{ top:352px; left:2px; width:28% }
+  .hero .art-aside{ font-size:12px; top:0 }
+  .hero .scroll-cue{ bottom:-40px }
+  .phone[data-float]>.motion-float{ padding:5px; border-radius:22px; box-shadow:0 20px 32px #0005,3px 2px 0 #28343e }
+  .motion-ready [data-reveal="up"]:not(.is-visible){ translate:0 20px }
+}
+@media(max-width:360px){
+  .hero-art{ height:538px }
+  .hero-laptop{ top:253px }
+  .hero .hero-phone-nova{ top:116px }
+  .hero .hero-phone-carton{ top:321px }
+}
+@media(prefers-reduced-motion:reduce){
+  [data-parallax]{ translate:none!important }
+  [data-reveal]{ opacity:1!important; translate:none!important; transition:none!important }
+  [data-float]>.motion-float{ animation:none!important; transform:none!important }
+  .beam,.scroll-cue .icon{ animation:none!important }
+}

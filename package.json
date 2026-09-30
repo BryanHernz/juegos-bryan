@@ -1,6 +1,6 @@
 {
   "name": "sala-uno",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "private": true,
   "type": "module",
   "description": "Sala Uno: portal de Nova Star y Cartón Lleno",
@@ -11,6 +11,6 @@
     "test": "node --test tests/*.test.mjs",
     "preview": "node tools/serve.mjs",
     "build": "node tools/build.mjs",
-    "check": "node --check app.js && node --check experience.mjs && node --check releases.mjs"
+    "check": "node --check app.js && node --check experience.mjs && node --check releases.mjs && node --check motion.mjs"
   }
 }
