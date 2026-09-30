@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { APPS } from '../config.mjs';
+import { readFileSync } from 'node:fs';
+import { APPS as configuredApps } from '../config.mjs';
+const APPS = JSON.parse(readFileSync(new URL('./fixtures/apps.json', import.meta.url), 'utf8'));
 import { safeHttps, safeGithub, normalizeRelease, snapshotRelease, selectDownloads,
   fetchLatest, readCached, writeCached, formatBytes } from '../releases.mjs';
 const nova = APPS[0], carton = APPS[1];
@@ -89,4 +91,12 @@ test('un timeout aborta la solicitud en vez de dejar la interfaz cargando', asyn
 test('formatea tamaños sin NaN', () => {
   assert.equal(formatBytes(1048576), '1 MB');
   assert.equal(formatBytes(NaN), '');
+});
+
+test('la configuracion real conserva las aplicaciones y URLs validas', () => {
+  assert.deepEqual(configuredApps.map(x => x.id).sort(), ['carton-lleno','nova-star']);
+  for (const app of configuredApps) {
+    assert.ok(snapshotRelease(app).assets.length > 0);
+    assert.ok(!app.web.url || safeHttps(app.web.url));
+  }
 });
