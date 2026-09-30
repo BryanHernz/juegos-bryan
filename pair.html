@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0c1524">
+  <meta name="description" content="Vincula tu TV a Nexo con tu cuenta y el código mostrado en el dispositivo.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com/firebasejs/; style-src 'self'; img-src 'self' data:; connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://api-jfqflryoka-tl.a.run.app; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+  <title>Vincular dispositivo · NEXO</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/pair.css">
+  <script type="module" src="/pair.mjs"></script>
+</head>
+<body class="pair-page">
+  <header class="header"><div class="header-inner">
+    <a class="pair-brand" href="/" aria-label="Nexo, inicio">NEXO<span aria-hidden="true">.</span></a>
+    <a class="pair-home" href="/">Volver al portal</a>
+  </div></header>
+  <main class="pair-wrap">
+    <section class="pair-card" id="pair-card" aria-labelledby="pair-title" aria-busy="true">
+      <p class="eyebrow"><span></span> TU CUENTA, EN LA TV</p>
+      <h1 id="pair-title">Vincular<br><em>dispositivo.</em></h1>
+      <p class="pair-intro">Abre tu cuenta de Nexo e ingresa el código que aparece en la TV.</p>
+      <form id="login-form">
+        <label for="email">Correo electrónico</label>
+        <input id="email" name="email" type="email" autocomplete="username" required maxlength="254" disabled>
+        <label for="password">Contraseña</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required disabled>
+        <button class="pair-button" id="login-button" type="submit" disabled>Iniciar sesión</button>
+        <p class="pair-note">Usa tu cuenta existente. No se crean cuentas desde aquí.</p>
+      </form>
+      <div class="pair-account" id="account" hidden>
+        <div><span>Sesión iniciada</span><strong id="account-email"></strong></div>
+        <button class="pair-sign-out" id="sign-out" type="button">Cerrar sesión</button>
+      </div>
+      <form id="pair-form" hidden>
+        <label for="code">Código de 6 dígitos</label>
+        <input class="pair-code" id="code" name="code" type="text" inputmode="numeric" pattern="[0-9]{6}" minlength="6" maxlength="6" autocomplete="off" placeholder="000000" aria-describedby="code-help" required>
+        <p class="pair-note" id="code-help">Comprueba que estés vinculando la TV que tienes delante.</p>
+        <button class="pair-button" id="pair-button" type="submit">Vincular dispositivo</button>
+      </form>
+      <p class="pair-status" id="pair-status" role="status" aria-live="polite" aria-atomic="true">Comprobando sesión…</p>
+      <noscript><p class="pair-status">Activa JavaScript para iniciar sesión y vincular tu TV.</p></noscript>
+    </section>
+    <p class="pair-footer">Nova Star + Cartón Lleno</p>
+  </main>
+</body>
+</html>

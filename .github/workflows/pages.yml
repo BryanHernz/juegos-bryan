@@ -19,14 +19,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Pruebas de descargas
+      - name: Instalar dependencias de pruebas
+        run: npm ci
+      - name: Pruebas del portal
         run: npm test
+      - name: Validar JavaScript
+        run: npm run check
       - name: Preparar sitio estático
-        run: |
-          mkdir -p _site/assets
-          cp index.html styles.css app.js config.mjs releases.mjs _site/
-          cp -R assets/. _site/assets/
-          touch _site/.nojekyll
+        run: npm run build
       - name: Guardar sitio
         uses: actions/upload-pages-artifact@v4
         with:
