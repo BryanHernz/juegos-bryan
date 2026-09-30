@@ -154,7 +154,7 @@ acceso global anularía esa protección. Admin SDK opera por IAM, fuera de esas 
 | --- | --- | --- |
 | `TV_PAIRING_CODE_SECRET` | Secret Manager (`defineSecret`) | Secreto aleatorio de al menos 32 bytes, recomendado 32 bytes aleatorios codificados como hex; enlazado sólo a `api` |
 | `SALA_UNO_PORTAL_URL` | Parámetro `defineString` | Origen HTTPS real del portal, sin ruta, credenciales, query ni fragmento; obligatorio, sin URL predeterminada |
-| `SALA_UNO_FUNCTIONS_REGION` | Parámetro `defineString` | Default `us-central1`; confirmar proximidad a Firestore antes de desplegar |
+| `SALA_UNO_FUNCTIONS_REGION` | Parámetro `defineString` | Default `southamerica-west1`, donde está el Firestore real; sigue configurable |
 
 El secret sólo se lee durante `onInit`, después de discovery, y nunca se escribe
 en el repositorio. Una rotación invalida los códigos pendientes durante sus cinco
@@ -186,8 +186,9 @@ Referencias oficiales: [configuración y Secret Manager](https://firebase.google
   `createHttpApp(..., { beforeCreate })` permite añadir App Check o un limiter
   distribuido sin cambiar las rutas. Antes de abrirlo al público, definir la fuente
   confiable de IP y un gateway/almacén compartido o política de App Check compatible
-  con ambas TVs. No se presenta `maxInstances: 10` como rate limit: sólo limita
-  escalado, y quedan riesgos de abuso, costes y carga por creación/polling.
+  con ambas TVs. El límite temporal `maxInstances: 3` sólo limita escalamiento/costo
+  durante las pruebas; no sustituye rate limiting. Quedan riesgos de abuso, costes
+  y carga por creación/polling.
 - Confirmar host definitivo del portal, región y cuenta de servicio/IAM.
 - Implementar `/pair/:pairingId` con login y entrada del código en una tarea posterior;
   decidir cómo transportará una entrada manual tanto identificador como código.
