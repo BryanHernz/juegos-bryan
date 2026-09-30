@@ -1,99 +1,41 @@
-# Juegos Bryan
+# Sala Uno
 
-Portal estático para Nova Star y Cartón Lleno. Versión del portal: **1.0.0**.
-HTML, CSS y JavaScript sin dependencias de producción. No se modifican ni combinan los proyectos Flutter.
+Portal de Nova Star y Cartón Lleno. Versión **1.1.0**. HTML, CSS y módulos JavaScript; Node **22 o superior** para pruebas y vista previa. No necesita `npm install` ni modifica las apps Flutter.
 
-## Qué está implementado
+## Rama de revisión
 
-- Portada responsive con dos áreas visuales: azul nocturno para karaoke y tonos cálidos para bingo.
-- Descargas de Windows instalable, Windows portátil, Android ARM64, Android TV ARMv7 y otras variantes realmente publicadas.
-- Consulta independiente de la última release estable de cada repositorio al abrir la página; botón para volver a consultar.
-- Validación de dominios, repositorios y archivos; no inserta HTML procedente de GitHub.
-- Caché local de hasta siete días e instantáneas iniciales como respaldo. Siempre se informa cuando se usa información guardada.
-- Notas de la publicación, historial, tamaños y ayuda de instalación.
-- Acceso web de Nova Star configurado con la dirección documentada en su proyecto.
-- GitHub Actions para probar y publicar en GitHub Pages.
+Nombre creativo propuesto: Sala Uno. El repositorio y la URL de GitHub Pages siguen siendo `juegos-bryan`. No se ha comprobado disponibilidad de marca o dominio.
 
-## Estado inicial verificado
+Diseño con una sola familia sans-serif, fondos sólidos, índice fijo, parallax limitado y controles de descarga inmóviles. Se desactiva el movimiento en móvil, con la preferencia del sistema o con el botón de cabecera.
 
-Consulta de releases: 28-09-2026.
+La paleta de Nova Star proviene de su tema Dart. Cartón Lleno usa temporalmente un bloque neutral: el conector aún no permite leer su repositorio fuente. Se retiraron los cartones y bolas inventados; no se presentan composiciones del portal como capturas reales.
 
-| Aplicación | Release | Estado |
-|---|---|---|
-| Nova Star | v1.0.24 | APK y ZIP publicados; el nuevo instalador EXE no figuraba en la release al crear el portal. |
-| Cartón Lleno | v1.0.36 | Instalador, ZIP y APK publicados. |
+## Vista previa local
 
-Las instantáneas no se anuncian como datos en directo. Si GitHub responde, la página sustituye el respaldo por la respuesta recibida, incluyendo archivos añadidos a una release existente.
-
-## Lo que NO se ha publicado ni inventado
-
-- Este repositorio es un portal; no contiene builds Flutter web ni instaladores.
-- La PWA actual de Nova Star es micrófono y catálogo, **no karaoke completo en el navegador**. Dirección tomada de `NovaStar/REVISION_IPHONE_PWA.md`; su disponibilidad en vivo debe comprobarse al abrirla.
-- La URL web de Cartón Lleno no estaba disponible para revisión. Su botón permanece deshabilitado hasta configurarla.
-- Las ilustraciones CSS son decorativas, no capturas de las aplicaciones. La identidad de Cartón es una propuesta provisional: no se tuvo acceso de lectura a su repositorio fuente y no se copiaron sus logos ni capturas.
-- No se ha cambiado ninguna dirección de Firebase Hosting ni se ha publicado código privado.
-
-## Primera publicación
-
-El repositorio remoto ya contiene el portal. Desde la carpeta local inicialmente vacía:
+Desde el repositorio:
 
 ```powershell
-git pull --ff-only origin main
-git branch --set-upstream-to=origin/main main
-.\tools\publicar.ps1
-```
-
-`publicar.ps1` utiliza tu autenticación local de `gh`: crea Pages si falta, selecciona el modo workflow e inicia `pages.yml`. No almacena tokens. Para esta configuración inicial necesitas permisos de administración de Pages. El script informa que el despliegue fue solicitado, no que ya terminó.
-
-Revisa el resultado en `https://github.com/BryanHernz/juegos-bryan/actions/workflows/pages.yml`.
-La dirección prevista tras un despliegue exitoso es `https://bryanhernz.github.io/juegos-bryan/`.
-Los pushes posteriores a `main` vuelven a publicar el portal.
-
-## Vista previa y pruebas
-
-Node.js 22 o superior. No es necesario ejecutar npm install.
-
-```powershell
+.\tools\importar-logo.ps1
 npm test
 npm run preview
 ```
 
-Abre `http://127.0.0.1:8080/`. El servidor escucha únicamente en el equipo local. No abras index.html mediante file://, porque utiliza módulos JavaScript.
+El importador copia, sin modificar sus bytes, `..\NovaStar\assets\branding\nova_star_logo.png` a `assets/nova-star-logo.png`. No copia código privado ni credenciales. Para otra ubicación, usar `-NovaStarPath`. El logo queda como archivo local nuevo hasta incorporarlo al commit; sin él aparece solo el nombre de la aplicación.
 
-## Subir el instalador ya probado de Nova Star
+La consola indica la dirección de la vista previa. Se sirve únicamente en localhost. Referencias visuales y pendientes en `DESIGN.md`.
 
-Desde el portal y sin reemplazar archivos existentes:
+## Descargas
 
-```powershell
-gh release upload v1.0.24 "..\NovaStar\dist\NovaStar-1.0.24-windows-installer.exe" --repo BryanHernz/novastar-versiones
-```
+Se mantiene el módulo de releases: consultas independientes a `BryanHernz/novastar-versiones` y `BryanHernz/carton-lleno-versiones`, validación de URL, selección por plataforma, caché e instantáneas marcadas como información guardada. Los instaladores no se almacenan en este repo.
 
-No uses `--clobber` ni reemplaces el ZIP publicado: puede estar referenciado por su hash en `version.json`. El portal detectará el EXE en la siguiente consulta, sin cambiar su código. Si el archivo ya existe, GitHub CLI lo indica y no lo sobrescribe.
+La instantánea de Nova Star corresponde a v1.0.24 y no incluye el nuevo EXE local; aparecerá cuando esté publicado y se consulte GitHub. Cartón Lleno conserva v1.0.36 como respaldo.
 
-## Configurar la web de Cartón Lleno
+Nova Star web es micrófono y catálogo, no karaoke completo en navegador. No se ha confirmado la URL web de Cartón Lleno; su enlace permanece deshabilitado.
 
-Cuando exista una URL HTTPS real de su despliegue:
+## Publicación
 
-```powershell
-node tools/configurar-web.mjs carton-lleno https://TU-SITIO/
-git add config.mjs
-git commit -m "feat: configurar acceso web de Carton Lleno"
-git push origin main
-```
+`npm test` también se ejecuta en pull requests. Solo `main` se despliega en Pages; esta rama de revisión no publica por sí sola.
 
-El comando solo modifica `config.mjs`. No sube un build Flutter, no despliega Firebase ni garantiza que esa aplicación sea compatible con navegador. Para publicar cada aplicación se debe usar el proceso de su propio proyecto.
+Cuando el diseño esté aprobado, el logo incorporado y los cambios fusionados a main, se usa `tools/publicar.ps1` para la configuración inicial de Pages. Los pushes posteriores a main activan el workflow existente.
 
-## Seguridad y mantenimiento
-
-`config.mjs` es público: no guardes credenciales ni repositorios privados allí. Los enlaces de descarga solo se aceptan desde los repositorios públicos configurados. No se autoejecutan instaladores ni se solicita desactivar protecciones de Windows.
-
-Las consultas se hacen desde el navegador y están sujetas a la disponibilidad y límites de GitHub. El portal usa enlaces directos como respaldo e informa de las limitaciones; no promete actualización instantánea cuando no hay conexión.
-
-## Fuentes revisadas
-
-- https://github.com/BryanHernz/NovaStar/blob/main/PROPUESTA_PORTAL.md
-- https://github.com/BryanHernz/NovaStar/blob/main/REVISION_IPHONE_PWA.md
-- https://github.com/BryanHernz/novastar-versiones/releases/tag/v1.0.24
-- https://github.com/BryanHernz/carton-lleno-versiones/releases/tag/v1.0.36
-- https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages
-- https://docs.github.com/en/rest/pages/pages
+No fusionar esta revisión como integración visual final de Cartón Lleno hasta revisar sus fuentes, colores, cartones y recursos originales.
