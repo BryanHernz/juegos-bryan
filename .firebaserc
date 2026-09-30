@@ -1,5 +1,15 @@
 {
   "projects": {
     "default": "nova-star-bd0d9"
-  }
+  },
+  "targets": {
+    "nova-star-bd0d9": {
+      "hosting": {
+        "portal": [
+          "nexo-hub"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }

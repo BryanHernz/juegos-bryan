@@ -1,4 +1,4 @@
-name: Publicar portal
+name: Validar portal
 on:
   push:
     branches: [main]
@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: pages
+  group: portal-ci-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -19,30 +19,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Pruebas de descargas
+      - name: Instalar dependencias de pruebas
+        run: npm ci
+      - name: Pruebas del portal
         run: npm test
+      - name: Validar JavaScript
+        run: npm run check
       - name: Preparar sitio estático
-        run: |
-          mkdir -p _site/assets
-          cp index.html styles.css app.js config.mjs releases.mjs _site/
-          cp -R assets/. _site/assets/
-          touch _site/.nojekyll
-      - name: Guardar sitio
-        uses: actions/upload-pages-artifact@v4
-        with:
-          path: _site
-  deploy:
-    needs: build
-    runs-on: ubuntu-24.04
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Configurar Pages
-        uses: actions/configure-pages@v5
-      - name: Publicar
-        id: deployment
-        uses: actions/deploy-pages@v4
+        run: npm run build

@@ -1,0 +1,23 @@
+.pair-page [hidden]{display:none!important}
+.pair-brand{font-size:26px;font-weight:800;letter-spacing:2px;line-height:1}.pair-brand span{color:var(--gold)}
+.pair-home{font-size:12px;color:var(--muted)}.pair-home:hover{color:var(--gold)}
+.pair-wrap{width:min(480px,calc(100% - 36px));margin:56px auto 32px}
+.pair-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:36px}
+.pair-card h1{font-size:42px;letter-spacing:-1.8px;line-height:1.08;margin:22px 0 16px}
+.pair-intro{color:var(--muted);font-size:14px;line-height:1.7;margin-bottom:28px}
+.pair-card form{display:grid;gap:10px}.pair-card label{font-size:13px;font-weight:600}
+.pair-card input{min-width:0;width:100%;border:1px solid #3f536e;border-radius:9px;background:#0c1524;color:var(--ink);font:inherit;padding:12px 14px;margin-bottom:6px;min-height:48px}
+.pair-card input:focus-visible{outline:3px solid var(--gold);outline-offset:3px}.pair-card input:disabled{opacity:.65}
+.pair-button{border:1px solid var(--gold);border-radius:9px;background:var(--gold);color:var(--bg);font-weight:700;font-size:14px;min-height:48px;padding:12px 16px;margin-top:8px}
+.pair-button:hover:enabled{background:#ffd797}.pair-button:disabled{opacity:.55}
+.pair-note{color:var(--muted);font-size:11px;line-height:1.65}
+.pair-account{display:flex;gap:16px;align-items:center;justify-content:space-between;border-block:1px solid var(--line);padding-block:15px;margin-bottom:24px}
+.pair-account>div{min-width:0}.pair-account span{display:block;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--blue)}.pair-account strong{display:block;font-size:13px;overflow-wrap:anywhere;margin-top:3px;font-weight:500}
+.pair-sign-out{flex-shrink:0;border:1px solid #3f536e;border-radius:8px;color:var(--ink);background:transparent;font-size:11px;padding:9px;min-height:40px}
+.pair-card .pair-code{font-size:30px;letter-spacing:.35em;text-align:center;padding-left:calc(14px + .35em);font-variant-numeric:tabular-nums}
+.pair-code::placeholder{color:#637086;opacity:1}
+.pair-status{color:var(--muted);font-size:13px;line-height:1.75;margin-top:22px}
+.pair-status[data-state=success]{padding:18px;border:1px solid #51775f;border-radius:10px;background:#172b25;color:#b8e8c9;font-size:15px}
+.pair-status[data-state=incorrect-code],.pair-status[data-state=no-access],.pair-status[data-state=approval-denied],.pair-status[data-state=expired],.pair-status[data-state=locked],.pair-status[data-state=network-error],.pair-status[data-state=session-invalid],.pair-status[data-state=login-error]{color:var(--gold)}
+.pair-footer{text-align:center;color:var(--muted);font-size:10px;letter-spacing:1px;margin-top:22px}
+@media(max-width:480px){.pair-wrap{margin-top:28px}.pair-card{padding:26px 23px}.pair-card h1{font-size:38px}.pair-home{font-size:11px}.pair-account{gap:10px}}
