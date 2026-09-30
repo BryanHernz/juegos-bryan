@@ -11,8 +11,8 @@ export function scrollProgress(scrollY, documentHeight, viewportHeight) {
   return range > 0 ? clamp(scrollY / range, 0, 1) : 0;
 }
 
-export function motionEnabled(reduced, _compact, choice) {
-  return !reduced && choice !== 'off';
+export function motionEnabled(reduced) {
+  return !reduced;
 }
 
 export function motionStrength(compact) { return compact ? .45 : 1; }
@@ -37,13 +37,10 @@ export function initMotion() {
   const revealItems = [...document.querySelectorAll('[data-reveal]')];
   const scenes = [...document.querySelectorAll('[data-motion-scene]')];
   const progress = document.querySelector('[data-scroll-progress]');
-  const toggles = [...document.querySelectorAll('[data-motion-toggle]')];
   const status = document.querySelector('[data-motion-status]');
   const chapters = [...document.querySelectorAll('[data-chapter]')].map(link => ({
     link, section: document.getElementById(link.dataset.chapter)
   })).filter(item => item.section);
-  let choice = null;
-  try { choice = window.localStorage.getItem('sala-uno.motion'); } catch { /* [motion] storage unavailable */ }
   let enabled = false;
   let frame = 0;
   let disposed = false;
@@ -106,24 +103,15 @@ export function initMotion() {
   }
 
   function configure() {
-    enabled = motionEnabled(reduced.matches, compact.matches, choice);
+    enabled = motionEnabled(reduced.matches);
     html.classList.toggle('motion-ready', enabled);
     html.classList.toggle('motion-off', !enabled);
-    html.dataset.motion = reduced.matches ? 'reduced' : (enabled ? 'on' : 'off');
-    for (const toggle of toggles) {
-      toggle.setAttribute('aria-pressed', String(enabled));
-      toggle.disabled = reduced.matches;
-      const text = reduced.matches ? 'Movimiento reducido' : (enabled ? 'Animaciones activas' : 'Animaciones pausadas');
-      toggle.setAttribute('aria-label', reduced.matches ? text : (enabled ? 'Pausar animaciones' : 'Activar animaciones'));
-      toggle.title = reduced.matches ? 'El sistema tiene activado el movimiento reducido.' : text;
-      const label = toggle.querySelector('[data-motion-label]');
-      if (label) label.textContent = text;
-    }
+    html.dataset.motion = reduced.matches ? 'reduced' : 'on';
     if (status) {
       status.hidden = enabled;
       status.textContent = reduced.matches
         ? 'El sistema tiene activado el movimiento reducido. El contenido sigue disponible sin animaciones.'
-        : 'Animaciones pausadas. Puedes activarlas desde el control del encabezado.';
+        : '';
     }
     revealObserver?.disconnect();
     for (const element of revealItems) {
@@ -145,12 +133,6 @@ export function initMotion() {
     if (sceneObserver) sceneObserver.observe(scene);
     else scene.dataset.sceneVisible = 'true';
   }
-  for (const toggle of toggles) listen(toggle, 'click', () => {
-    if (reduced.matches) return;
-    choice = enabled ? 'off' : 'on';
-    try { window.localStorage.setItem('sala-uno.motion', choice); } catch { /* [motion] storage unavailable */ }
-    configure();
-  });
   listen(reduced, 'change', configure);
   listen(compact, 'change', configure);
   listen(window, 'scroll', schedule, { passive: true });

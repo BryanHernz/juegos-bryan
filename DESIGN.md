@@ -2,7 +2,7 @@
 
 La marca visible es Nexo; no incluye un nombre personal. Se mantiene el nombre del repositorio y los orígenes de los instaladores para no romper enlaces.
 
-La integración conserva exactamente `styles.css`, `motion.mjs`, galerías y assets del rescue 1.2.1. El HTML solo adapta el nombre visible y los metadatos a Nexo. La pantalla de vinculación mantiene sus estilos de `main` en `pair-base.css` para evitar cambios por las variables y reglas del portal recuperado.
+La integración conserva exactamente `styles.css`, galerías y assets del rescue 1.2.1. El HTML adapta el nombre visible y los metadatos a Nexo y elimina los controles manuales de animación. El motion conserva efectos, timings y accesibilidad. La pantalla de vinculación mantiene sus estilos de `main` en `pair-base.css` para evitar cambios por las variables y reglas del portal recuperado.
 
 ## Fuente visual
 
@@ -24,7 +24,7 @@ Una familia de sistema sans-serif, sin cambio de fuente en la última palabra de
 
 Capas con velocidades distintas sobre las pantallas y los teléfonos, sin reemplazar sus transformaciones de perspectiva. Flotación suave en un contenedor interior, entradas al llegar a cada sección y luces ambientales discretas. El scroll sigue siendo nativo; los controles de descarga no son capas parallax.
 
-La amplitud se reduce en móvil. Movimiento reducido del sistema y pausa manual detienen las animaciones sin ocultar contenido. El estado se muestra en el encabezado y en el pie; el trabajo de animación se pausa fuera de la escena visible y al ocultar la pestaña.
+La amplitud se reduce en móvil. Las animaciones permanecen activas normalmente, sin controles manuales de pausa. Movimiento reducido del sistema detiene las animaciones sin ocultar contenido y muestra un aviso accesible; el trabajo de animación se pausa fuera de la escena visible y al ocultar la pestaña.
 
 ## Diferencia frente a las imágenes conceptuales
 
