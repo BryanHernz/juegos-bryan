@@ -22,9 +22,12 @@ test('vista previa reconoce /pair/:pairingId y sirve módulos sin exponer archiv
   }
 });
 
-test('Hosting configura únicamente nexo-hub con rewrite y publica solo archivos estáticos', async () => {
+test('Hosting usa el target portal asociado a nexo-hub y publica solo archivos estáticos', async () => {
   const config = JSON.parse(await readFile(new URL('../firebase.json', import.meta.url), 'utf8'));
-  assert.equal(config.hosting.site, 'nexo-hub');
+  const rc = JSON.parse(await readFile(new URL('../.firebaserc', import.meta.url), 'utf8'));
+  assert.equal(config.hosting.target, 'portal');
+  assert.equal(config.hosting.site, undefined);
+  assert.deepEqual(rc.targets['nova-star-bd0d9'].hosting.portal, ['nexo-hub']);
   assert.equal(config.hosting.public, '_site');
   assert.deepEqual(config.hosting.rewrites, [{ source: '/pair/**', destination: '/pair.html' }]);
   assert.ok(PUBLIC_FILES.includes('pair.html'));

@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "nexo-hub",
+    "target": "portal",
     "public": "_site",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [{ "source": "/pair/**", "destination": "/pair.html" }],
