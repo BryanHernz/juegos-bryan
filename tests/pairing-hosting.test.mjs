@@ -14,7 +14,7 @@ test('vista previa reconoce /pair/:pairingId y sirve módulos sin exponer archiv
   assert.equal(response.status, 200);
   assert.match(await response.text(), /Vincular dispositivo · NEXO/);
   assert.equal(response.headers.get('cache-control'), 'no-store');
-  for (const file of ['/pair.mjs', '/pair-auth.mjs', '/pairing.mjs', '/pair-config.mjs', '/pair.css', '/styles.css', '/assets/favicon.svg', '/']) {
+  for (const file of ['/pair.mjs', '/pair-auth.mjs', '/pairing.mjs', '/pair-config.mjs', '/pair.css', '/pair-base.css', '/styles.css', '/assets/favicon.svg', '/']) {
     assert.equal((await fetch(origin + file)).status, 200, file);
   }
   for (const file of ['/functions/package.json', '/functions/.env.nova-star-bd0d9', '/package-lock.json', '/tests/pairing-web.test.mjs', '/node_modules/jsdom/package.json']) {

@@ -1,57 +1,10 @@
-# Juegos Bryan
+# Nexo · portal 1.2.1
 
-Portal estático para Nova Star y Cartón Lleno. Versión del portal: **1.0.0**.
-HTML, CSS y JavaScript sin dependencias de producción. No se modifican ni combinan los proyectos Flutter.
+Portal de Nexo con el diseño final 1.2.1 recuperado de `rescue/nexo-portal-final` (`c8a310a724ce0100675cff250fecdbc2c84063eb`). Conserva la composición, capturas, galerías y motion originales; integra la vinculación de TV y la infraestructura vigente de `main`.
 
-## Qué está implementado
+## Ejecutar
 
-- Portada responsive con dos áreas visuales: azul nocturno para karaoke y tonos cálidos para bingo.
-- Descargas de Windows instalable, Windows portátil, Android ARM64, Android TV ARMv7 y otras variantes realmente publicadas.
-- Consulta independiente de la última release estable de cada repositorio al abrir la página; botón para volver a consultar.
-- Validación de dominios, repositorios y archivos; no inserta HTML procedente de GitHub.
-- Caché local de hasta siete días e instantáneas iniciales como respaldo. Siempre se informa cuando se usa información guardada.
-- Notas de la publicación, historial, tamaños y ayuda de instalación.
-- Acceso web de Nova Star configurado con la dirección documentada en su proyecto.
-- GitHub Actions para probar y publicar en GitHub Pages.
-
-## Estado inicial verificado
-
-Consulta de releases: 28-09-2026.
-
-| Aplicación | Release | Estado |
-|---|---|---|
-| Nova Star | v1.0.24 | APK y ZIP publicados; el nuevo instalador EXE no figuraba en la release al crear el portal. |
-| Cartón Lleno | v1.0.36 | Instalador, ZIP y APK publicados. |
-
-Las instantáneas no se anuncian como datos en directo. Si GitHub responde, la página sustituye el respaldo por la respuesta recibida, incluyendo archivos añadidos a una release existente.
-
-## Lo que NO se ha publicado ni inventado
-
-- Este repositorio es un portal; no contiene builds Flutter web ni instaladores.
-- La PWA actual de Nova Star es micrófono y catálogo, **no karaoke completo en el navegador**. Dirección tomada de `NovaStar/REVISION_IPHONE_PWA.md`; su disponibilidad en vivo debe comprobarse al abrirla.
-- La URL web de Cartón Lleno no estaba disponible para revisión. Su botón permanece deshabilitado hasta configurarla.
-- Las ilustraciones CSS son decorativas, no capturas de las aplicaciones. La identidad de Cartón es una propuesta provisional: no se tuvo acceso de lectura a su repositorio fuente y no se copiaron sus logos ni capturas.
-- No se ha cambiado ninguna dirección de Firebase Hosting ni se ha publicado código privado.
-
-## Primera publicación
-
-El repositorio remoto ya contiene el portal. Desde la carpeta local inicialmente vacía:
-
-```powershell
-git pull --ff-only origin main
-git branch --set-upstream-to=origin/main main
-.\tools\publicar.ps1
-```
-
-`publicar.ps1` utiliza tu autenticación local de `gh`: crea Pages si falta, selecciona el modo workflow e inicia `pages.yml`. No almacena tokens. Para esta configuración inicial necesitas permisos de administración de Pages. El script informa que el despliegue fue solicitado, no que ya terminó.
-
-Revisa el resultado en `https://github.com/BryanHernz/juegos-bryan/actions/workflows/pages.yml`.
-La dirección prevista tras un despliegue exitoso es `https://bryanhernz.github.io/juegos-bryan/`.
-Los pushes posteriores a `main` vuelven a publicar el portal.
-
-## Vista previa y pruebas
-
-Node.js 22 o superior. Las dependencias son únicamente para las pruebas.
+Node.js 22.23.3 validado. Las dependencias npm son únicamente para pruebas; el portal sigue siendo estático.
 
 ```powershell
 npm ci
@@ -61,7 +14,61 @@ npm run build
 npm run preview
 ```
 
-Abre `http://127.0.0.1:8080/`. El servidor escucha únicamente en el equipo local. No abras index.html mediante file://, porque utiliza módulos JavaScript.
+Vista previa: http://127.0.0.1:8080/ . El servidor solo escucha en la máquina local. `Ctrl+C` lo detiene.
+
+## Implementado
+
+- Portada más alta: mínimo de 1120 px o 112svh en escritorio, con las dos pantallas y los dos teléfonos originales. Las secciones de producto mantienen su composición aprobada.
+- Botones planos, sin contorno ni bisel y radio de 8 px. No hay tarjetas decorativas con bordes alrededor de las secciones.
+- Capturas reales del usuario dentro de los dispositivos. Las interfaces no se regeneraron con IA.
+- Teléfono de Nova Star más abajo que el monitor, completamente visible. Usa `1000092031.jpg` rotado 180 grados: cabeza del micrófono hacia arriba. Solo se retiró la barra inferior del sistema antes de rotarlo.
+- Galerías de biblioteca/canto/torneo/fiesta y bingo 75/90/comprobación/celebración. Se pueden ampliar, cerrar con Escape y navegar sus pestañas con teclado.
+- Ejemplos originales PDF de cartones de 75 y 90 bolas, con vistas previas derivadas de esos PDF.
+- Parallax por capas sobre pantallas, teléfonos y fondos, con velocidades diferentes y desplazamiento acotado. Entrada progresiva de contenido y flotación suave. En móvil se reduce la amplitud, sin desactivar todo el movimiento.
+- Control de animaciones sincronizado en encabezado y pie. Respeta movimiento reducido del sistema y muestra ese estado. No altera el scroll nativo ni desplaza los botones de descarga con el parallax.
+- Versiones y archivos desde los dos repositorios de publicaciones existentes. Windows instalador y portátil, Android teléfono/TV y otras variantes realmente publicadas.
+- Sin nombre personal visible en los textos del portal. Se cubrió el nombre de cuenta en las capturas de biblioteca y modos de juego.
+
+## Configuración que se conserva
+
+`config.mjs` conserva desde `main` los repositorios de publicaciones, direcciones web y datos de respaldo. También se conservan Firebase Auth, la URL del backend, Functions y la configuración multisite de Nexo.
+
+La PWA de Nova Star enlazada es el micrófono y catálogo: no se anuncia como una partida completa en navegador. La URL web de Cartón Lleno está vacía hasta confirmar una dirección real. El botón lo comunica y no inventa un destino.
+
+```powershell
+node .\tools\configurar-web.mjs carton-lleno https://DIRECCION-REAL/
+```
+
+Sustituir esa dirección por la publicación real, no por la URL del repositorio fuente.
+
+## Logos
+
+Se conserva el logo de Nova Star incluido en el rescue. `tools/importar-logo.ps1` permite importar el PNG original desde el clon hermano `NovaStar/assets/branding/nova_star_logo.png` cuando está disponible, sustituyendo únicamente ese recurso.
+
+La marca «22» se recortó de la pantalla de inicio enviada por el usuario. No se dibujó un cartón nuevo ni se rediseñaron las cuadrículas. `assets/sources.json` documenta la procedencia y transformaciones de las capturas.
+
+## Publicaciones y caché
+
+El navegador consulta cada `/releases/latest` de manera independiente. Los enlaces se validan contra el repositorio esperado. No se incluye token de GitHub en el cliente. Las notas se insertan como texto, nunca como HTML.
+
+Si falla la consulta, se informa que se usan datos guardados. Se conserva la caché validada por hasta siete días y, en su defecto, la instantánea incluida. El respaldo inicial conoce Nova Star v1.0.24 y Cartón Lleno v1.0.36: NO significa que se haya comprobado hoy su disponibilidad. El instalador nuevo de Nova Star aparecerá cuando la API lo devuelva como archivo subido.
+
+## Publicación del portal
+
+`npm run build` genera `_site/` con una lista explícita de archivos públicos, incluyendo `experience.mjs`, `motion.mjs` y todos los archivos de pairing. Copia todos los assets y verifica automáticamente los archivos requeridos, las cuatro capturas principales y la igualdad de cada asset entre origen y build. No copia Functions, scripts de desarrollo, pruebas ni credenciales.
+
+El workflow de `main` ejecuta exclusivamente CI (`npm ci`, pruebas, check y build), sin publicar a GitHub Pages. Firebase conserva el target `portal` asociado a `nexo-hub` y la reescritura `/pair/**` a `/pair.html`. Esta integración no realiza deploy ni merge.
+
+## Validación
+
+- Pruebas Node de descargas, URLs, caché, movimiento, privacidad, recursos, estructura, branding, build y pairing.
+- Sintaxis de JavaScript y generación del sitio estático.
+- El rescue documenta validación visual en Chromium de 1920 a 320 px. La integración conserva su CSS y motion sin cambios.
+- Desplazamientos de profundidad distintos comprobados en escritorio y móvil; flotación, pausa manual, sincronización de controles y cambios en vivo de movimiento reducido.
+- Navegación de pestañas, menú móvil, ampliación de imagen y Escape.
+- Respuestas de API simuladas como no disponibles: se conserva el respaldo existente de las publicaciones.
+
+Las pruebas de pairing usan dobles de Auth/API; no crean ni consumen pairings en producción. La comprobación local y el build no equivalen a un deploy público ni validan la instalación de EXE/APK.
 
 ## Vinculación web de TV en Nexo
 
@@ -74,41 +81,3 @@ El único inicio de sesión ofrecido es email/password para cuentas existentes; 
 La pantalla contempla éxito, sesión inválida (401), código incorrecto o falta de acceso (403), enlace inexistente (404), ya aprobado/consumido (409), expirado (410), bloqueo por intentos (429) y errores de red. Solo distingue los errores 403 si recibe los códigos conocidos `incorrect_code` o `app_access_denied`; otros 403 muestran un mensaje neutro. El backend conserva la decisión sobre los permisos de cada app.
 
 `npm run build` copia exclusivamente los archivos públicos a `_site/`. `firebase.json` prepara únicamente el sitio **nexo-hub**, con la reescritura `/pair/**` a `/pair.html`; no se ha ejecutado ningún deploy. La configuración de Functions permanece igual y el Hosting de Nova Star no se modifica. La ruta de vinculación está destinada a `https://nexo-hub.web.app`, origen permitido por el backend; una vista previa local puede mostrar la interfaz, pero las pruebas de aprobación usan dobles de Auth/API para evitar CORS y operaciones en producción. No se deben enviar credenciales reales para estas pruebas locales.
-
-## Subir el instalador ya probado de Nova Star
-
-Desde el portal y sin reemplazar archivos existentes:
-
-```powershell
-gh release upload v1.0.24 "..\NovaStar\dist\NovaStar-1.0.24-windows-installer.exe" --repo BryanHernz/novastar-versiones
-```
-
-No uses `--clobber` ni reemplaces el ZIP publicado: puede estar referenciado por su hash en `version.json`. El portal detectará el EXE en la siguiente consulta, sin cambiar su código. Si el archivo ya existe, GitHub CLI lo indica y no lo sobrescribe.
-
-## Configurar la web de Cartón Lleno
-
-Cuando exista una URL HTTPS real de su despliegue:
-
-```powershell
-node tools/configurar-web.mjs carton-lleno https://TU-SITIO/
-git add config.mjs
-git commit -m "feat: configurar acceso web de Carton Lleno"
-git push origin main
-```
-
-El comando solo modifica `config.mjs`. No sube un build Flutter, no despliega Firebase ni garantiza que esa aplicación sea compatible con navegador. Para publicar cada aplicación se debe usar el proceso de su propio proyecto.
-
-## Seguridad y mantenimiento
-
-`config.mjs` es público: no guardes credenciales ni repositorios privados allí. Los enlaces de descarga solo se aceptan desde los repositorios públicos configurados. No se autoejecutan instaladores ni se solicita desactivar protecciones de Windows.
-
-Las consultas se hacen desde el navegador y están sujetas a la disponibilidad y límites de GitHub. El portal usa enlaces directos como respaldo e informa de las limitaciones; no promete actualización instantánea cuando no hay conexión.
-
-## Fuentes revisadas
-
-- https://github.com/BryanHernz/NovaStar/blob/main/PROPUESTA_PORTAL.md
-- https://github.com/BryanHernz/NovaStar/blob/main/REVISION_IPHONE_PWA.md
-- https://github.com/BryanHernz/novastar-versiones/releases/tag/v1.0.24
-- https://github.com/BryanHernz/carton-lleno-versiones/releases/tag/v1.0.36
-- https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages
-- https://docs.github.com/en/rest/pages/pages

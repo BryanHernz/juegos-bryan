@@ -1,0 +1,304 @@
+[
+  {
+    "asset": "assets/screens/nova-library.webp",
+    "source": "Captura de pantalla 2026-09-28 184801.png",
+    "sourceSha256": "1e0e0c1e821c71876ee802956f3c932a45e00ddf65468c2f64f045e06e4e1151",
+    "sourceSize": [
+      2048,
+      1151
+    ],
+    "transforms": {
+      "rotationDegrees": 0,
+      "accountLabelMasked": true,
+      "bottomSystemBarRemoved": false,
+      "maxWidth": 1600
+    },
+    "generativeRedraw": false
+  },
+  {
+    "asset": "assets/screens/nova-detail.webp",
+    "source": "Captura de pantalla 2026-09-28 184818.png",
+    "sourceSha256": "3837c6041259c1da5e83999b8d29c8f64ef3a72564f1634e37258dd147b133f7",
+    "sourceSize": [
+      2048,
+      1150
+    ],
+    "transforms": {
+      "rotationDegrees": 0,
+      "accountLabelMasked": true,
+      "bottomSystemBarRemoved": false,
+      "maxWidth": 1600
+    },
+    "generativeRedraw": false
+  },
+  {
+    "asset": "assets/screens/nova-tournament.webp",
+    "source": "Captura de pantalla 2026-09-28 185026.png",
+    "sourceSha256": "feb73327d321a9b346beed85826271b2eddc81c6cdcdcd2a6afd9f8db922752c",
+    "sourceSize": [
+      2048,
+      1153
+    ],
+    "transforms": {
+      "rotationDegrees": 0,
+      "accountLabelMasked": true,
+      "bottomSystemBarRemoved": false,
+      "maxWidth": 1600
+    },
+    "generativeRedraw": false
+  },
+  {
+    "asset": "assets/screens/nova-party.webp",
+    "source": "Captura de pantalla 2026-09-28 185036.png",
+    "sourceSha256": "4a26ad7eba76f69acff5bf169a2f032255012be235dc93faf1ed17ad8959edfb",
+    "sourceSize": [
+      2048,
+      1153
+    ],
+    "transforms": {
+      "rotationDegrees": 0,
+      "accountLabelMasked": true,
+      "bottomSystemBarRemoved": false,
+      "maxWidth": 1600
+    },
+    "generativeRedraw": false
+  },
+  {
+    "asset": "assets/screens/nova-session.webp",
+    "source": "Captura de pantalla 2026-09-28 185048.png",
+    "sourceSha256": "b25564a230a1b088f99c7e87b48ed5c48fb4e440a9e654a1b188a044d10e70ba",
+    "sourceSize": [
+      2048,
+      1154
+    ],
+    "transforms": {
+      "rotationDegrees": 0,
+      "accountLabelMasked": true,
+      "bottomSystemBarRemoved": false,
+      "maxWidth": 1600
+    },
+    "generativeRedraw": false
+  },
+  {
+    "asset": "assets/screens/nova-single.webp",
+    "source": "Captura de pantalla 2026-09-28 185749.png",
+    "sourceSha256": "237ac49d4085045c3a6f39c3d4678efa74e1366585761d516f638c07236107df",
+    "sourceSize": [
+      2048,
+      1154
+    ],
+    "transforms": {
+      "rotationDegrees": 0,
+      "accountLabelMasked": false,
+      "bottomSystemBarRemoved": false,
+      "maxWidth": 1600
+    },
+    "generativeRedraw": false
+  },
+  {
+    "asset": "assets/screens/nova-duet.webp",
+    "source": "Captura de pantalla 2026-09-28 190011.png",
+    "sourceSha256": "3cc2f2ce7a2fd4e92be6e56f62dcd02ce4d0c45e402eb3d047343b837aec4549",
+    "sourceSize": [
+      2048,
+      1149
+    ],
+    "transforms": {
+      "rotationDegrees": 0,
+      "accountLabelMasked": false,
+      "bottomSystemBarRemoved": false,
+      "maxWidth": 1600
+    },
+    "generativeRedraw": false
+  },
+  {
+    "asset": "assets/screens/nova-results.webp",
+    "source": "Captura de pantalla 2026-09-28 190022.png",
+    "sourceSha256": "bc1df387b4ef9ce18b23991d1a3c65d4de535f6e639931c382ef4b6fcbf282fb",
+    "sourceSize": [
+      2048,
+      1146
+    ],
+    "transforms": {
+      "rotationDegrees": 0,
+      "accountLabelMasked": false,
+      "bottomSystemBarRemoved": false,
+      "maxWidth": 1600
+    },
+    "generativeRedraw": false
+  },
+  {
+    "asset": "assets/screens/carton-home.webp",
+    "source": "image.png",
+    "sourceSha256": "c5990fbc6d142f62e73f4808d478393d01690f2a0c39ed6c1398755f26894bbb",
+    "sourceSize": [
+      2048,
+      1153
+    ],
+    "transforms": {
+      "rotationDegrees": 0,
+      "accountLabelMasked": false,
+      "bottomSystemBarRemoved": false,
+      "maxWidth": 1600
+    },
+    "generativeRedraw": false
+  },
+  {
+    "asset": "assets/screens/carton-75.webp",
+    "source": "image_2.png",
+    "sourceSha256": "a61535fd649a2bcc4cf7e93af5e2cdff524f42b45bc8dd3afbce3d8f61f3a43a",
+    "sourceSize": [
+      2048,
+      1154
+    ],
+    "transforms": {
+      "rotationDegrees": 0,
+      "accountLabelMasked": false,
+      "bottomSystemBarRemoved": false,
+      "maxWidth": 1600
+    },
+    "generativeRedraw": false
+  },
+  {
+    "asset": "assets/screens/carton-90.webp",
+    "source": "image_3.png",
+    "sourceSha256": "5a95a2b86547e7ae0d0e272c70ddb5d268518fb69f6c512954de035e997d75ce",
+    "sourceSize": [
+      2048,
+      1149
+    ],
+    "transforms": {
+      "rotationDegrees": 0,
+      "accountLabelMasked": false,
+      "bottomSystemBarRemoved": false,
+      "maxWidth": 1600
+    },
+    "generativeRedraw": false
+  },
+  {
+    "asset": "assets/screens/carton-win.webp",
+    "source": "image_4.png",
+    "sourceSha256": "b0891e8aed49cac0fb98d0cd9286229ae08448e76b274df09994813078e59cb5",
+    "sourceSize": [
+      2048,
+      1149
+    ],
+    "transforms": {
+      "rotationDegrees": 0,
+      "accountLabelMasked": false,
+      "bottomSystemBarRemoved": false,
+      "maxWidth": 1600
+    },
+    "generativeRedraw": false
+  },
+  {
+    "asset": "assets/screens/carton-check.webp",
+    "source": "image_5.png",
+    "sourceSha256": "5b24a91a81002f54a289c4f4616e7a9418d0acb29061a1a774f964785450bb1c",
+    "sourceSize": [
+      2048,
+      1150
+    ],
+    "transforms": {
+      "rotationDegrees": 0,
+      "accountLabelMasked": false,
+      "bottomSystemBarRemoved": false,
+      "maxWidth": 1600
+    },
+    "generativeRedraw": false
+  },
+  {
+    "asset": "assets/screens/nova-microphone.webp",
+    "source": "1000092031.jpg",
+    "sourceSha256": "2986bc96819c3a317419fb1fae5896d1a76a9dbb6fca3a2904d3c630d9fad4e0",
+    "sourceSize": [
+      742,
+      1536
+    ],
+    "transforms": {
+      "rotationDegrees": 180,
+      "accountLabelMasked": false,
+      "bottomSystemBarRemoved": true,
+      "maxWidth": 1600
+    },
+    "generativeRedraw": false
+  },
+  {
+    "asset": "assets/screens/nova-connected.webp",
+    "source": "1000092035.jpg",
+    "sourceSha256": "4d383830a4faf82893576505c57a39905c0d5f324fd48554a7160cd8636409f8",
+    "sourceSize": [
+      742,
+      1536
+    ],
+    "transforms": {
+      "rotationDegrees": 0,
+      "accountLabelMasked": false,
+      "bottomSystemBarRemoved": true,
+      "maxWidth": 1600
+    },
+    "generativeRedraw": false
+  },
+  {
+    "asset": "assets/screens/nova-connect.webp",
+    "source": "1000092037.jpg",
+    "sourceSha256": "56218cfd9243b87a4cb70fe4b19b46966d90b4bcefad0b1b543f3ef302d25674",
+    "sourceSize": [
+      742,
+      1536
+    ],
+    "transforms": {
+      "rotationDegrees": 0,
+      "accountLabelMasked": false,
+      "bottomSystemBarRemoved": true,
+      "maxWidth": 1600
+    },
+    "generativeRedraw": false
+  },
+  {
+    "asset": "assets/screens/carton-remote.webp",
+    "source": "1000092003.jpg",
+    "sourceSha256": "ff08e72ac748483b997eaddc8d704413f0dc9a92db00a7fda1aa5007e3d97ed1",
+    "sourceSize": [
+      742,
+      1536
+    ],
+    "transforms": {
+      "rotationDegrees": 0,
+      "accountLabelMasked": false,
+      "bottomSystemBarRemoved": true,
+      "maxWidth": 1600
+    },
+    "generativeRedraw": false
+  },
+  {
+    "asset": "assets/screens/carton-mobile.webp",
+    "source": "1000092005.jpg",
+    "sourceSha256": "aafcff1a6206fb2a557c926943095c1ff5a17f4d33547387433b838ce556152e",
+    "sourceSize": [
+      742,
+      1536
+    ],
+    "transforms": {
+      "rotationDegrees": 0,
+      "accountLabelMasked": false,
+      "bottomSystemBarRemoved": true,
+      "maxWidth": 1600
+    },
+    "generativeRedraw": false
+  },
+  {
+    "asset": "assets/print/cartones-75.pdf",
+    "source": "75.pdf",
+    "sourceSha256": "64f9ec027c294269915a1ee4cf0010ccc48c6806f7194ee8a9724758f27556d5",
+    "transforms": [],
+    "generativeRedraw": false
+  },
+  {
+    "asset": "assets/print/cartones-90.pdf",
+    "source": "90.pdf",
+    "sourceSha256": "91d4f9db1151a0d52131b827494fb6bfe03989a03b2045dbb56c20f51cb26db7",
+    "transforms": [],
+    "generativeRedraw": false
+  }
+]
