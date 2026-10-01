@@ -1,0 +1,9 @@
+# Upload only the already-validated runtime and locked package manifests.
+# Do not include .gitignore: it excludes lib/, which this deployment needs.
+*
+!package.json
+!package-lock.json
+!lib/
+!lib/**
+**/.env*
+**/.secret.local

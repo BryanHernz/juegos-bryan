@@ -12,7 +12,10 @@
   "scripts": {
     "test": "vitest run",
     "build": "tsc",
-    "lint": "eslint src tests *.mjs"
+    "lint": "eslint src tests *.mjs",
+    "deploy:cleanup": "node deploy-cleanup.mjs --deploy",
+    "verify:cleanup": "node deploy-cleanup.mjs --verify",
+    "deploy:cleanup:dry-run": "node deploy-cleanup.mjs --dry-run"
   },
   "dependencies": {
     "express": "^5.2.1",

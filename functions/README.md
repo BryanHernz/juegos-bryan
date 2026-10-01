@@ -211,8 +211,9 @@ de verano. Usa `NEXO_FUNCTIONS_REGION`, cuyo default es `southamerica-west1`,
 Node 22, 256 MiB, timeout de 300 segundos, cero instancias mínimas, una instancia
 máxima, concurrencia 1 y sin reintentos de Scheduler (`retryCount: 0`).
 Una repetición manual o ejecución solapada también es segura por las transacciones.
-La función y el job sólo existirán cuando se autorice y realice un deploy futuro.
-Esta implementación local no configura TTL, reglas, IAM ni recursos de producción.
+La Function y el job ya están desplegados. La Function reside en
+`southamerica-west1`; el job reside en `southamerica-east1` (ver procedimiento
+de deploy abajo). La limpieza no configura TTL ni cambia reglas o IAM.
 
 | Estado | Condición de eliminación |
 | --- | --- |
@@ -253,6 +254,101 @@ resumen/estado del job antes de ampliar recursos. Los tests son exclusivamente
 locales, incluidos límites exactos de retención, rollback, carreras y paginación.
 
 Referencia: [funciones programadas de Firebase](https://firebase.google.com/docs/functions/schedule-functions).
+
+## Procedimiento oficial de deploy y verificación del cleanup
+
+**Function region != Scheduler location.** `cleanupTvPairingsDaily` permanece en
+`southamerica-west1`, junto a Firestore. Cloud Scheduler no ofrece esa ubicación;
+el job `firebase-schedule-cleanupTvPairingsDaily-southamerica-west1` reside en
+`southamerica-east1` y envía un POST autenticado por OIDC a la Function de Santiago.
+El sufijo del nombre identifica la región de la Function, no la ubicación del job.
+
+La causa está en Firebase CLI 15.19.0:
+`lib/deploy/functions/release/fabricator.js`, `upsertScheduleV2(endpoint)`, llama a
+`scheduler.jobFromEndpoint(endpoint, endpoint.region, projectNumber)`.
+`lib/gcp/cloudscheduler.js` usa esa ubicación para construir el nombre del job y
+`createOrReplaceJob()` lo consulta/crea/actualiza allí. El SDK `onSchedule` no tiene
+un parámetro independiente para la ubicación del Scheduler. Cambiar sólo
+`NEXO_FUNCTIONS_REGION` también movería la Function; no es la solución.
+
+Desde `functions/`, con **Node 22 y Google Cloud CLI autenticado**:
+
+```sh
+# Offline: muestra el plan; no usa credenciales, red, builds ni escrituras.
+npm run deploy:cleanup:dry-run
+
+# Sólo lectura de Function, permiso de invocación y Scheduler.
+npm run verify:cleanup
+
+# Sólo cuando el deploy esté autorizado:
+npm run deploy:cleanup
+```
+
+El script versionado `deploy-cleanup.mjs` usa los CLIs/APIs oficiales de Google:
+
+1. Instala con `npm ci` y exige lint, tests y build locales. Comprueba el manifest
+   compilado (`0 4 * * *`, UTC) y los archivos que se van a subir.
+2. Verifica que exista la Function Gen 2 activa, Node 22, entry point correcto,
+   cuenta de runtime aprobada y recursos actuales. Nunca recrea una Function
+   ausente, cambia su nombre/región ni despliega `api` u otras Functions.
+3. Verifica que `roles/run.invoker` ya permita invocar a la cuenta aprobada y que
+   cleanup no sea público. No otorga, elimina ni modifica bindings IAM. Si falta
+   un permiso, aborta y exige revisión explícita.
+4. Actualiza **únicamente** `cleanupTvPairingsDaily` con `gcloud functions deploy
+   --gen2 --trigger-http --entry-point=cleanupTvPairingsDaily --region=southamerica-west1`.
+   `onSchedule` Gen 2 ya es una Function HTTP con un job separado; no se modifica
+   su export, callback, schedule, timezone ni lógica de retención. Esto evita el
+   administrador de Scheduler de Firebase CLI. Conserva la cuenta de build cuando
+   está especificada y vuelve a comprobar cuenta de runtime e invocadores.
+5. Usa la API oficial de Cloud Scheduler para consultar el job exacto en
+   `southamerica-east1`: crea si falta, corrige únicamente los campos aprobados
+   que difieran y no escribe si ya coincide. No reemplaza otros tipos de targets
+   ni reactiva un job pausado. Una configuración cambiada concurrentemente
+   durante el deploy hace abortar la reconciliación.
+6. Verifica `ENABLED`, POST/OIDC al URI actual, cuenta de servicio, `0 4 * * *`,
+   UTC, deadline 300 s, cero reintentos y próxima ejecución a las 04:00 UTC.
+   `scheduleTime` puede incluir segundos/fracciones dentro del minuto programado;
+   se valida ese minuto y se informa el timestamp completo que devuelve Google.
+   Devuelve un resumen con los identificadores, ubicaciones y `nextExecution`.
+   Cualquier fallo aborta con salida distinta de cero; no trata un deploy parcial
+   como éxito y no borra recursos para corregirlo.
+
+`.gcloudignore` permite subir sólo `package.json`, `package-lock.json` y el runtime
+compilado `lib/`. Excluye `.env*`, secretos locales, `node_modules`, tests y tooling.
+`GOOGLE_NODE_RUN_SCRIPTS=` evita recompilar TypeScript sin sus fuentes en Cloud
+Build, igual que Firebase CLI; el build ya se validó localmente. No cambian las
+dependencias ni el lockfile. Tokens de Google sólo se mantienen en memoria y no
+se muestran en logs; nunca se leen secretos del backend. El script no invoca
+cleanup, no consulta datos Firestore ni toca Authentication, reglas o TTL.
+
+La reconciliación del job es idempotente: sucesivas ejecuciones no crean jobs
+duplicados ni actualizan un job correcto. Cada `--deploy` sí publica nuevamente
+el código de la Function; `--verify` y `--dry-run` no publican nada.
+
+Para inspeccionar directamente el estado y la próxima ejecución:
+
+```sh
+gcloud functions describe cleanupTvPairingsDaily --gen2 \
+  --region=southamerica-west1 --project=nova-star-bd0d9 \
+  --format='yaml(name,state,buildConfig.runtime,serviceConfig.uri)'
+
+gcloud scheduler jobs describe firebase-schedule-cleanupTvPairingsDaily-southamerica-west1 \
+  --location=southamerica-east1 --project=nova-star-bd0d9 \
+  --format='yaml(name,state,schedule,timeZone,scheduleTime)'
+```
+
+**El proceso normal cambia sólo para cleanup.** No usar `firebase deploy --only
+functions` ni `functions:nexo:cleanupTvPairingsDaily`: volverían a intentar
+administrar el job en la ubicación incorrecta. Para futuros cambios autorizados
+de `api`, Firebase CLI sigue siendo válido con el selector explícito
+`firebase deploy --only functions:nexo:api --project nova-star-bd0d9`.
+Una actualización futura de Firebase CLI/SDK que soporte ubicaciones separadas
+debe verificarse antes de retirar esta excepción; no parchear su instalación.
+
+Referencias: [ubicaciones de Scheduler](https://cloud.google.com/scheduler/docs/locations),
+[gcloud functions deploy](https://cloud.google.com/sdk/gcloud/reference/functions/deploy),
+[autenticación HTTP de Scheduler](https://cloud.google.com/scheduler/docs/http-target-auth),
+[scripts de build de Node](https://cloud.google.com/docs/buildpacks/nodejs).
 
 No se toca Cartón Lleno, Nova Star, Storage, releases, actualizadores, panel admin,
 diseño web ni configuración de Hosting.
