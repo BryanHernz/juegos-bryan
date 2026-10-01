@@ -8,6 +8,13 @@ export function safeHttps(value) {
   } catch { return null; }
 }
 
+export function productWeb(app, companionUrls = []) {
+  const web = safeHttps(app.web.url);
+  const companions = [app.companion?.url, ...companionUrls].map(safeHttps).filter(Boolean);
+  // A companion Hosting origin must never become the game's Web option.
+  return web && !companions.some(companion => new URL(web).origin === new URL(companion).origin) ? web : null;
+}
+
 export function safeGithub(value, repo, kind = 'asset') {
   if (!REPO_PATTERN.test(repo)) return null;
   const href = safeHttps(value);
@@ -56,8 +63,7 @@ export function selectDownloads(assets) {
   // No se sustituye una arquitectura o plataforma por otra.
   return {
     windows: pick(/windows-(?:instalador|installer|setup)\.exe$/i,
-      /(?:instalador|installer|setup).*\.exe$/i, /\.(?:msi|msix|msixbundle)$/i),
-    portable: pick(/windows(?:[-_]x64)?\.zip$/i),
+      /(?:instalador|installer|setup).*\.exe$/i),
     phone: pick(/-telefono\.apk$/i, /-arm64-v8a\.apk$/i),
     tv: pick(/-tele\.apk$/i, /-armeabi-v7a\.apk$/i)
   };
@@ -118,6 +124,14 @@ export function readCached(app, storage, now = Date.now()) {
     const cached = JSON.parse(storage.getItem(`juegos-bryan:release:v1:${app.id}`));
     const age = now - cached.checkedAt;
     if (!Number.isFinite(age) || age < 0 || age > 7 * 86400000) return null;
+    // A still-fresh browser cache must not downgrade the bundled fallback.
+    const version = tag => /^v?(\d+)\.(\d+)\.(\d+)$/.exec(tag || '')?.slice(1).map(Number);
+    const minimum = version(app.snapshot.tag_name), current = version(cached.raw?.tag_name);
+    if (minimum) {
+      if (!current) return null;
+      const firstDifference = current.findIndex((part, index) => part !== minimum[index]);
+      if (firstDifference >= 0 && current[firstDifference] < minimum[firstDifference]) return null;
+    }
     return { release: normalizeRelease(cached.raw, app.repo), checkedAt: cached.checkedAt };
   } catch { return null; }
 }

@@ -28,4 +28,4 @@ La amplitud se reduce en móvil. Las animaciones permanecen activas normalmente,
 
 ## Diferencia frente a las imágenes conceptuales
 
-La implementación usa contenido verdadero y textos verificables. No reproduce los textos deformados, números inventados, cifras de canciones no verificadas ni enlaces de Términos/Contacto/redes sin destino de los bocetos generados. Cartón web permanece pendiente de URL; el acceso web de Nova Star es micrófono/catálogo.
+La implementación usa contenido verdadero y textos verificables. No reproduce los textos deformados, números inventados, cifras de canciones no verificadas ni enlaces de Términos/Contacto/redes sin destino de los bocetos generados. Web permanece pendiente de URL oficial para ambos juegos. Micrófono / Companion es una opción independiente de Nova Star; no representa Nova Star Web. Descargas mantiene los estilos existentes y sólo muestra Web, Windows, Android y Android TV / Google TV, con el companion opcional de Nova Star.

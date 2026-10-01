@@ -22,10 +22,11 @@ test('las dos instantáneas tienen enlaces válidos del repositorio correcto', (
     assert.ok(release.assets.every(a => safeGithub(a.url, app.repo)));
   }
 });
-test('Nova no ofrece un instalador EXE inexistente', () => {
+test('Nova selecciona el instalador EXE real y no publica el ZIP como opción', () => {
   const selected = selectDownloads(snapshotRelease(nova).assets);
-  assert.equal(selected.windows, null);
-  assert.match(selected.portable.name, /windows-x64.zip$/);
+  assert.equal(selected.windows.name, 'NovaStar-1.0.27-windows-installer.exe');
+  assert.equal(selected.portable, undefined);
+  assert.ok(snapshotRelease(nova).assets.some(asset => /windows-x64.zip$/.test(asset.name)));
 });
 test('Cartón selecciona los nombres fijos de Windows y teléfono', () => {
   const selected = selectDownloads(snapshotRelease(carton).assets);
@@ -33,17 +34,26 @@ test('Cartón selecciona los nombres fijos de Windows y teléfono', () => {
   assert.equal(selected.phone.name, 'CartonLleno-telefono.apk');
   assert.equal(selected.tv.name, 'CartonLleno-tele.apk');
 });
-test('detecta el nombre del instalador nuevo de Nova', () => {
-  const assets = [...snapshotRelease(nova).assets, { name: 'NovaStar-1.0.24-windows-installer.exe' }];
-  assert.equal(selectDownloads(assets).windows.name, 'NovaStar-1.0.24-windows-installer.exe');
+test('prioriza los aliases oficiales sobre APKs versionados independientemente del orden', () => {
+  for (const app of APPS) {
+    const assets = snapshotRelease(app).assets.toReversed();
+    const selected = selectDownloads(assets);
+    assert.match(selected.phone.name, /-telefono.apk$/);
+    assert.match(selected.tv.name, /-tele.apk$/);
+  }
+});
+
+test('Windows no sustituye el instalador EXE por ZIP, MSI ni ejecutables técnicos', () => {
+  assert.equal(selectDownloads([{ name: 'app-windows-x64.zip' }, { name: 'app.msi' },
+    { name: 'updater.exe' }]).windows, null);
 });
 test('no confunde x86_64 Android con teléfono ARM64 ni con Windows', () => {
-  const selected = selectDownloads([{ name: 'NovaStar-1.0.24-x86_64.apk' }]);
-  assert.deepEqual(selected, { windows: null, phone: null, tv: null, portable: null });
+  const selected = selectDownloads([{ name: 'NovaStar-1.0.27-x86_64.apk' }]);
+  assert.deepEqual(selected, { windows: null, phone: null, tv: null });
 });
 test('rechaza otros dominios, credenciales y scripts', () => {
   for (const url of ['javascript:alert(1)', 'http://github.com/a/b', 'https://evil.example/a.exe',
-    'https://github.com.evil.example/a', 'https://u:p@github.com/BryanHernz/novastar-versiones/releases/download/v1/file.exe'])
+    'https://github.com.evil.example/a', 'https://u:p@github.com/BryanHernz/nova-star-versiones/releases/download/v1/file.exe'])
     assert.equal(safeGithub(url, nova.repo), null);
   assert.equal(safeHttps(''), null);
 });
@@ -61,9 +71,22 @@ test('filtra archivos inválidos y no muestra JSON como instalador', () => {
 test('solo guarda y recupera caché validada con máximo de siete días', () => {
   const storage = memoryStorage(), now = Date.now();
   writeCached(nova, storage, rawRelease(), now);
-  assert.equal(readCached(nova, storage, now + 1000).release.tag, 'v1.0.24');
+  assert.equal(readCached(nova, storage, now + 1000).release.tag, 'v1.0.27');
   assert.equal(readCached(nova, storage, now + 8 * 86400000), null);
   assert.equal(readCached(nova, storage, now - 1000), null);
+});
+
+test('una caché reciente no rebaja el fallback y una versión superior sigue válida', () => {
+  const storage = memoryStorage(), now = Date.now();
+  for (const app of APPS) {
+    const raw = rawRelease(app);
+    raw.tag_name = 'v1.0.1';
+    writeCached(app, storage, raw, now);
+    assert.equal(readCached(app, storage, now), null);
+    raw.tag_name = 'v1.0.100';
+    writeCached(app, storage, raw, now);
+    assert.equal(readCached(app, storage, now).release.tag, 'v1.0.100');
+  }
 });
 test('el almacenamiento bloqueado no rompe la aplicación', () => {
   const storage = { getItem() { throw new Error('blocked'); }, setItem() { throw new Error('blocked'); } };
@@ -78,7 +101,7 @@ test('la consulta se hace sin token ni cookies y siempre se revalida', async () 
     assert.equal(options.headers.Authorization, undefined);
     return { ok: true, json: async () => rawRelease() };
   } });
-  assert.equal(result.release.tag, 'v1.0.24');
+  assert.equal(result.release.tag, 'v1.0.27');
 });
 test('los límites de GitHub tienen un error reconocible', async () => {
   await assert.rejects(fetchLatest(nova, { fetchImpl: async () => ({ ok: false, status: 403 }) }), /limitado/);

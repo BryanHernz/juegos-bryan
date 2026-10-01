@@ -26,14 +26,14 @@ Vista previa: http://127.0.0.1:8080/ . El servidor solo escucha en la máquina l
 - Ejemplos originales PDF de cartones de 75 y 90 bolas, con vistas previas derivadas de esos PDF.
 - Parallax por capas sobre pantallas, teléfonos y fondos, con velocidades diferentes y desplazamiento acotado. Entrada progresiva de contenido y flotación suave. En móvil se reduce la amplitud, sin desactivar todo el movimiento.
 - Animaciones activas normalmente, sin controles manuales de pausa. Respeta movimiento reducido del sistema y muestra ese estado. No altera el scroll nativo ni desplaza los botones de descarga con el parallax.
-- Versiones y archivos desde los dos repositorios de publicaciones existentes. Windows instalador y portátil, Android teléfono/TV y otras variantes realmente publicadas.
+- Versiones y archivos desde los repositorios oficiales de publicaciones. Opciones principales: Web, Windows (instalador EXE), Android y Android TV / Google TV; Nova Star incluye además Micrófono / Companion. Los ZIP, aliases duplicados y variantes técnicas no aparecen en la interfaz de descargas.
 - Sin nombre personal visible en los textos del portal. Se cubrió el nombre de cuenta en las capturas de biblioteca y modos de juego.
 
 ## Configuración que se conserva
 
-`config.mjs` conserva desde `main` los repositorios de publicaciones, direcciones web y datos de respaldo. También se conservan Firebase Auth, la URL del backend, Functions y la configuración multisite de Nexo.
+`config.mjs` usa `BryanHernz/nova-star-versiones` y `BryanHernz/carton-lleno-versiones`. También se conservan Firebase Auth, la URL del backend, Functions y la configuración multisite de Nexo.
 
-La PWA de Nova Star enlazada es el micrófono y catálogo: no se anuncia como una partida completa en navegador. La URL web de Cartón Lleno está vacía hasta confirmar una dirección real. El botón lo comunica y no inventa un destino.
+Las URLs Web de ambos juegos están vacías hasta confirmar direcciones oficiales; sus opciones muestran «Web · Próximamente», sin enlace. `companion` es una configuración independiente de Nova Star que conserva `https://nova-star-bd0d9.web.app/` como Micrófono / Companion. Ese origen se rechaza como destino Web, también en la herramienta de configuración.
 
 ```powershell
 node .\tools\configurar-web.mjs carton-lleno https://DIRECCION-REAL/
@@ -51,7 +51,17 @@ La marca «22» se recortó de la pantalla de inicio enviada por el usuario. No 
 
 El navegador consulta cada `/releases/latest` de manera independiente. Los enlaces se validan contra el repositorio esperado. No se incluye token de GitHub en el cliente. Las notas se insertan como texto, nunca como HTML.
 
-Si falla la consulta, se informa que se usan datos guardados. Se conserva la caché validada por hasta siete días y, en su defecto, la instantánea incluida. El respaldo inicial conoce Nova Star v1.0.24 y Cartón Lleno v1.0.36: NO significa que se haya comprobado hoy su disponibilidad. El instalador nuevo de Nova Star aparecerá cuando la API lo devuelva como archivo subido.
+Si falla la consulta, se informa que se usan datos guardados. Se conserva la caché validada por hasta siete días, siempre que su versión no sea inferior al snapshot; en su defecto se usa la instantánea incluida. Los fallbacks se comprobaron contra las releases públicas oficiales el 2026-10-01: Nova Star v1.0.27 y Cartón Lleno v1.0.42. Mantienen la estructura de snapshots, las notas oficiales y los nombres/tamaños reales de los assets.
+
+| Plataforma | Nova Star 1.0.27 | Cartón Lleno 1.0.42 |
+| --- | --- | --- |
+| Web | Próximamente, sin URL | Próximamente, sin URL |
+| Windows | `NovaStar-1.0.27-windows-installer.exe` | `CartonLleno-windows-instalador.exe` |
+| Android | `NovaStar-telefono.apk` | `CartonLleno-telefono.apk` |
+| Android TV / Google TV | `NovaStar-tele.apk` | `CartonLleno-tele.apk` |
+| Companion | `https://nova-star-bd0d9.web.app/` | No aplica |
+
+`selectDownloads()` prioriza los aliases oficiales de teléfono/TV frente a los APK versionados. Si falta un alias, conserva el fallback existente por arquitectura ARM64/ARMv7. Windows sólo admite un instalador EXE; no sustituye un instalador ausente por ZIP o MSI. Los enlaces apuntan al tag de la release consultada. Los ZIP y otros archivos continúan en GitHub sin cambios: no se modifica ninguna release ni el updater. Nova Star 1.0.27 incluye un ZIP; Cartón Lleno 1.0.42 no lo publica.
 
 ## Publicación del portal
 
