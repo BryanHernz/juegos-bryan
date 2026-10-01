@@ -51,6 +51,10 @@ un contorno visible independiente del hover. Ayuda participa ahora en el
 seguimiento de capítulos existente. Al final de la página se activa el último
 capítulo visible aunque no alcance la línea de activación habitual; esto permite
 marcar Ayuda correctamente. No cambia el cálculo ni los tiempos de las animaciones.
+Se retira la barra larga de progreso de lectura bajo el header: el acento del
+producto queda en el underline del enlace activo. El monograma de la navbar crece
+de 34 a 37 px en escritorio y de 30 a 33 px en móvil, sin alterar su geometría,
+la palabra Nexo ni los símbolos del hero y del footer.
 
 El CTA común conserva tamaño y destino, con fondo marfil, sin borde y con estados
 hover, pressed y focus. Los controles de producto y descarga usan acentos propios
