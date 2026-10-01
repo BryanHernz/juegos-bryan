@@ -26,14 +26,14 @@ Vista previa: http://127.0.0.1:8080/ . El servidor solo escucha en la máquina l
 - Ejemplos originales PDF de cartones de 75 y 90 bolas, con vistas previas derivadas de esos PDF.
 - Parallax por capas sobre pantallas, teléfonos y fondos, con velocidades diferentes y desplazamiento acotado. Entrada progresiva de contenido y flotación suave. En móvil se reduce la amplitud, sin desactivar todo el movimiento.
 - Animaciones activas normalmente, sin controles manuales de pausa. Respeta movimiento reducido del sistema y muestra ese estado. No altera el scroll nativo ni desplaza los botones de descarga con el parallax.
-- Versiones y archivos desde los repositorios oficiales de publicaciones. Opciones principales: Web, Windows (instalador EXE), Android y Android TV / Google TV; Nova Star incluye además Micrófono / Companion. Los ZIP, aliases duplicados y variantes técnicas no aparecen en la interfaz de descargas.
+- Versiones y archivos desde los repositorios oficiales de publicaciones. Opciones principales: Web, Windows (instalador EXE), Android y Android TV / Google TV. El micrófono de Nova Star se abre desde el QR dentro de la aplicación. Los ZIP, aliases duplicados y variantes técnicas no aparecen en la interfaz de descargas.
 - Sin nombre personal visible en los textos del portal. Se cubrió el nombre de cuenta en las capturas de biblioteca y modos de juego.
 
 ## Configuración que se conserva
 
 `config.mjs` usa `BryanHernz/nova-star-versiones` y `BryanHernz/carton-lleno-versiones`. También se conservan Firebase Auth, la URL del backend, Functions y la configuración multisite de Nexo.
 
-Las URLs Web de ambos juegos están vacías hasta confirmar direcciones oficiales; sus opciones muestran «Web · Próximamente», sin enlace. `companion` es una configuración independiente de Nova Star que conserva `https://nova-star-bd0d9.web.app/` como Micrófono / Companion. Ese origen se rechaza como destino Web, también en la herramienta de configuración.
+Las URLs Web de ambos juegos están vacías hasta confirmar direcciones oficiales; sus opciones muestran «Web · Próximamente», sin enlace. `companion` es una configuración independiente de Nova Star que conserva `https://nova-star-bd0d9.web.app/` como Micrófono / Companion, sin enlace público en el portal. El acceso se realiza desde el QR dentro de Nova Star. Ese origen se rechaza como destino Web, también en la herramienta de configuración.
 
 ```powershell
 node .\tools\configurar-web.mjs carton-lleno https://DIRECCION-REAL/
@@ -59,7 +59,7 @@ Si falla la consulta, se informa que se usan datos guardados. Se conserva la cac
 | Windows | `NovaStar-1.0.27-windows-installer.exe` | `CartonLleno-windows-instalador.exe` |
 | Android | `NovaStar-telefono.apk` | `CartonLleno-telefono.apk` |
 | Android TV / Google TV | `NovaStar-tele.apk` | `CartonLleno-tele.apk` |
-| Companion | `https://nova-star-bd0d9.web.app/` | No aplica |
+| Micrófono | Acceso por QR dentro de Nova Star, sin botón en el portal | No aplica |
 
 `selectDownloads()` prioriza los aliases oficiales de teléfono/TV frente a los APK versionados. Si falta un alias, conserva el fallback existente por arquitectura ARM64/ARMv7. Windows sólo admite un instalador EXE; no sustituye un instalador ausente por ZIP o MSI. Los enlaces apuntan al tag de la release consultada. Los ZIP y otros archivos continúan en GitHub sin cambios: no se modifica ninguna release ni el updater. Nova Star 1.0.27 incluye un ZIP; Cartón Lleno 1.0.42 no lo publica.
 

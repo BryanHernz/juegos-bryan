@@ -37,22 +37,18 @@ function assertOptions(document) {
     }
     const card = document.getElementById(`descargas-${app.id}`);
     assert.deepEqual([...card.querySelectorAll('.download-options > a')].map(link =>
-      link.hasAttribute('data-web') ? 'web' : link.hasAttribute('data-companion') ? 'companion' : link.dataset.download),
-    app.id === 'nova-star' ? ['web', 'windows', 'phone', 'tv', 'companion'] : ['web', 'windows', 'phone', 'tv']);
+      link.hasAttribute('data-web') ? 'web' : link.dataset.download),
+    ['web', 'windows', 'phone', 'tv']);
   }
-  const companions = [...document.querySelectorAll('[data-companion]')];
-  assert.equal(companions.length, 2);
-  for (const companion of companions) {
-    assert.equal(companion.href, 'https://nova-star-bd0d9.web.app/');
-    assert.match(companion.textContent, /Micrófono \/ Companion/);
-    assert.equal(companion.closest('[data-app]').dataset.app, 'nova-star');
-  }
+  assert.equal(document.querySelectorAll('[data-companion]').length, 0);
+  assert.equal([...document.querySelectorAll('a[href]')].filter(link => link.href.startsWith('https://nova-star-bd0d9.web.app')).length, 0);
+  assert.match(document.getElementById('ayuda').textContent, /Escanea el QR desde Nova Star/);
   assert.equal(document.querySelectorAll('[data-download="portable"], [data-assets]').length, 0);
   assert.doesNotMatch(document.body.textContent, /Windows portátil|Otras variantes/);
   assert.equal([...document.querySelectorAll('a[href]')].filter(link => /\.zip$/i.test(link.href)).length, 0);
 }
 
-test('el fallback offline conserva versiones actuales, instaladores y companion separado de Web', async t => {
+test('el fallback offline conserva versiones y descargas sin publicar el companion', async t => {
   const dom = new JSDOM(html, { url: 'http://127.0.0.1:8080/' });
   t.after(() => dom.window.close());
   t.mock.method(console, 'warn', () => {});

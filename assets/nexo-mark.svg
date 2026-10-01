@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" color="#f2eedf" role="img" aria-labelledby="title">
+  <title id="title">Nexo — conexión entre aplicaciones</title>
+  <g fill="currentColor">
+    <path d="M4 4h7l8 8-5 5-3-3v14H4Z"/>
+    <path d="M28 28h-7l-8-8 5-5 3 3V4h7Z"/>
+  </g>
+</svg>

@@ -2121,3 +2121,138 @@ h2{
   [data-float]>.motion-float{ animation:none!important; transform:none!important }
   .beam,.scroll-cue .icon{ animation:none!important }
 }
+
+/* [Nexo polish] Identity and controls only; scene geometry/motion stays above. */
+:root{
+  --nexo-identity:#f2eedf;
+  --nova-control:#ffc078;
+  --carton-control:#f5d64c;
+  --focus-ring:var(--nexo-identity)
+}
+.header{ border-bottom:1px solid #d7e4ed1c }
+.brand{ gap:11px; min-height:44px }
+.brand-icon{ width:34px; height:34px; color:var(--nexo-identity) }
+.brand:hover .brand-icon{ color:#ffcf91 }
+.brand:focus-visible{ outline-color:var(--nexo-identity); border-radius:4px }
+.footer .brand-icon{ width:28px; height:28px }
+.hero-signature{ display:flex; align-items:center; gap:10px; flex-wrap:wrap }
+.hero-signature .brand-icon{ width:26px; height:26px }
+.hero-brand{ color:var(--nexo-identity); font-size:18px; letter-spacing:-.025em; font-weight:750 }
+.hero-domain{ border-left:1px solid #f2eedf38; padding-left:14px; margin-left:4px; font-size:11px }
+.navigation{
+  gap:6px;
+  padding-inline:22px;
+  border-inline:1px solid #d7e4ed1c
+}
+.navigation>a:not(.mobile-cta){
+  --nav-accent:var(--nexo-identity);
+  position:relative;
+  display:flex;
+  align-items:center;
+  min-height:44px;
+  padding:12px 10px;
+  border-radius:4px;
+  color:#c7d1d8;
+  white-space:nowrap;
+  transition:color .18s ease,background-color .18s ease
+}
+.navigation>[href="#nova-star"]:not(.mobile-cta){ --nav-accent:var(--nova-control) }
+.navigation>[href="#carton-lleno"]:not(.mobile-cta){ --nav-accent:var(--carton-control) }
+.navigation>a:not(.mobile-cta)::after{
+  content:'';
+  position:absolute;
+  inset:auto 10px 5px;
+  height:2px;
+  background:var(--nav-accent);
+  opacity:0;
+  transform:scaleX(.65);
+  transform-origin:left;
+  transition:opacity .18s ease,transform .18s ease
+}
+.navigation>a:not(.mobile-cta):hover{ color:#fff; background:#d7e4ed0b }
+.navigation>a:not(.mobile-cta):hover::after{ opacity:.5; transform:scaleX(1) }
+.navigation>a:not(.mobile-cta)[aria-current]{ color:#fff; font-weight:650 }
+.navigation>a:not(.mobile-cta)[aria-current]::after{ opacity:1; transform:scaleX(1) }
+.navigation>a:not(.mobile-cta):focus-visible{ outline:2px solid var(--nexo-identity); outline-offset:3px }
+.header .header-cta{
+  min-height:46px;
+  border:0;
+  background:var(--nexo-identity);
+  color:#10202c;
+  padding:13px 17px;
+  transition:background-color .18s ease,transform .12s ease
+}
+.header .header-cta:hover{ background:#fff8e9 }
+.header .header-cta:active{ background:#ded7c6; transform:translateY(1px) }
+.header .header-cta:focus-visible{ outline:2px solid var(--nexo-identity); outline-offset:4px }
+.header .header-cta .icon{ transition:transform .18s ease }
+.header .header-cta:hover .icon{ transform:translateX(2px) }
+.header .mobile-cta{ display:none }
+.menu-toggle{ min-width:48px; min-height:48px; border-radius:6px }
+.menu-toggle:hover{ background:#d7e4ed12 }
+.menu-toggle:active{ background:#d7e4ed20 }
+.menu-toggle:focus-visible{ outline:2px solid var(--nexo-identity); outline-offset:3px }
+[data-app="nova-star"] .cta-grid{ --control-accent:var(--nova-control); --focus-ring:#ffcc91 }
+[data-app="carton-lleno"] .cta-grid{ --control-accent:#8a7113; --focus-ring:#6f5c13 }
+.cta-grid .button{
+  border:0;
+  min-height:54px;
+  transition:background-color .18s ease,transform .12s ease
+}
+.cta-grid .button.secondary .icon{ color:var(--control-accent) }
+.cta-grid .button:not([aria-disabled="true"]):active{ transform:translateY(1px) }
+.cta-grid .button:focus-visible{ outline:2px solid var(--focus-ring); outline-offset:4px }
+.cta-grid .button[aria-disabled="true"]{ opacity:1; background:#182732; color:#adbbc4 }
+.carton .cta-grid .button[aria-disabled="true"]{ background:#e5e4da; color:#65695d }
+.download-card[data-app="nova-star"]{ --control-accent:#965121; --control-tint:#fff3e7; --focus-ring:#965121 }
+.download-card[data-app="carton-lleno"]{ --control-accent:#736013; --control-tint:#faf4d6; --focus-ring:#736013 }
+.download-option{
+  min-height:58px;
+  border:0;
+  transition:background-color .18s ease,transform .12s ease
+}
+.download-option[href]>.icon:first-child{ color:var(--control-accent) }
+.download-option[href]:hover{ background:var(--control-tint) }
+.download-option[href]:active{ transform:translateY(1px) }
+.download-option:focus-visible{ outline:2px solid var(--focus-ring); outline-offset:3px }
+.download-option[aria-disabled="true"]{ opacity:1; color:#6d746b; background:#f1f2ed }
+.download-option[aria-disabled="true"]:hover{ background:#f1f2ed }
+.download-card .refresh{ width:44px; height:44px }
+.download-card .refresh:focus-visible{ outline:2px solid var(--focus-ring); outline-offset:3px }
+.product .text-link{ min-height:44px }
+.product.nova .text-link:focus-visible{ outline-color:#ffcc91 }
+.carton .text-link:focus-visible{ outline-color:#6f5c13 }
+@media(min-width:901px) and (max-width:1190px){
+  .navigation{ gap:2px; padding-inline:12px }
+  .navigation>a:not(.mobile-cta){ padding-inline:8px; font-size:13px }
+  .header .header-cta{ padding-inline:13px; font-size:12px }
+}
+@media(max-width:900px){
+  .header-inner .brand{ font-size:25px }
+  .brand-icon{ width:30px; height:30px }
+  .navigation{
+    border-inline:0;
+    border-block:1px solid #d7e4ed1c;
+    padding:16px 32px 20px;
+    max-height:calc(100svh - 72px);
+    overflow-y:auto;
+    gap:4px
+  }
+  .navigation>a:not(.mobile-cta){ min-height:48px; padding:13px 14px; font-size:16px }
+  .navigation>a:not(.mobile-cta)::after{ inset:auto 14px 5px; max-width:40px }
+  .header .header-cta:not(.mobile-cta){ display:none }
+  .header .mobile-cta{ display:flex; min-height:48px; margin-top:12px }
+}
+@media(max-width:600px){
+  .navigation{ padding-inline:24px }
+  .hero-signature{ gap:8px }
+  .hero-domain{ font-size:10px; padding-left:10px; margin-left:2px }
+}
+@media(prefers-reduced-motion:reduce){
+  .navigation>a:not(.mobile-cta),.navigation>a::after,
+  .header .header-cta,.header .header-cta .icon,.cta-grid .button,.download-option{
+    transition:none
+  }
+  .header .header-cta:active,.header .header-cta:hover .icon,
+  .cta-grid .button:active,.download-option:active{ transform:none }
+}

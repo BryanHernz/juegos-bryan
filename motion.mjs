@@ -89,6 +89,12 @@ export function initMotion() {
       if (rect.top <= viewport * .45 && rect.bottom > 120) active = item;
     }
     const percent = scrollProgress(window.scrollY, html.scrollHeight, viewport);
+    // A short final chapter cannot reach the activation line at the page end.
+    const finalChapter = chapters.at(-1);
+    if (percent === 1 && finalChapter) {
+      const rect = getRect(finalChapter.section);
+      if (rect.top < viewport && rect.bottom > 120) active = finalChapter;
+    }
     if (progress) progress.style.transform = `scaleX(${percent})`;
     for (const update of updates) update.element.style.setProperty('--parallax-y', `${update.value.toFixed(2)}px`);
     for (const item of chapters) {

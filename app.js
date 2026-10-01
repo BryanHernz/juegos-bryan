@@ -1,6 +1,6 @@
 import { initExperience } from './experience.mjs';
 import { APPS, SNAPSHOT_CHECKED_AT } from './config.mjs';
-import { safeHttps, productWeb, snapshotRelease, selectDownloads, formatBytes,
+import { productWeb, snapshotRelease, selectDownloads, formatBytes,
   formatDate, fetchLatest, readCached, writeCached } from './releases.mjs';
 
 export async function initDownloads({ document, window, fetchImpl = globalThis.fetch }) {
@@ -30,7 +30,6 @@ export async function initDownloads({ document, window, fetchImpl = globalThis.f
   function render(app, release, status, warning = false) {
     const selected = selectDownloads(release.assets);
     const web = productWeb(app, companionUrls);
-    const companion = safeHttps(app.companion?.url);
     for (const root of roots(app)) {
       setText(root, '[data-version]', release.tag);
       setText(root, '[data-date]', formatDate(release.publishedAt));
@@ -47,11 +46,6 @@ export async function initDownloads({ document, window, fetchImpl = globalThis.f
       for (const link of all('[data-web]', root)) setLink(link, web, app.web.description);
       setText(root, '[data-web-label]', web ? app.web.label : 'Web · Próximamente');
       setText(root, '[data-web-note]', app.web.description);
-      for (const link of all('[data-companion]', root)) {
-        setLink(link, companion, app.companion?.description);
-        setText(link, '[data-companion-label]', app.companion?.label || 'Companion');
-      }
-      setText(root, '[data-companion-note]', app.companion?.description || '');
     }
   }
   async function refresh(app) {
