@@ -164,8 +164,9 @@ acceso global anularía esa protección. Admin SDK opera por IAM, fuera de esas 
 | `NEXO_PORTAL_URL` | Parámetro `defineString` | Origen HTTPS real del portal, sin ruta, credenciales, query ni fragmento; obligatorio, sin URL predeterminada |
 | `NEXO_FUNCTIONS_REGION` | Parámetro `defineString` | Default `southamerica-west1`, donde está el Firestore real; sigue configurable |
 
-El secret sólo se lee durante `onInit`, después de discovery, y nunca se escribe
-en el repositorio. Una rotación invalida los códigos pendientes durante sus cinco
+El secret sólo se lee al inicializar el router en la primera solicitud de `api`,
+después de discovery, y nunca se escribe en el repositorio. La limpieza programada
+no enlaza ni lee ese secret. Una rotación invalida los códigos pendientes durante sus cinco
 minutos de vida; crear pairings nuevos. No usar claves privadas ni JSON de cuentas
 de servicio: `initializeApp()` usa las credenciales administradas del entorno.
 
@@ -201,8 +202,57 @@ Referencias oficiales: [configuración y Secret Manager](https://firebase.google
 - Implementar `/pair/:pairingId` con login y entrada del código en una tarea posterior;
   decidir cómo transportará una entrada manual tanto identificador como código.
 - Confirmar deny de Firestore para pairings y contador en el proyecto real.
-- Añadir después TTL/limpieza. Borrar un pairing no borra automáticamente su
-  subcolección `security`; cualquier limpieza deberá eliminar también el contador.
+
+## Retención diaria de tvPairings
+
+`cleanupTvPairingsDaily` usa Cloud Functions v2 `onSchedule`, cron `0 4 * * *`
+y timezone `UTC`: una ejecución diaria a las 04:00 UTC, sin cambios de horario
+de verano. Usa `NEXO_FUNCTIONS_REGION`, cuyo default es `southamerica-west1`,
+Node 22, 256 MiB, timeout de 300 segundos, cero instancias mínimas, una instancia
+máxima, concurrencia 1 y sin reintentos de Scheduler (`retryCount: 0`).
+Una repetición manual o ejecución solapada también es segura por las transacciones.
+La función y el job sólo existirán cuando se autorice y realice un deploy futuro.
+Esta implementación local no configura TTL, reglas, IAM ni recursos de producción.
+
+| Estado | Condición de eliminación |
+| --- | --- |
+| `pending` o `approved`, vigente | Conservar |
+| `pending` o `approved`, expirado sin consumir | `now >= expiresAt + 24 horas` |
+| `consumed` | `now >= consumedAt + 7 días` **y** `now >= expiresAt` |
+| Desconocido, campos faltantes/tipos inválidos o estructura inesperada | Omitir y contar como inválido |
+
+Escanea exclusivamente `tvPairings` en páginas de 200, ordenadas por ID y sin
+cargar campos durante el escaneo. No necesita índices nuevos. Para cada documento,
+una transacción relee el padre y vuelve a evaluar su estado y timestamps actuales.
+Si es elegible, lee `security` y elimina sus documentos junto con el padre en el
+mismo commit. Un conflicto provoca la relectura automática de Firestore; un fallo
+no deja un borrado parcial. Un padre ya eliminado se omite sin error.
+
+Se conservan pairings incompletos (incluidos hashes ausentes), campos desconocidos,
+subcolecciones distintas de `security`, documentos `security` con subcolecciones
+anidadas (incluso si falta su documento padre) y más de 100 documentos `security`, para evitar pérdida de datos ajenos
+o exceder un commit acotado. No se usa borrado recursivo ni se consultan otras
+colecciones. Los errores individuales se cuentan y el recorrido continúa; un error
+de escaneo detiene el recorrido. El job informa fallo si el resumen contiene errores.
+
+Cada ejecución registra un único resumen `tv_pairings_cleanup` con `scanned`,
+`deletedExpired`, `deletedConsumed`, `skippedActive`, `skippedInvalid` y `errors`.
+También incluye `skippedRetention` (aún dentro de las 24 h/7 d) y `skippedMissing`
+(eliminado concurrentemente), para contabilizar todos los documentos escaneados.
+Los contadores de borrado se incrementan después de confirmar la transacción,
+sin duplicarlos en reintentos. No se registran documentos, IDs, hashes, tokens,
+secretos ni detalles de excepciones del proveedor.
+
+El coste escala con la cantidad de pairings: aproximadamente una lectura del
+escaneo y otra lectura transaccional por padre, más consultas/lecturas `security`
+para los elegibles y una eliminación por documento borrado. Se suma un job diario
+de Cloud Scheduler y la ejecución de Functions; sin dependencias adicionales.
+La revisión de subcolecciones agrega llamadas de metadatos. El timeout de 300 s
+es un límite por ejecución; errores o volumen que lo exceda requieren revisar el
+resumen/estado del job antes de ampliar recursos. Los tests son exclusivamente
+locales, incluidos límites exactos de retención, rollback, carreras y paginación.
+
+Referencia: [funciones programadas de Firebase](https://firebase.google.com/docs/functions/schedule-functions).
 
 No se toca Cartón Lleno, Nova Star, Storage, releases, actualizadores, panel admin,
 diseño web ni configuración de Hosting.
