@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
+import {JSDOM} from 'jsdom';
 import {parallaxOffset, scrollProgress, motionEnabled, motionStrength, approach, initMotion, loadLocalLogos} from '../motion.mjs';
 
 test('parallax usa limites por capa y velocidades opuestas', () => {
@@ -15,19 +16,84 @@ test('el parallax cambia con el scroll, no solo con el tiempo', () => {
   const scrolled = parallaxOffset(-210, 860, 900, -.13);
   assert.ok(Math.abs(scrolled - initial) > 40);
 });
-test('movimiento reducido y pausa manual desactivan las capas', () => {
-  assert.equal(motionEnabled(true, false, 'on'), false);
-  assert.equal(motionEnabled(true, true, null), false);
-  assert.equal(motionEnabled(false, false, 'off'), false);
-  assert.equal(motionEnabled(false, false, null), true);
+test('movimiento activo normalmente y reducido segun el sistema', () => {
+  assert.equal(motionEnabled(true), false);
+  assert.equal(motionEnabled(false), true);
   assert.equal(parallaxOffset(100, 200, 900, .1, false), 0);
 });
 test('en movil el efecto sigue activo con amplitud reducida', () => {
-  assert.equal(motionEnabled(false, true, null), true);
-  assert.equal(motionEnabled(false, true, 'on'), true);
+  assert.equal(motionEnabled(false), true);
   assert.equal(motionStrength(true), .45);
   assert.equal(motionStrength(false), 1);
   assert.ok(Math.abs(parallaxOffset(100, 400, 800, .2 * motionStrength(true))) < Math.abs(parallaxOffset(100, 400, 800, .2)));
+});
+
+test('ignora la antigua pausa manual y conserva accesibilidad y suspension automatica', () => {
+  const dom = new JSDOM('<section data-motion-scene><div data-parallax="0.1" data-reveal="up"></div></section><p data-motion-status hidden role="status"></p>', {
+    url: 'https://nexo.example/', pretendToBeVisual: true
+  });
+  const {window} = dom;
+  const previousWindow = globalThis.window;
+  const previousDocument = globalThis.document;
+  const reduced = new window.EventTarget();
+  reduced.matches = false;
+  const compact = new window.EventTarget();
+  compact.matches = false;
+  window.matchMedia = query => query.includes('prefers-reduced-motion') ? reduced : compact;
+  const frames = new Map();
+  let frameId = 0;
+  window.requestAnimationFrame = callback => { frames.set(++frameId, callback); return frameId; };
+  window.cancelAnimationFrame = id => frames.delete(id);
+  let hidden = false;
+  Object.defineProperty(window.document, 'hidden', {get: () => hidden});
+  window.localStorage.setItem('sala-uno.motion', 'off');
+  const scene = window.document.querySelector('section');
+  scene.getBoundingClientRect = () => ({top: 100, bottom: 300, height: 200});
+  globalThis.window = window;
+  globalThis.document = window.document;
+  let dispose;
+  try {
+    dispose = initMotion();
+    const html = window.document.documentElement;
+    const plane = window.document.querySelector('[data-parallax]');
+    const status = window.document.querySelector('[data-motion-status]');
+    assert.equal(html.dataset.motion, 'on');
+    assert.ok(html.classList.contains('motion-ready'));
+    assert.equal(status.hidden, true);
+    const [id, paint] = frames.entries().next().value;
+    frames.delete(id);
+    paint();
+    assert.ok(parseFloat(plane.style.getPropertyValue('--parallax-y')) > 0);
+
+    reduced.matches = true;
+    reduced.dispatchEvent(new window.Event('change'));
+    assert.equal(html.dataset.motion, 'reduced');
+    assert.ok(html.classList.contains('motion-off'));
+    assert.equal(plane.style.getPropertyValue('--parallax-y'), '0px');
+    assert.ok(plane.classList.contains('is-visible'));
+    assert.equal(status.hidden, false);
+    assert.match(status.textContent, /movimiento reducido/);
+
+    reduced.matches = false;
+    reduced.dispatchEvent(new window.Event('change'));
+    assert.equal(html.dataset.motion, 'on');
+    assert.equal(status.hidden, true);
+    hidden = true;
+    window.document.dispatchEvent(new window.Event('visibilitychange'));
+    assert.ok(html.classList.contains('motion-suspended'));
+    assert.equal(frames.size, 0);
+    hidden = false;
+    window.document.dispatchEvent(new window.Event('visibilitychange'));
+    assert.equal(html.classList.contains('motion-suspended'), false);
+    assert.equal(frames.size, 1);
+  } finally {
+    dispose?.();
+    if (previousWindow === undefined) delete globalThis.window;
+    else globalThis.window = previousWindow;
+    if (previousDocument === undefined) delete globalThis.document;
+    else globalThis.document = previousDocument;
+    window.close();
+  }
 });
 test('entradas no finitas y dimensiones invalidas no producen transformaciones', () => {
   for (const value of [NaN, Infinity, -Infinity]) {

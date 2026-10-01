@@ -29,14 +29,13 @@ test('las capas animadas preservan la perspectiva de los dispositivos', () => {
   assert.doesNotMatch(motion, /element\.style\.transform\s*=/);
   assert.match(hero, /class="motion-float"/);
 });
-test('controles de movimiento sincronizados y aviso de accesibilidad', () => {
-  assert.equal((html.match(/data-motion-toggle/g) || []).length, 2);
+test('sin controles manuales de movimiento y con aviso de accesibilidad', () => {
+  assert.doesNotMatch(html, /data-motion-toggle|data-motion-label|Animaciones activas|Pausar animaciones/);
   assert.match(hero, /data-motion-status hidden role="status"/);
-  assert.match(motion, /toggle\.disabled = reduced\.matches/);
 });
 test('las descargas no son capas parallax', () => {
   for (const tag of html.matchAll(/<(?:a|button)\b[^>]*>/g)) {
-    if (/data-download|data-web|data-motion-toggle|class="button/.test(tag[0])) assert.doesNotMatch(tag[0], /data-parallax/);
+    if (/data-download|data-web|class="button/.test(tag[0])) assert.doesNotMatch(tag[0], /data-parallax/);
   }
 });
 test('sin JS o con movimiento reducido no se oculta contenido', () => {

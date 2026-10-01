@@ -25,7 +25,7 @@ Vista previa: http://127.0.0.1:8080/ . El servidor solo escucha en la máquina l
 - Galerías de biblioteca/canto/torneo/fiesta y bingo 75/90/comprobación/celebración. Se pueden ampliar, cerrar con Escape y navegar sus pestañas con teclado.
 - Ejemplos originales PDF de cartones de 75 y 90 bolas, con vistas previas derivadas de esos PDF.
 - Parallax por capas sobre pantallas, teléfonos y fondos, con velocidades diferentes y desplazamiento acotado. Entrada progresiva de contenido y flotación suave. En móvil se reduce la amplitud, sin desactivar todo el movimiento.
-- Control de animaciones sincronizado en encabezado y pie. Respeta movimiento reducido del sistema y muestra ese estado. No altera el scroll nativo ni desplaza los botones de descarga con el parallax.
+- Animaciones activas normalmente, sin controles manuales de pausa. Respeta movimiento reducido del sistema y muestra ese estado. No altera el scroll nativo ni desplaza los botones de descarga con el parallax.
 - Versiones y archivos desde los dos repositorios de publicaciones existentes. Windows instalador y portátil, Android teléfono/TV y otras variantes realmente publicadas.
 - Sin nombre personal visible en los textos del portal. Se cubrió el nombre de cuenta en las capturas de biblioteca y modos de juego.
 
@@ -63,8 +63,8 @@ El workflow de `main` ejecuta exclusivamente CI (`npm ci`, pruebas, check y buil
 
 - Pruebas Node de descargas, URLs, caché, movimiento, privacidad, recursos, estructura, branding, build y pairing.
 - Sintaxis de JavaScript y generación del sitio estático.
-- El rescue documenta validación visual en Chromium de 1920 a 320 px. La integración conserva su CSS y motion sin cambios.
-- Desplazamientos de profundidad distintos comprobados en escritorio y móvil; flotación, pausa manual, sincronización de controles y cambios en vivo de movimiento reducido.
+- El rescue documenta validación visual en Chromium de 1920 a 320 px. Se conserva su CSS; el motion mantiene sus efectos y accesibilidad, sin controles manuales de pausa.
+- Desplazamientos de profundidad distintos comprobados en escritorio y móvil; flotación y cambios en vivo de movimiento reducido. La antigua preferencia de pausa manual ya no desactiva las animaciones.
 - Navegación de pestañas, menú móvil, ampliación de imagen y Escape.
 - Respuestas de API simuladas como no disponibles: se conserva el respaldo existente de las publicaciones.
 
