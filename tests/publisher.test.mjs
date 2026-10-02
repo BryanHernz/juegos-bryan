@@ -6,9 +6,34 @@ import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
-import { hashFile, prepare, publish, githubAdapter } from '../tools/publish-release.mjs';
+import { hashFile, hashRemoteStream, prepare, publish, githubAdapter } from '../tools/publish-release.mjs';
 
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
+test('interrupted remote hashes restart from zero; integrity/permission failures never retry', async () => {
+  let calls = 0;
+  const bytes = Buffer.from('complete immutable object');
+  const result = await hashRemoteStream(async function* () {
+    calls++;
+    if (calls === 1) {
+      yield bytes.subarray(0, 5);
+      throw Object.assign(new Error('aborted'), { code: 'ECONNRESET' });
+    }
+    yield bytes;
+  });
+  assert.equal(result, sha(bytes)); assert.equal(calls, 2);
+  for (const code of ['CONTENT_DOWNLOAD_MISMATCH', 403]) {
+    let attempts = 0;
+    await assert.rejects(hashRemoteStream(async function* () {
+      attempts++; throw Object.assign(new Error('must abort'), { code });
+    }), /must abort/);
+    assert.equal(attempts, 1);
+  }
+  let attempts = 0;
+  await assert.rejects(hashRemoteStream(async function* () {
+    attempts++; throw Object.assign(new Error('aborted'), { code: 'ECONNRESET' });
+  }), /aborted/);
+  assert.equal(attempts, 3);
+});
 async function fixture(t) {
   const directory = await mkdtemp(path.join(tmpdir(), 'nexo-publisher-test-'));
   t.after(async () => {

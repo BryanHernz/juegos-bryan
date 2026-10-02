@@ -18,6 +18,20 @@ export async function hashFile(file) {
   for await (const bytes of createReadStream(file)) hash.update(bytes);
   return hash.digest('hex');
 }
+export async function hashRemoteStream(createStream) {
+  for (let attempt = 0; ; attempt++) {
+    const hash = createHash('sha256');
+    try {
+      for await (const bytes of createStream()) hash.update(bytes);
+      return hash.digest('hex');
+    } catch (error) {
+      // Retry only interrupted reads of the same immutable generation. Discard
+      // partial bytes; permission and CRC/SHA integrity failures must still abort.
+      if (attempt >= 2 || !['ECONNRESET', 'ETIMEDOUT', 'EPIPE'].includes(error?.code)) throw error;
+      await new Promise(resolve => setTimeout(resolve, 250 * (attempt + 1)));
+    }
+  }
+}
 class PublicationError extends Error {}
 function fail(message) { throw new PublicationError(message); }
 async function removeTemporary(directory) {
@@ -213,9 +227,7 @@ export async function cloudAdapter(bucketName) {
       return { ...m, bytes };
     },
     async hash(object, generation) {
-      const hash = createHash('sha256');
-      for await (const bytes of bucket.file(object, { generation }).createReadStream({ validation: 'crc32c' })) hash.update(bytes);
-      return hash.digest('hex');
+      return hashRemoteStream(() => bucket.file(object, { generation }).createReadStream({ validation: 'crc32c' }));
     },
     async sign(object, generation, filename, expiresAt) {
       const [url] = await bucket.file(object, { generation }).getSignedUrl({
