@@ -1,6 +1,6 @@
 import { initExperience } from './experience.mjs';
-import { connectPortal } from './portal-auth.mjs';
-import { initPortalGate } from './portal-gate.mjs';
+import { connectPortal } from './portal-auth.mjs?v=private-v2';
+import { initPortalGate } from './portal-gate.mjs?v=private-v2';
 import { createReleaseClient } from './private-releases.mjs';
 
 export async function initDownloads({ document, window, apps, user, fetchImpl = fetch,

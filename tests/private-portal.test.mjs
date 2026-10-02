@@ -27,13 +27,15 @@ function dom(t) {
   t.after(() => instance.window.close());
   return instance;
 }
-function gate(t, { record = access, readAccess = async () => record, onAuthorized = () => {}, ...extra } = {}) {
+function gate(t, { record = access, loadPortal, onAuthorized = () => {}, ...extra } = {}) {
   const { window } = dom(t);
   window.document.getElementById('portal-content').replaceChildren();
   let signOuts = 0, signedIn;
   const auth = { subscribe: () => () => {}, signOut: async () => { signOuts++; },
-    signIn: async (email, password) => { signedIn = { email, password }; }, readAccess,
-    loadPortal: async () => ({ html: portalContent, apps: allowedApps(record).map(app => app.key) }) };
+    signIn: async (email, password) => { signedIn = { email, password }; },
+    loadPortal: loadPortal ?? (async () => ({ html: portalContent, apps: record?.active === true ?
+      APPS.filter(app => record.apps?.[app.key] === true).map(app => app.key) : [] })),
+    readAccess: async () => { throw new Error('The portal must use the API only'); } };
   const controller = initPortalGate({ document: window.document, window, auth, reload: () => {}, onAuthorized, ...extra });
   return { ...controller, window, document: window.document, auth, signOuts: () => signOuts, signedIn: () => signedIn };
 }
@@ -69,10 +71,9 @@ test('Cartón autorizada conserva CTA, sin Nova ni ayuda del micrófono', async 
   assert.equal(g.document.querySelector('.header-inner > .header-cta').getAttribute('href'), '#carton-lleno');
   assert.doesNotMatch(g.document.getElementById('portal-content').textContent, /Nova Star/);
 });
-test('access ausente, inactive, valor truthy y errores de Firestore fallan cerrados', async t => {
-  for (const record of [undefined, { active: false, apps: { novaStar: true } }, { active: 'true', apps: { novaStar: true } },
-    { active: true, apps: { novaStar: 'true' } }]) assert.equal(allowedApps(record).length, 0);
-  const g = gate(t, { readAccess: async () => { throw new Error('offline'); } }); await g.session(user);
+test('la API es la única autoridad; apps inválidas y errores de red fallan cerrados', async t => {
+  for (const keys of [undefined, [], ['unknown'], [true], { novaStar: true }]) assert.equal(allowedApps(keys).length, 0);
+  const g = gate(t, { loadPortal: async () => { throw new Error('offline'); } }); await g.session(user);
   assert.ok(g.document.getElementById('portal-content').hidden);
   assert.match(g.document.getElementById('portal-message').textContent, /verificar tu acceso/);
 });
@@ -89,9 +90,9 @@ test('rechaza Anonymous sin deshabilitar el proveedor y vacía contraseña al en
 });
 test('logout oculta el portal; una lectura retrasada no vuelve a abrirlo', async t => {
   let resolve;
-  const g = gate(t, { readAccess: () => new Promise(done => { resolve = done; }) });
+  const g = gate(t, { loadPortal: () => new Promise(done => { resolve = done; }) });
   const pending = g.session(user); await new Promise(done => setImmediate(done));
-  await g.session(null); resolve(access); await pending;
+  await g.session(null); resolve({ html: portalContent, apps: ['novaStar'] }); await pending;
   assert.ok(g.document.getElementById('portal-content').hidden);
 });
 test('descargas consultan API autenticada y firman bajo demanda, sin enlaces/caché persistentes', async t => {
@@ -148,6 +149,12 @@ test('el nuevo gate no se incluye en pairing y el build copia sus dependencias i
   const pair = readFileSync(new URL('../pair.html', import.meta.url), 'utf8');
   assert.doesNotMatch(pair, /portal-gate|portal-auth|app.js|portal-content/);
   const source = readFileSync(new URL('../portal-auth.mjs', import.meta.url), 'utf8');
-  assert.match(source, /getDocFromServer/); assert.match(source, /connectFirebaseAuth/);
+  assert.match(source, /createReleaseClient/); assert.match(source, /connectFirebaseAuth/);
+  assert.doesNotMatch(source, /firebase-firestore|getDoc|readAccess/);
   assert.doesNotMatch(source, /localStorage|signInAnonymously|createUser/);
+});
+
+test('los módulos del nuevo gate evitan la configuración pública cacheada', () => {
+  assert.match(readFileSync(new URL('../portal-gate.mjs', import.meta.url), 'utf8'), /config\.mjs\?v=private-v2/);
+  assert.match(html, /app\.js\?v=private-v2/);
 });

@@ -1,7 +1,8 @@
-import { APPS } from './config.mjs';
+import { APPS } from './config.mjs?v=private-v2';
 
-export function allowedApps(access) {
-  return access?.active === true ? APPS.filter(app => access.apps?.[app.key] === true) : [];
+export function allowedApps(keys) {
+  if (!Array.isArray(keys) || keys.some(key => !APPS.some(app => app.key === key))) return [];
+  return APPS.filter(app => keys.includes(app.key));
 }
 
 export function restrictProducts(document, apps) {
@@ -40,17 +41,13 @@ export function initPortalGate({ document, window, auth, onAuthorized, reload = 
     try {
       if (user.isAnonymous) { await auth.signOut(); return; }
       await user.getIdToken(true);
-      const apps = allowedApps(await auth.readAccess(user.uid));
+      const content = await auth.loadPortal(user);
+      const apps = allowedApps(content.apps);
       if (run !== revision) return;
       if (!apps.length) { closed('Tu cuenta no tiene acceso a aplicaciones de Nexo.'); return; }
       const identity = `${user.uid}:${apps.map(app => app.key).join(',')}`;
       if (visibleIdentity && identity !== visibleIdentity) { reload(); return; }
       if (!visibleIdentity) {
-        const content = await auth.loadPortal(user);
-        if (run !== revision) return;
-        if (content.apps.slice().sort().join(',') !== apps.map(app => app.key).sort().join(',')) {
-          closed('Los permisos cambiaron. Reintenta para verificar el acceso actual.'); return;
-        }
         // HTML comes exclusively from our authenticated, server-owned template;
         // release notes and all user data are rendered separately as text.
         shell.innerHTML = content.html;
@@ -70,7 +67,8 @@ export function initPortalGate({ document, window, auth, onAuthorized, reload = 
       shell.hidden = false; gate.hidden = true;
     } catch (error) {
       if (run === revision) {
-        closed('No pudimos verificar tu acceso. Reintenta cuando haya conexión.');
+        closed(error.status === 403 ? 'Tu cuenta no tiene acceso a aplicaciones de Nexo.' :
+          'No pudimos verificar tu acceso. Reintenta cuando haya conexión.');
         if (error.status === 401) await auth.signOut();
       }
     }
