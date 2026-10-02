@@ -2,17 +2,27 @@ import { connectFirebaseAuth } from './pair-auth.mjs';
 import { createPairingFlow, pairingIdFromPath, loadPairingMetadata } from './pairing.mjs';
 
 const PAIR_APPEARANCES = Object.freeze({
-  novaStar: { name: 'Nova Star', logo: '/assets/nova-star-logo.png', screen: '/assets/screens/nova-duet.webp', accent: '#ffc078' },
-  cartonLleno: { name: 'Cartón Lleno', logo: '/assets/carton-mark.webp', screen: '/assets/screens/carton-75.webp', accent: '#f5d64c' },
+  novaStar: { name: 'Nova Star', logo: '/assets/nova-star-logo.png', screen: '/assets/screens/nova-duet.webp', accent: '#ffb156', background: '#050a13', tagline: 'Tu voz. Tu escenario.' },
+  cartonLleno: { name: 'Cartón Lleno', logo: '/assets/carton-mark.webp', screen: '/assets/screens/carton-75.webp', accent: '#fad703', background: '#f2f0e6', tagline: 'Que empiece la buena suerte.' },
 });
 export function pairingAppearance(app) {
   return Object.hasOwn(PAIR_APPEARANCES, app) ? { app, ...PAIR_APPEARANCES[app] } :
-    { app: 'nexo', name: 'Nexo', logo: '/assets/nexo-mark.svg', screen: null, accent: '#f2eedf' };
+    { app: 'nexo', name: 'Nexo', logo: '/assets/nexo-mark.svg', screen: null, accent: '#f2eedf', background: '#071018', tagline: '' };
 }
 export function renderPairExperience(document, state) {
   const product = pairingAppearance(state.app);
   const root = document.getElementById('pair-experience');
   root.dataset.app = product.app; root.dataset.phase = state.phase;
+  // Theme only from the allowlisted app returned by real pairing metadata.
+  document.body.dataset.app = product.app;
+  document.querySelector('meta[name="theme-color"]').content = product.background;
+  document.title = product.app === 'nexo' ? 'Vincular dispositivo · Nexo' : `Vincular TV · ${product.name}`;
+  document.getElementById('pair-header-logo').src = product.logo;
+  document.getElementById('pair-header-name').textContent = product.name;
+  document.querySelector('.pair-brand').setAttribute('aria-label', `${product.name} · Portal Nexo`);
+  const tagline = document.getElementById('pair-product-tagline');
+  tagline.textContent = product.tagline; tagline.hidden = !product.tagline;
+  document.querySelector('.pair-carton-balls').hidden = product.app !== 'cartonLleno';
   document.getElementById('pair-product-name').textContent = product.name;
   document.getElementById('pair-product-logo').src = product.logo;
   const screen = document.getElementById('pair-product-screen');

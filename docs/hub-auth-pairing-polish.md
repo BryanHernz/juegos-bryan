@@ -11,8 +11,12 @@ Rama de implementación: `feature/nexo-hub-auth-pairing-polish`.
 - Navbar sin “Explorar aplicaciones”; logout secundario, navegación conservada.
 - Windows/Android en dos columnas y TV centrado debajo con el mismo ancho.
   A 420 px o menos se apilan los tres. Destinos y firma no cambian.
-- Pairing con marco Nexo común, captura Nova/naranja o Cartón/amarillo;
-  app desconocida o metadata no disponible no se infieren de la URL.
+- Pairing independiente con identidad completa de cada app: Cartón usa crema,
+  Nunito/Fredoka, contornos negros, amarillo y sombras duras; Nova usa su fondo
+  real, panel translúcido, campos sin borde y botones ámbar. Los estilos se
+  tomaron de los temas/login reales de las apps, sin modificarlas.
+  Nexo queda como cuenta común secundaria. App desconocida o metadata no
+  disponible mantiene tema neutro; nunca se infiere la app de la URL.
 - Estados de carga, login, código, vinculación, éxito, aprobado, consumido,
   expirado y error. `prefers-reduced-motion` desactiva el nuevo movimiento.
 
@@ -84,3 +88,10 @@ reutilizan el motor de parallax del portal, con velocidades opuestas y límite
 de 16 px; al montar el portal se recrea su controlador para incluir sus escenas.
 Se conservan suspensión automática y reduced motion, además de los bordes de
 los inputs aprobados. El preview aclara que no autentica y ofrece “Ver el portal”.
+
+Corrección posterior: los inputs del login general Nexo permanecen iguales;
+los de `/pair` usan la apariencia nativa de la app. Los recursos nuevos en
+`assets/pairing` son copias del fondo Nova y las fuentes de Cartón, con sus
+licencias OFL. No se usan fuentes remotas. La metadata de `api` se publica
+antes de `hosting:portal`; los temas de app se limitan exclusivamente a `/pair`.
+El login general Nexo y los contratos de descargas se conservan.

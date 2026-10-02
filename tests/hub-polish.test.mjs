@@ -36,11 +36,14 @@ test('login split muestra arte real sin catálogo privado; navbar sin explorar y
   assert.match(css, /prefers-reduced-motion:reduce/);
   dom.window.close();
 });
-for (const [app, name, accent] of [['novaStar', 'Nova Star', '#ffc078'], ['cartonLleno', 'Cartón Lleno', '#f5d64c']]) {
+for (const [app, name, accent] of [['novaStar', 'Nova Star', '#ffb156'], ['cartonLleno', 'Cartón Lleno', '#fad703']]) {
   test(`metadata ${app} tematiza pairing sin usar query params`, async t => {
     const { flow, document } = fixture(t, { app }); await tick();
     assert.equal(flow.snapshot().app, app);
     assert.equal(document.getElementById('pair-experience').dataset.app, app);
+    assert.equal(document.body.dataset.app, app);
+    assert.equal(document.getElementById('pair-header-name').textContent, name);
+    assert.equal(document.title, `Vincular TV · ${name}`);
     assert.equal(document.getElementById('pair-title').textContent, `Vincular ${name}`);
     assert.equal(document.getElementById('login-form').hidden, false);
     assert.equal(pairingAppearance(app).accent, accent);
@@ -50,6 +53,11 @@ for (const [app, name, accent] of [['novaStar', 'Nova Star', '#ffc078'], ['carto
 test('app desconocida permanece neutra, sin HTML ni rutas de imagen inyectadas', async t => {
   const { document } = fixture(t, { app: '<img src=x onerror=alert(1)>' }); await tick();
   assert.equal(document.getElementById('pair-experience').dataset.app, 'nexo');
+  assert.equal(document.body.dataset.app, 'nexo');
+  assert.equal(document.getElementById('pair-header-name').textContent, 'Nexo');
+  assert.equal(document.querySelector('meta[name="theme-color"]').content, '#071018');
+  assert.equal(document.getElementById('pair-product-tagline').hidden, true);
+  assert.equal(document.querySelector('.pair-carton-balls').hidden, true);
   assert.equal(document.getElementById('pair-title').textContent, 'Vincular dispositivo');
   assert.equal(document.getElementById('pair-product-screen').hidden, true);
   assert.equal(document.querySelector('[onerror]'), null);

@@ -22,3 +22,74 @@
 @media(max-width:760px){.pair-page .header-inner{width:calc(100% - 40px);height:78px}.pair-wrap{width:min(480px,calc(100% - 40px));grid-template-columns:1fr;gap:32px;margin-top:24px}.pair-card{grid-row:1;padding:0;border:0}.pair-visual{grid-row:2;padding-top:28px;border-top:1px solid #d2e3ec18}.pair-card h1{font-size:37px}.pair-product{margin-bottom:22px}.pair-product>span{font-size:23px}.pair-visual .eyebrow{margin-bottom:22px}.pair-visual-note{margin-bottom:24px}.pair-footer{margin-top:10px}.pair-neutral-art>img{width:60px;height:60px}.pair-brand{font-size:25px}.pair-brand img{width:33px;height:33px}}
 @media(max-width:370px){.pair-home{font-size:11px}.pair-card h1{font-size:33px}.pair-card .pair-code{font-size:27px;letter-spacing:.25em}.pair-wrap{width:calc(100% - 36px)}.pair-neutral-art{gap:20px}.pair-steps{gap:8px}.pair-steps li{font-size:10px}}
 @media(prefers-reduced-motion:reduce){.pair-screen-frame,.pair-stage:after{animation:none!important;translate:none}.pair-button{transition:none}.pair-button:active:enabled{transform:none}}
+/* Native app presentation, scoped to pairing only; source palettes/theme values
+   come from Carton main.dart/ui/widgets.dart and Nova app/theme + login_screen. */
+@font-face{font-family:PairNunito;src:url('/assets/pairing/Nunito-Regular.ttf') format('truetype');font-weight:400;font-display:swap}
+@font-face{font-family:PairNunito;src:url('/assets/pairing/Nunito-Bold.ttf') format('truetype');font-weight:700;font-display:swap}
+@font-face{font-family:PairNunito;src:url('/assets/pairing/Nunito-ExtraBold.ttf') format('truetype');font-weight:800;font-display:swap}
+@font-face{font-family:PairFredoka;src:url('/assets/pairing/Fredoka-SemiBold.ttf') format('truetype');font-weight:600 800;font-display:swap}
+.pair-product-tagline{font-size:30px;line-height:1.2;margin:0 0 26px;letter-spacing:-.025em}
+.pair-page[data-app=novaStar]{color-scheme:dark;--pair-bg:#050a13;--pair-text:#fff;--pair-muted:#ffffff99;--pair-accent:#ffb156;background:linear-gradient(#08111f99,#050a13b3 55%,#000c),url('/assets/pairing/nova-background.jpg') center/cover fixed;font-family:Roboto,Arial,sans-serif}
+.pair-page[data-app=novaStar] .pair-wrap{--pair-accent:#ffb156;column-gap:48px;width:min(1050px,calc(100% - 64px));margin-top:28px}
+.pair-page[data-app=novaStar] .pair-brand{color:#ffb156;font-size:24px;font-weight:800;letter-spacing:.025em}
+.pair-page[data-app=novaStar] .pair-card{background:#08111fc7;backdrop-filter:blur(16px);border:0;border-radius:24px;padding:28px}
+.pair-page[data-app=novaStar] .pair-card h1{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.18}
+.pair-page[data-app=novaStar] .pair-product{flex-direction:column;gap:16px;margin-bottom:18px}
+.pair-page[data-app=novaStar] .pair-product>img{width:108px;height:108px}
+.pair-page[data-app=novaStar] .pair-product>span{color:#ffb156;font-size:30px;font-weight:900;letter-spacing:3px;text-transform:uppercase}
+.pair-page[data-app=novaStar] .pair-product-tagline{text-align:center;font-weight:700;font-size:26px}
+.pair-page[data-app=novaStar] .pair-visual .eyebrow{text-align:center;display:block;color:#ffffff80;margin-bottom:24px}
+.pair-page[data-app=novaStar] .pair-screen-frame{max-width:390px;margin-inline:auto;border:0;background:#ffffff0d;border-radius:18px;padding:5px;box-shadow:0 18px 45px #0006}
+.pair-page[data-app=novaStar] .pair-screen-stand{display:none}
+.pair-page[data-app=novaStar] .pair-card label{color:#ffffffb3;font-weight:400;font-size:14px}
+.pair-page[data-app=novaStar] .pair-card input{border:0;background:#ffffff0d;color:#fff;border-radius:10px;padding:16px;min-height:54px}
+.pair-page[data-app=novaStar] .pair-card input::placeholder{color:#fff6}
+.pair-page[data-app=novaStar] .pair-card input:hover{background:#ffffff14}
+.pair-page[data-app=novaStar] .pair-card input:focus-visible{outline:2px solid #ffb156;outline-offset:3px}
+.pair-page[data-app=novaStar] .pair-button{background:#ffb156;color:#08111f;border-radius:12px;font-size:16px;font-weight:700;min-height:54px}
+.pair-page[data-app=novaStar] .pair-button:hover:enabled{background:#ffc578}
+.pair-page[data-app=novaStar] .pair-button:active:enabled{background:#f5a342}
+.pair-page[data-app=novaStar] .pair-note,.pair-page[data-app=novaStar] .pair-footer,.pair-page[data-app=novaStar] .pair-steps li{color:#ffffff99}
+.pair-page[data-app=novaStar] .pair-steps .is-current,.pair-page[data-app=novaStar] .pair-steps .is-done{color:#ffb156}
+.pair-page[data-app=novaStar] .pair-status{background:#ffb1561a;color:#ffb156;border:0;border-radius:12px;padding:12px;font-size:13px}
+.pair-page[data-app=novaStar] .pair-status[data-state=success]{background:#5de6a019;color:#5de6a0}
+.pair-page[data-app=novaStar] .pair-result-icon{color:#5de6a0;border-color:#5de6a0;background:#5de6a014}
+.pair-page[data-app=cartonLleno]{color-scheme:light;--pair-bg:#f2f0e6;--pair-text:#0a0a0a;--pair-muted:#6b6656;--pair-accent:#0a0a0a;background:#f2f0e6;font-family:PairNunito,Arial,sans-serif}
+.pair-page[data-app=cartonLleno] .pair-wrap{--pair-accent:#0a0a0a;column-gap:48px;width:min(1050px,calc(100% - 64px));margin-top:28px}
+.pair-page[data-app=cartonLleno] .pair-brand{color:#0a0a0a;font-weight:800;letter-spacing:0;font-size:24px}
+.pair-page[data-app=cartonLleno] .pair-brand>img{clip-path:inset(2% 4% 5% 4% round 13%)}
+.pair-page[data-app=cartonLleno] .pair-product{justify-content:center;margin-bottom:18px}
+.pair-page[data-app=cartonLleno] .pair-product>img{display:none}
+.pair-page[data-app=cartonLleno] .pair-product>span{color:#6b6656;font-size:12px;font-weight:800;letter-spacing:2.4px;text-transform:uppercase}
+.pair-page[data-app=cartonLleno] .pair-visual .eyebrow{display:block;text-align:center;color:#6b6656;font-weight:800}
+.pair-page[data-app=cartonLleno] .pair-carton-balls{display:flex;justify-content:center;align-items:center;gap:14px;margin-bottom:24px}
+.pair-carton-balls>span{width:56px;height:56px;display:grid;place-items:center;background:#fff;border:2.5px solid #0a0a0a;border-radius:50%;color:#0a0a0a;font-family:PairFredoka,Arial,sans-serif;font-size:26px;box-shadow:3px 3px 0 #0a0a0a}
+.pair-carton-balls>span:nth-child(2){width:96px;height:96px;background:#fad703;font-size:44px;border-width:3px;box-shadow:4px 4px 0 #0a0a0a}
+.pair-page[data-app=cartonLleno] .pair-product-tagline{font-family:PairFredoka,Arial,sans-serif;color:#0a0a0a;font-size:32px;max-width:310px;text-align:center;margin-inline:auto}
+.pair-page[data-app=cartonLleno] .pair-card{background:#f2f0e6;border:3px solid #0a0a0a;border-radius:18px;padding:24px;box-shadow:6px 6px 0 #0a0a0a}
+.pair-page[data-app=cartonLleno] .pair-card h1{font-family:PairFredoka,Arial,sans-serif;font-size:32px;font-weight:600;letter-spacing:-.5px;line-height:1.15}
+.pair-page[data-app=cartonLleno] .pair-stage{font-weight:800;color:#6b6656;letter-spacing:1.5px}
+.pair-page[data-app=cartonLleno] .pair-card label{font-size:14px;font-weight:800;color:#0a0a0a}
+.pair-page[data-app=cartonLleno] .pair-card input{background:#fff;border:2.5px solid #0a0a0a;border-radius:12px;color:#0a0a0a;padding:14px;min-height:54px;font-weight:400}
+.pair-page[data-app=cartonLleno] .pair-card input::placeholder{color:#6b6656}
+.pair-page[data-app=cartonLleno] .pair-card input:focus-visible{border-color:#0a0a0a;outline:2px solid #0a0a0a;outline-offset:3px}
+.pair-page[data-app=cartonLleno] .pair-card .pair-code{font-family:PairFredoka,Arial,sans-serif;font-weight:600}
+.pair-page[data-app=cartonLleno] .pair-button{background:#fad703;color:#0a0a0a;border:2.5px solid #0a0a0a;border-radius:14px;box-shadow:4px 4px 0 #0a0a0a;min-height:54px;font-size:16px;font-weight:800;letter-spacing:.3px}
+.pair-page[data-app=cartonLleno] .pair-button:hover:enabled{background:#fad703;transform:translate(-1px,-1px);box-shadow:5px 5px 0 #0a0a0a}
+.pair-page[data-app=cartonLleno] .pair-button:focus-visible{outline:2px solid #0a0a0a;outline-offset:5px;transform:translate(-2px,-2px);box-shadow:6px 6px 0 #0a0a0a}
+.pair-page[data-app=cartonLleno] .pair-button:active:enabled{transform:translate(2px,2px);box-shadow:2px 2px 0 #0a0a0a}
+.pair-page[data-app=cartonLleno] .pair-button:disabled{background:#ddd9c8;color:#6b6656;opacity:1;box-shadow:none}
+.pair-page[data-app=cartonLleno] .pair-screen-frame{max-width:390px;margin-inline:auto;border:3px solid #0a0a0a;background:#fff;border-radius:14px;box-shadow:4px 4px 0 #0a0a0a;padding:4px}
+.pair-page[data-app=cartonLleno] .pair-screen-stand{display:none}
+.pair-page[data-app=cartonLleno] .pair-home,.pair-page[data-app=cartonLleno] .pair-sign-out,.pair-page[data-app=cartonLleno] .pair-note,.pair-page[data-app=cartonLleno] .pair-footer{color:#6b6656}
+.pair-page[data-app=cartonLleno] .pair-home:hover,.pair-page[data-app=cartonLleno] .pair-sign-out:hover{color:#0a0a0a}
+.pair-page[data-app=cartonLleno] .pair-steps li,.pair-page[data-app=cartonLleno] .pair-steps li>span{color:#6b6656;font-weight:800}
+.pair-page[data-app=cartonLleno] .pair-steps .is-current,.pair-page[data-app=cartonLleno] .pair-steps .is-done{color:#0a0a0a}
+.pair-page[data-app=cartonLleno] .pair-steps .is-current>span,.pair-page[data-app=cartonLleno] .pair-steps .is-done>span{color:#0a0a0a}
+.pair-page[data-app=cartonLleno] .pair-status{background:#fff;border:2px solid #0a0a0a;border-radius:12px;padding:12px;color:#6b6656}
+.pair-page[data-app=cartonLleno] .pair-status[data-state=success]{color:#15592e;background:#eef6ee}
+.pair-page[data-app=cartonLleno] .pair-status[data-state=incorrect-code],.pair-page[data-app=cartonLleno] .pair-status[data-state=login-error],.pair-page[data-app=cartonLleno] .pair-status[data-state=no-access],.pair-page[data-app=cartonLleno] .pair-status[data-state=approval-denied]{color:#982525}
+.pair-page[data-app=cartonLleno] .pair-result-icon{border:2.5px solid #0a0a0a;background:#fad703;color:#0a0a0a;box-shadow:3px 3px 0 #0a0a0a}
+@media(max-width:760px){.pair-page[data-app=novaStar] .pair-wrap,.pair-page[data-app=cartonLleno] .pair-wrap{width:min(480px,calc(100% - 32px));margin-top:16px;gap:36px}.pair-page[data-app=novaStar] .pair-card{padding:22px}.pair-page[data-app=cartonLleno] .pair-card{padding:20px}.pair-page[data-app=cartonLleno] .pair-visual{border:0}.pair-product-tagline{font-size:26px}.pair-page[data-app=novaStar] .pair-product>img{width:76px;height:76px}.pair-page[data-app=novaStar] .pair-product>span{font-size:25px}.pair-page[data-app=novaStar] .pair-card h1,.pair-page[data-app=cartonLleno] .pair-card h1{font-size:29px}.pair-page[data-app=cartonLleno] .pair-brand,.pair-page[data-app=novaStar] .pair-brand{font-size:21px}.pair-page[data-app=cartonLleno] .pair-home,.pair-page[data-app=novaStar] .pair-home{font-size:11px}}
+@media(max-width:370px){.pair-page[data-app=novaStar] .pair-card,.pair-page[data-app=cartonLleno] .pair-card{padding:18px}.pair-page[data-app=novaStar] .header-inner,.pair-page[data-app=cartonLleno] .header-inner{width:calc(100% - 32px);gap:12px}.pair-page[data-app=novaStar] .pair-brand,.pair-page[data-app=cartonLleno] .pair-brand{font-size:19px;gap:8px}.pair-page[data-app=novaStar] .pair-brand img,.pair-page[data-app=cartonLleno] .pair-brand img{width:29px;height:29px}}
+@media(prefers-reduced-motion:reduce){.pair-page[data-app=cartonLleno] .pair-button:hover:enabled,.pair-page[data-app=cartonLleno] .pair-button:focus-visible,.pair-page[data-app=cartonLleno] .pair-button:active:enabled{transform:none}}
