@@ -352,3 +352,18 @@ Referencias: [ubicaciones de Scheduler](https://cloud.google.com/scheduler/docs/
 
 No se toca Cartón Lleno, Nova Star, Storage, releases, actualizadores, panel admin,
 diseño web ni configuración de Hosting.
+# API de distribución privada (implementación local, sin deploy)
+
+`api` añade `GET /api/v1/portal`, `GET /api/v1/releases/:app/latest`,
+`GET /api/v1/releases/:app/:version` y
+`POST /api/v1/releases/:app/:version/download/:assetId`.
+Usan Firebase ID tokens, revocación/estado de Auth y `access/{uid}` leído en cada
+solicitud. `NEXO_RELEASES_BUCKET` es un parámetro Functions oficial nuevo;
+default vacío conserva releases cerrados hasta provisionar un bucket privado.
+El contenido del portal se copia a lib en el build y se filtra por permisos en
+el servidor. No se escribe Firestore, no se modifica pairing/cleanup ni se
+transmiten binarios desde Functions. URLs GCS V4 de cinco minutos.
+
+Ver [contrato multiasset, estructura, IAM real y publicador](../docs/private-release-distribution.md).
+Bucket privado, IAM mínimo e importación inicial completados; parámetro local ignorado configurado.
+No hubo deploy; no se modificaron secretos, reglas ni Authentication.

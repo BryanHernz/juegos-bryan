@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { APPS as configuredApps } from '../config.mjs';
+import { APPS as configuredApps } from '../tools/legacy-releases.mjs';
 const APPS = JSON.parse(readFileSync(new URL('./fixtures/apps.json', import.meta.url), 'utf8'));
 import { safeHttps, safeGithub, normalizeRelease, snapshotRelease, selectDownloads,
   fetchLatest, readCached, writeCached, formatBytes } from '../releases.mjs';

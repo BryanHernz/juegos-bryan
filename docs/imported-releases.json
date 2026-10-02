@@ -1,0 +1,547 @@
+{
+  "bucket": "nova-star-bd0d9-nexo-releases",
+  "region": "southamerica-west1",
+  "releases": [
+    {
+      "app": "novaStar",
+      "manifest": {
+        "schemaVersion": 1,
+        "app": "novaStar",
+        "version": "1.0.27",
+        "build": 1029,
+        "releasedAt": "2026-10-01T20:02:11.000Z",
+        "notes": "- Corregida la actualización automática en Windows.\r\n- Mejorada la estabilidad del inicio con Nexo y la vinculación de TV.\r\n- Nova Star confirma que el instalador de Windows está ejecutándose antes de cerrarse; si no puede iniciarlo, permanece abierta para reintentar.",
+        "recommendations": {
+          "windows": "novaStar-1.0.27-windows-installer-standard-x64",
+          "tv": "novaStar-1.0.27-android-package-tv-armeabi-v7a",
+          "phone": "novaStar-1.0.27-android-package-phone-arm64-v8a"
+        },
+        "assets": [
+          {
+            "sha256": "3d7af0fad38b50d12891eabe9f8e55349e8e5c4d5ebeec64b237a8b40a088ee5",
+            "size": 61984436,
+            "id": "novaStar-1.0.27-android-package-standard-arm64-v8a",
+            "purpose": "package",
+            "variant": "standard",
+            "platform": "android",
+            "architecture": "arm64-v8a",
+            "format": "apk",
+            "versionCode": 3029,
+            "filename": "NovaStar-1.0.27-arm64-v8a.apk",
+            "downloadEndpoint": "/api/v1/releases/novaStar/1.0.27/download/novaStar-1.0.27-android-package-standard-arm64-v8a",
+            "generation": "1790905322835019"
+          },
+          {
+            "sha256": "24a0309620709eae4a1366cf734943c3ab1dcdcc30ae5d7cf1d2250ff09e7e4d",
+            "size": 51726636,
+            "id": "novaStar-1.0.27-android-package-standard-armeabi-v7a",
+            "purpose": "package",
+            "variant": "standard",
+            "platform": "android",
+            "architecture": "armeabi-v7a",
+            "format": "apk",
+            "versionCode": 2029,
+            "filename": "NovaStar-1.0.27-armeabi-v7a.apk",
+            "downloadEndpoint": "/api/v1/releases/novaStar/1.0.27/download/novaStar-1.0.27-android-package-standard-armeabi-v7a",
+            "generation": "1790905324834080"
+          },
+          {
+            "sha256": "f54099db8e0988fcba90aff08b392079667f69c0cd074d60a0a6d93333bc7261",
+            "size": 44411009,
+            "id": "novaStar-1.0.27-windows-installer-standard-x64",
+            "purpose": "installer",
+            "variant": "standard",
+            "platform": "windows",
+            "architecture": "x64",
+            "format": "exe",
+            "versionCode": null,
+            "filename": "NovaStar-1.0.27-windows-installer.exe",
+            "downloadEndpoint": "/api/v1/releases/novaStar/1.0.27/download/novaStar-1.0.27-windows-installer-standard-x64",
+            "generation": "1790905326424944"
+          },
+          {
+            "sha256": "9fd46c94e4fb60240a8c4ed0bb398d2aeeb66ec86c93ce734dcc06d25798e0ae",
+            "size": 61700962,
+            "id": "novaStar-1.0.27-windows-updater-standard-x64",
+            "purpose": "updater",
+            "variant": "standard",
+            "platform": "windows",
+            "architecture": "x64",
+            "format": "zip",
+            "versionCode": null,
+            "filename": "NovaStar-1.0.27-windows-x64.zip",
+            "downloadEndpoint": "/api/v1/releases/novaStar/1.0.27/download/novaStar-1.0.27-windows-updater-standard-x64",
+            "generation": "1790905328032061"
+          },
+          {
+            "sha256": "a2b20d927437c2574836d54c5743fe2fd8b9e37bbf9fc4235300ae542e082ddd",
+            "size": 71798432,
+            "id": "novaStar-1.0.27-android-package-standard-x86_64",
+            "purpose": "package",
+            "variant": "standard",
+            "platform": "android",
+            "architecture": "x86_64",
+            "format": "apk",
+            "versionCode": 5029,
+            "filename": "NovaStar-1.0.27-x86_64.apk",
+            "downloadEndpoint": "/api/v1/releases/novaStar/1.0.27/download/novaStar-1.0.27-android-package-standard-x86_64",
+            "generation": "1790905330229385"
+          },
+          {
+            "sha256": "24a0309620709eae4a1366cf734943c3ab1dcdcc30ae5d7cf1d2250ff09e7e4d",
+            "size": 51726636,
+            "id": "novaStar-1.0.27-android-package-tv-armeabi-v7a",
+            "purpose": "package",
+            "variant": "tv",
+            "platform": "android",
+            "architecture": "armeabi-v7a",
+            "format": "apk",
+            "versionCode": 2029,
+            "filename": "NovaStar-tele.apk",
+            "downloadEndpoint": "/api/v1/releases/novaStar/1.0.27/download/novaStar-1.0.27-android-package-tv-armeabi-v7a",
+            "generation": "1790905332019465"
+          },
+          {
+            "sha256": "3d7af0fad38b50d12891eabe9f8e55349e8e5c4d5ebeec64b237a8b40a088ee5",
+            "size": 61984436,
+            "id": "novaStar-1.0.27-android-package-phone-arm64-v8a",
+            "purpose": "package",
+            "variant": "phone",
+            "platform": "android",
+            "architecture": "arm64-v8a",
+            "format": "apk",
+            "versionCode": 3029,
+            "filename": "NovaStar-telefono.apk",
+            "downloadEndpoint": "/api/v1/releases/novaStar/1.0.27/download/novaStar-1.0.27-android-package-phone-arm64-v8a",
+            "generation": "1790905334131153"
+          }
+        ]
+      },
+      "officialArtifacts": [
+        {
+          "filename": "Instalar-NovaStar.ps1",
+          "size": 3097,
+          "sha256": "2ab2744439885304fe20c391163056781703f435aa8c841bdd1a66f67328ddd0"
+        },
+        {
+          "filename": "NovaStar-1.0.27-arm64-v8a.apk",
+          "size": 61984436,
+          "sha256": "3d7af0fad38b50d12891eabe9f8e55349e8e5c4d5ebeec64b237a8b40a088ee5",
+          "apk": {
+            "versionName": "1.0.27",
+            "versionCode": 3029,
+            "architectures": [
+              "arm64-v8a"
+            ]
+          }
+        },
+        {
+          "filename": "NovaStar-1.0.27-armeabi-v7a.apk",
+          "size": 51726636,
+          "sha256": "24a0309620709eae4a1366cf734943c3ab1dcdcc30ae5d7cf1d2250ff09e7e4d",
+          "apk": {
+            "versionName": "1.0.27",
+            "versionCode": 2029,
+            "architectures": [
+              "armeabi-v7a"
+            ]
+          }
+        },
+        {
+          "filename": "NovaStar-1.0.27-windows-installer.exe",
+          "size": 44411009,
+          "sha256": "f54099db8e0988fcba90aff08b392079667f69c0cd074d60a0a6d93333bc7261"
+        },
+        {
+          "filename": "NovaStar-1.0.27-windows-x64.zip",
+          "size": 61700962,
+          "sha256": "9fd46c94e4fb60240a8c4ed0bb398d2aeeb66ec86c93ce734dcc06d25798e0ae"
+        },
+        {
+          "filename": "NovaStar-1.0.27-x86_64.apk",
+          "size": 71798432,
+          "sha256": "a2b20d927437c2574836d54c5743fe2fd8b9e37bbf9fc4235300ae542e082ddd",
+          "apk": {
+            "versionName": "1.0.27",
+            "versionCode": 5029,
+            "architectures": [
+              "x86_64"
+            ]
+          }
+        },
+        {
+          "filename": "NovaStar-tele.apk",
+          "size": 51726636,
+          "sha256": "24a0309620709eae4a1366cf734943c3ab1dcdcc30ae5d7cf1d2250ff09e7e4d",
+          "apk": {
+            "versionName": "1.0.27",
+            "versionCode": 2029,
+            "architectures": [
+              "armeabi-v7a"
+            ]
+          }
+        },
+        {
+          "filename": "NovaStar-telefono.apk",
+          "size": 61984436,
+          "sha256": "3d7af0fad38b50d12891eabe9f8e55349e8e5c4d5ebeec64b237a8b40a088ee5",
+          "apk": {
+            "versionName": "1.0.27",
+            "versionCode": 3029,
+            "architectures": [
+              "arm64-v8a"
+            ]
+          }
+        },
+        {
+          "filename": "VERIFICACION.json",
+          "size": 6000,
+          "sha256": "99b456b4a888790b75d970fd71835ad9cd9c4bdfacb9f3c49f04bb304f445d9c"
+        },
+        {
+          "filename": "version.json",
+          "size": 1554,
+          "sha256": "1c292c05150e0e4163eb8dd3b9618dd06f3274999eeb0849a23b58135bbd4393"
+        }
+      ]
+    },
+    {
+      "app": "cartonLleno",
+      "manifest": {
+        "schemaVersion": 1,
+        "app": "cartonLleno",
+        "version": "1.0.42",
+        "build": 44,
+        "releasedAt": "2026-10-01T16:21:40.000Z",
+        "notes": "- Cartón Lleno ahora funciona con tu cuenta de Nexo, la misma de Nova Star.\n- En el teléfono y en Windows se inicia sesión con correo y contraseña, y la sesión queda guardada.\n- La tele se vincula escaneando un QR con el teléfono: la contraseña nunca pasa por la tele.\n- Tus partidas y preferencias se guardan en la nube y se ven en todos tus equipos.\n- Sin internet se sigue jugando hasta 7 días desde la última vez que se comprobó tu cuenta.",
+        "recommendations": {
+          "tv": "cartonLleno-1.0.42-android-package-tv-armeabi-v7a",
+          "phone": "cartonLleno-1.0.42-android-package-phone-arm64-v8a",
+          "windows": "cartonLleno-1.0.42-windows-installer-alias-x64"
+        },
+        "assets": [
+          {
+            "sha256": "333d9f37a431ed2545202189cdcb3e3696e327b2a081e229f2842f256a1d7c5e",
+            "size": 58915329,
+            "id": "cartonLleno-1.0.42-android-package-standard-arm64-v8a",
+            "purpose": "package",
+            "variant": "standard",
+            "platform": "android",
+            "architecture": "arm64-v8a",
+            "format": "apk",
+            "versionCode": 2044,
+            "filename": "CartonLleno-1.0.42-arm64-v8a.apk",
+            "downloadEndpoint": "/api/v1/releases/cartonLleno/1.0.42/download/cartonLleno-1.0.42-android-package-standard-arm64-v8a",
+            "generation": "1790905413331706"
+          },
+          {
+            "sha256": "b8d1dc947bd21df1f9a5344f916de9c7e00fb027787515d37bfb3cde89e5627c",
+            "size": 54899827,
+            "id": "cartonLleno-1.0.42-android-package-standard-armeabi-v7a",
+            "purpose": "package",
+            "variant": "standard",
+            "platform": "android",
+            "architecture": "armeabi-v7a",
+            "format": "apk",
+            "versionCode": 1044,
+            "filename": "CartonLleno-1.0.42-armeabi-v7a.apk",
+            "downloadEndpoint": "/api/v1/releases/cartonLleno/1.0.42/download/cartonLleno-1.0.42-android-package-standard-armeabi-v7a",
+            "generation": "1790905415127348"
+          },
+          {
+            "sha256": "71fd47858be8c4ca7e8aede157e7b18dbacd7ff42e49ded1a708f03c3fab0540",
+            "size": 39204055,
+            "id": "cartonLleno-1.0.42-windows-installer-standard-x64",
+            "purpose": "installer",
+            "variant": "standard",
+            "platform": "windows",
+            "architecture": "x64",
+            "format": "exe",
+            "versionCode": null,
+            "filename": "CartonLleno-1.0.42-instalador.exe",
+            "downloadEndpoint": "/api/v1/releases/cartonLleno/1.0.42/download/cartonLleno-1.0.42-windows-installer-standard-x64",
+            "generation": "1790905416637595"
+          },
+          {
+            "sha256": "0ab829e786e3c909ae6f1ffa41aa63e42836bf1cc33c7bb4e2d21f2eac4cbdaf",
+            "size": 61274620,
+            "id": "cartonLleno-1.0.42-android-package-standard-x86_64",
+            "purpose": "package",
+            "variant": "standard",
+            "platform": "android",
+            "architecture": "x86_64",
+            "format": "apk",
+            "versionCode": 4044,
+            "filename": "CartonLleno-1.0.42-x86_64.apk",
+            "downloadEndpoint": "/api/v1/releases/cartonLleno/1.0.42/download/cartonLleno-1.0.42-android-package-standard-x86_64",
+            "generation": "1790905418321133"
+          },
+          {
+            "sha256": "b8d1dc947bd21df1f9a5344f916de9c7e00fb027787515d37bfb3cde89e5627c",
+            "size": 54899827,
+            "id": "cartonLleno-1.0.42-android-package-tv-armeabi-v7a",
+            "purpose": "package",
+            "variant": "tv",
+            "platform": "android",
+            "architecture": "armeabi-v7a",
+            "format": "apk",
+            "versionCode": 1044,
+            "filename": "CartonLleno-tele.apk",
+            "downloadEndpoint": "/api/v1/releases/cartonLleno/1.0.42/download/cartonLleno-1.0.42-android-package-tv-armeabi-v7a",
+            "generation": "1790905422130852"
+          },
+          {
+            "sha256": "333d9f37a431ed2545202189cdcb3e3696e327b2a081e229f2842f256a1d7c5e",
+            "size": 58915329,
+            "id": "cartonLleno-1.0.42-android-package-phone-arm64-v8a",
+            "purpose": "package",
+            "variant": "phone",
+            "platform": "android",
+            "architecture": "arm64-v8a",
+            "format": "apk",
+            "versionCode": 2044,
+            "filename": "CartonLleno-telefono.apk",
+            "downloadEndpoint": "/api/v1/releases/cartonLleno/1.0.42/download/cartonLleno-1.0.42-android-package-phone-arm64-v8a",
+            "generation": "1790905424131008"
+          },
+          {
+            "sha256": "71fd47858be8c4ca7e8aede157e7b18dbacd7ff42e49ded1a708f03c3fab0540",
+            "size": 39204055,
+            "id": "cartonLleno-1.0.42-windows-installer-alias-x64",
+            "purpose": "installer",
+            "variant": "alias",
+            "platform": "windows",
+            "architecture": "x64",
+            "format": "exe",
+            "versionCode": null,
+            "filename": "CartonLleno-windows-instalador.exe",
+            "downloadEndpoint": "/api/v1/releases/cartonLleno/1.0.42/download/cartonLleno-1.0.42-windows-installer-alias-x64",
+            "generation": "1790905426032042"
+          }
+        ]
+      },
+      "officialArtifacts": [
+        {
+          "filename": "CartonLleno-1.0.42-arm64-v8a.apk",
+          "size": 58915329,
+          "sha256": "333d9f37a431ed2545202189cdcb3e3696e327b2a081e229f2842f256a1d7c5e",
+          "apk": {
+            "versionName": "1.0.42",
+            "versionCode": 2044,
+            "architectures": [
+              "arm64-v8a"
+            ]
+          }
+        },
+        {
+          "filename": "CartonLleno-1.0.42-armeabi-v7a.apk",
+          "size": 54899827,
+          "sha256": "b8d1dc947bd21df1f9a5344f916de9c7e00fb027787515d37bfb3cde89e5627c",
+          "apk": {
+            "versionName": "1.0.42",
+            "versionCode": 1044,
+            "architectures": [
+              "armeabi-v7a"
+            ]
+          }
+        },
+        {
+          "filename": "CartonLleno-1.0.42-instalador.exe",
+          "size": 39204055,
+          "sha256": "71fd47858be8c4ca7e8aede157e7b18dbacd7ff42e49ded1a708f03c3fab0540"
+        },
+        {
+          "filename": "CartonLleno-1.0.42-x86_64.apk",
+          "size": 61274620,
+          "sha256": "0ab829e786e3c909ae6f1ffa41aa63e42836bf1cc33c7bb4e2d21f2eac4cbdaf",
+          "apk": {
+            "versionName": "1.0.42",
+            "versionCode": 4044,
+            "architectures": [
+              "x86_64"
+            ]
+          }
+        },
+        {
+          "filename": "CartonLleno-tele.apk",
+          "size": 54899827,
+          "sha256": "b8d1dc947bd21df1f9a5344f916de9c7e00fb027787515d37bfb3cde89e5627c",
+          "apk": {
+            "versionName": "1.0.42",
+            "versionCode": 1044,
+            "architectures": [
+              "armeabi-v7a"
+            ]
+          }
+        },
+        {
+          "filename": "CartonLleno-telefono.apk",
+          "size": 58915329,
+          "sha256": "333d9f37a431ed2545202189cdcb3e3696e327b2a081e229f2842f256a1d7c5e",
+          "apk": {
+            "versionName": "1.0.42",
+            "versionCode": 2044,
+            "architectures": [
+              "arm64-v8a"
+            ]
+          }
+        },
+        {
+          "filename": "CartonLleno-windows-instalador.exe",
+          "size": 39204055,
+          "sha256": "71fd47858be8c4ca7e8aede157e7b18dbacd7ff42e49ded1a708f03c3fab0540"
+        },
+        {
+          "filename": "version.json",
+          "size": 1137,
+          "sha256": "22fd004bb3d227dd93f1035567c7722b807ad9a542d4631ea030114c291a537c"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "checkedAt": "2026-10-02T01:46:41.457Z",
+    "bucketPrivate": true,
+    "releases": [
+      {
+        "app": "novaStar",
+        "version": "1.0.27",
+        "build": 1029,
+        "assets": 7,
+        "signedDownloads": [
+          {
+            "id": "novaStar-1.0.27-android-package-standard-arm64-v8a",
+            "filename": "NovaStar-1.0.27-arm64-v8a.apk",
+            "size": 61984436,
+            "sha256": "3d7af0fad38b50d12891eabe9f8e55349e8e5c4d5ebeec64b237a8b40a088ee5",
+            "generation": "1790905322835019",
+            "verified": true
+          },
+          {
+            "id": "novaStar-1.0.27-android-package-standard-armeabi-v7a",
+            "filename": "NovaStar-1.0.27-armeabi-v7a.apk",
+            "size": 51726636,
+            "sha256": "24a0309620709eae4a1366cf734943c3ab1dcdcc30ae5d7cf1d2250ff09e7e4d",
+            "generation": "1790905324834080",
+            "verified": true
+          },
+          {
+            "id": "novaStar-1.0.27-windows-installer-standard-x64",
+            "filename": "NovaStar-1.0.27-windows-installer.exe",
+            "size": 44411009,
+            "sha256": "f54099db8e0988fcba90aff08b392079667f69c0cd074d60a0a6d93333bc7261",
+            "generation": "1790905326424944",
+            "verified": true
+          },
+          {
+            "id": "novaStar-1.0.27-windows-updater-standard-x64",
+            "filename": "NovaStar-1.0.27-windows-x64.zip",
+            "size": 61700962,
+            "sha256": "9fd46c94e4fb60240a8c4ed0bb398d2aeeb66ec86c93ce734dcc06d25798e0ae",
+            "generation": "1790905328032061",
+            "verified": true
+          }
+        ],
+        "githubUnchanged": true
+      },
+      {
+        "app": "cartonLleno",
+        "version": "1.0.42",
+        "build": 44,
+        "assets": 7,
+        "signedDownloads": [
+          {
+            "id": "cartonLleno-1.0.42-android-package-standard-arm64-v8a",
+            "filename": "CartonLleno-1.0.42-arm64-v8a.apk",
+            "size": 58915329,
+            "sha256": "333d9f37a431ed2545202189cdcb3e3696e327b2a081e229f2842f256a1d7c5e",
+            "generation": "1790905413331706",
+            "verified": true
+          },
+          {
+            "id": "cartonLleno-1.0.42-android-package-standard-armeabi-v7a",
+            "filename": "CartonLleno-1.0.42-armeabi-v7a.apk",
+            "size": 54899827,
+            "sha256": "b8d1dc947bd21df1f9a5344f916de9c7e00fb027787515d37bfb3cde89e5627c",
+            "generation": "1790905415127348",
+            "verified": true
+          },
+          {
+            "id": "cartonLleno-1.0.42-windows-installer-standard-x64",
+            "filename": "CartonLleno-1.0.42-instalador.exe",
+            "size": 39204055,
+            "sha256": "71fd47858be8c4ca7e8aede157e7b18dbacd7ff42e49ded1a708f03c3fab0540",
+            "generation": "1790905416637595",
+            "verified": true
+          }
+        ],
+        "githubUnchanged": true
+      }
+    ],
+    "unsignedAccess": 403,
+    "expiredSignedUrl": 400,
+    "expiredSignedUrlCode": "ExpiredToken",
+    "expiredSignedUrlReason": "Request has expired"
+  },
+  "accountVerification": {
+    "checkedAt": "2026-10-02T01:48:27.507Z",
+    "disabled": false,
+    "passwordProvider": true,
+    "active": true,
+    "apps": {
+      "novaStar": true,
+      "cartonLleno": true
+    },
+    "writes": false
+  },
+  "localServiceVerification": {
+    "checkedAt": "2026-10-02T01:56:47.104Z",
+    "mode": "local compiled service with real private Storage, publisher identity",
+    "auth": "covered separately by unit tests and account read; no real ID token used",
+    "releases": [
+      {
+        "app": "novaStar",
+        "version": "1.0.27",
+        "build": 1029,
+        "assetIdsValidated": [
+          "novaStar-1.0.27-android-package-standard-arm64-v8a",
+          "novaStar-1.0.27-android-package-standard-armeabi-v7a",
+          "novaStar-1.0.27-windows-installer-standard-x64",
+          "novaStar-1.0.27-windows-updater-standard-x64",
+          "novaStar-1.0.27-android-package-standard-x86_64",
+          "novaStar-1.0.27-android-package-tv-armeabi-v7a",
+          "novaStar-1.0.27-android-package-phone-arm64-v8a"
+        ],
+        "rejectedUnknownOrForeign": 4
+      },
+      {
+        "app": "cartonLleno",
+        "version": "1.0.42",
+        "build": 44,
+        "assetIdsValidated": [
+          "cartonLleno-1.0.42-android-package-standard-arm64-v8a",
+          "cartonLleno-1.0.42-android-package-standard-armeabi-v7a",
+          "cartonLleno-1.0.42-windows-installer-standard-x64",
+          "cartonLleno-1.0.42-android-package-standard-x86_64",
+          "cartonLleno-1.0.42-android-package-tv-armeabi-v7a",
+          "cartonLleno-1.0.42-android-package-phone-arm64-v8a",
+          "cartonLleno-1.0.42-windows-installer-alias-x64"
+        ],
+        "rejectedUnknownOrForeign": 4
+      }
+    ]
+  },
+  "validation": {
+    "node": "v22.23.3",
+    "npm": "10.9.9",
+    "rootTests": 97,
+    "functionsTests": 130,
+    "check": "passed",
+    "portalBuild": "passed",
+    "functionsBuild": "passed",
+    "functionsLint": "passed",
+    "deploy": false,
+    "commit": false,
+    "push": false
+  }
+}

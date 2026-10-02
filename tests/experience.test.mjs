@@ -2,7 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 import { validScreenshotPath, initExperience } from '../experience.mjs';
-const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+import { portalHtml } from './portal-fixture.mjs';
+const html = portalHtml();
 const css = readFileSync(new URL('../styles.css', import.meta.url), 'utf8');
 test('el modulo visual no requiere DOM al importarse', () => { assert.doesNotThrow(initExperience); });
 test('la galeria solo acepta capturas locales', () => {

@@ -26,20 +26,27 @@ Vista previa: http://127.0.0.1:8080/ . El servidor solo escucha en la máquina l
 - Ejemplos originales PDF de cartones de 75 y 90 bolas, con vistas previas derivadas de esos PDF.
 - Parallax por capas sobre pantallas, teléfonos y fondos, con velocidades diferentes y desplazamiento acotado. Entrada progresiva de contenido y flotación suave. En móvil se reduce la amplitud, sin desactivar todo el movimiento.
 - Animaciones activas normalmente, sin controles manuales de pausa. Respeta movimiento reducido del sistema y muestra ese estado. No altera el scroll nativo ni desplaza los botones de descarga con el parallax.
-- Versiones y archivos desde los repositorios oficiales de publicaciones. Opciones principales: Web, Windows (instalador EXE), Android y Android TV / Google TV. El micrófono de Nova Star se abre desde el QR dentro de la aplicación. Los ZIP, aliases duplicados y variantes técnicas no aparecen en la interfaz de descargas.
+- Portal autenticado con acceso por app. Descargas privadas mediante API Nexo: Windows (instalador EXE), Android y Android TV / Google TV. El micrófono de Nova Star conserva su acceso QR. No hay opciones Web, ZIP ni variantes técnicas públicas en el portal.
 - Sin nombre personal visible en los textos del portal. Se cubrió el nombre de cuenta en las capturas de biblioteca y modos de juego.
 
-## Configuración que se conserva
+## Distribución privada
 
-`config.mjs` usa `BryanHernz/nova-star-versiones` y `BryanHernz/carton-lleno-versiones`. También se conservan Firebase Auth, la URL del backend, Functions y la configuración multisite de Nexo.
+[Arquitectura, contratos, publicación y decisiones antes de deploy](docs/private-release-distribution.md).
 
-Las URLs Web de ambos juegos están vacías hasta confirmar direcciones oficiales; sus opciones muestran «Web · Próximamente», sin enlace. `companion` es una configuración independiente de Nova Star que conserva `https://nova-star-bd0d9.web.app/` como Micrófono / Companion, sin enlace público en el portal. El acceso se realiza desde el QR dentro de Nova Star. Ese origen se rechaza como destino Web, también en la herramienta de configuración.
+`index.html` entrega sólo el login Nexo. El contenido visual aprobado está en
+`functions/portal-content.html`, servido por el backend después de verificar
+Auth/access y filtrar productos. No se incluye ese contenido en `_site`.
+`config.mjs` contiene únicamente identificadores de productos. Auth comparte
+la configuración de pairing; la URL del backend permanece igual.
 
-```powershell
-node .\tools\configurar-web.mjs carton-lleno https://DIRECCION-REAL/
-```
+Los repositorios públicos `BryanHernz/nova-star-versiones` y
+`BryanHernz/carton-lleno-versiones`, releases 1.0.27/1.0.42, aliases y updater
+antiguo quedan intactos. Sus snapshots anteriores están en
+`tools/legacy-releases.mjs`, fuera del build de Hosting. El portal no usa esos
+snapshots ni caché de GitHub para saltarse permisos.
 
-Sustituir esa dirección por la publicación real, no por la URL del repositorio fuente.
+No hay versiones Web ni placeholders. El micrófono companion conserva su sitio
+original y se abre desde el QR dentro de Nova Star. No se modificó el PWA.
 
 ## Logos
 
@@ -47,21 +54,23 @@ Se conserva el logo de Nova Star incluido en el rescue. `tools/importar-logo.ps1
 
 La marca «22» se recortó de la pantalla de inicio enviada por el usuario. No se dibujó un cartón nuevo ni se rediseñaron las cuadrículas. `assets/sources.json` documenta la procedencia y transformaciones de las capturas.
 
-## Publicaciones y caché
+## Descargas autorizadas
 
-El navegador consulta cada `/releases/latest` de manera independiente. Los enlaces se validan contra el repositorio esperado. No se incluye token de GitHub en el cliente. Las notas se insertan como texto, nunca como HTML.
+Cada botón solicita una URL firmada de cinco minutos mediante el backend.
+El ID token sólo viaja en Authorization; ningún token o enlace firmado se guarda
+por código propio en localStorage. Ante falta de sesión/acceso/red, falla cerrado.
+El bucket privado y las releases oficiales ya están provisionados/importados.
+La nueva API y el portal privado aún no se desplegaron. No existe fallback público del portal.
 
-Si falla la consulta, se informa que se usan datos guardados. Se conserva la caché validada por hasta siete días, siempre que su versión no sea inferior al snapshot; en su defecto se usa la instantánea incluida. Los fallbacks se comprobaron contra las releases públicas oficiales el 2026-10-01: Nova Star v1.0.27 y Cartón Lleno v1.0.42. Mantienen la estructura de snapshots, las notas oficiales y los nombres/tamaños reales de los assets.
-
-| Plataforma | Nova Star 1.0.27 | Cartón Lleno 1.0.42 |
+| Plataforma | Nova Star | Cartón Lleno |
 | --- | --- | --- |
-| Web | Próximamente, sin URL | Próximamente, sin URL |
-| Windows | `NovaStar-1.0.27-windows-installer.exe` | `CartonLleno-windows-instalador.exe` |
-| Android | `NovaStar-telefono.apk` | `CartonLleno-telefono.apk` |
-| Android TV / Google TV | `NovaStar-tele.apk` | `CartonLleno-tele.apk` |
-| Micrófono | Acceso por QR dentro de Nova Star, sin botón en el portal | No aplica |
+| Windows | Instalador EXE | Instalador EXE |
+| Android | NovaStar-telefono.apk | CartonLleno-telefono.apk |
+| Android TV / Google TV | NovaStar-tele.apk | CartonLleno-tele.apk |
 
-`selectDownloads()` prioriza los aliases oficiales de teléfono/TV frente a los APK versionados. Si falta un alias, conserva el fallback existente por arquitectura ARM64/ARMv7. Windows sólo admite un instalador EXE; no sustituye un instalador ausente por ZIP o MSI. Los enlaces apuntan al tag de la release consultada. Los ZIP y otros archivos continúan en GitHub sin cambios: no se modifica ninguna release ni el updater. Nova Star 1.0.27 incluye un ZIP; Cartón Lleno 1.0.42 no lo publica.
+Para publicar artefactos ya compilados: `npm run releases:dry-run -- input.json`,
+`npm run releases:verify -- input.json bucket` o, sólo tras aprobación,
+`npm run releases:publish -- input.json bucket`. Ver contrato detallado arriba.
 
 ## Publicación del portal
 
@@ -71,12 +80,12 @@ El workflow de `main` ejecuta exclusivamente CI (`npm ci`, pruebas, check y buil
 
 ## Validación
 
-- Pruebas Node de descargas, URLs, caché, movimiento, privacidad, recursos, estructura, branding, build y pairing.
+- Pruebas Node de gate, descargas privadas, publicador, compatibilidad GitHub, movimiento, recursos, branding, build y pairing; pruebas backend de Auth/access, integridad y firma.
 - Sintaxis de JavaScript y generación del sitio estático.
 - El rescue documenta validación visual en Chromium de 1920 a 320 px. Se conserva su CSS; el motion mantiene sus efectos y accesibilidad, sin controles manuales de pausa.
 - Desplazamientos de profundidad distintos comprobados en escritorio y móvil; flotación y cambios en vivo de movimiento reducido. La antigua preferencia de pausa manual ya no desactiva las animaciones.
 - Navegación de pestañas, menú móvil, ampliación de imagen y Escape.
-- Respuestas de API simuladas como no disponibles: se conserva el respaldo existente de las publicaciones.
+- Respuestas de API simuladas como no disponibles: las descargas quedan cerradas sin fallback público.
 
 Las pruebas de pairing usan dobles de Auth/API; no crean ni consumen pairings en producción. La comprobación local y el build no equivalen a un deploy público ni validan la instalación de EXE/APK.
 
@@ -90,4 +99,4 @@ El único inicio de sesión ofrecido es email/password para cuentas existentes; 
 
 La pantalla contempla éxito, sesión inválida (401), código incorrecto o falta de acceso (403), enlace inexistente (404), ya aprobado/consumido (409), expirado (410), bloqueo por intentos (429) y errores de red. Solo distingue los errores 403 si recibe los códigos conocidos `incorrect_code` o `app_access_denied`; otros 403 muestran un mensaje neutro. El backend conserva la decisión sobre los permisos de cada app.
 
-`npm run build` copia exclusivamente los archivos públicos a `_site/`. `firebase.json` prepara únicamente el sitio **nexo-hub**, con la reescritura `/pair/**` a `/pair.html`; no se ha ejecutado ningún deploy. La configuración de Functions permanece igual y el Hosting de Nova Star no se modifica. La ruta de vinculación está destinada a `https://nexo-hub.web.app`, origen permitido por el backend; una vista previa local puede mostrar la interfaz, pero las pruebas de aprobación usan dobles de Auth/API para evitar CORS y operaciones en producción. No se deben enviar credenciales reales para estas pruebas locales.
+`npm run build` copia exclusivamente los archivos públicos a `_site/`. `firebase.json` prepara únicamente el sitio **nexo-hub**, con la reescritura `/pair/**` a `/pair.html`; no se ha ejecutado ningún deploy. La lógica de pairing y la configuración Hosting permanecen iguales y el Hosting de Nova Star no se modifica. La ruta de vinculación está destinada a `https://nexo-hub.web.app`, origen permitido por el backend; una vista previa local puede mostrar la interfaz, pero las pruebas de aprobación usan dobles de Auth/API para evitar CORS y operaciones en producción. No se deben enviar credenciales reales para estas pruebas locales.

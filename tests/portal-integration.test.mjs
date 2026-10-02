@@ -5,9 +5,10 @@ import { once } from 'node:events';
 import { JSDOM } from 'jsdom';
 import { buildSite } from '../tools/build.mjs';
 import { createPreviewServer } from '../tools/serve.mjs';
+import { portalHtml } from './portal-fixture.mjs';
 
 test('portal recuperado muestra Nexo en título, metadatos, encabezado y pie', async () => {
-  const dom = new JSDOM(await readFile(new URL('../index.html', import.meta.url), 'utf8'));
+  const dom = new JSDOM(portalHtml());
   try {
     const document = dom.window.document;
     assert.match(document.title, /Nexo/);
@@ -32,7 +33,7 @@ test('build contiene el portal, pairing, capturas y todos los assets sin archivo
   const pairHtml = await readFile(new URL('../_site/pair.html', import.meta.url), 'utf8');
   assert.match(pairHtml, /href="\/pair-base.css"/);
   assert.doesNotMatch(pairHtml, /href="\/styles.css"/);
-  for (const file of ['functions', 'firebase.json', '.firebaserc', 'package.json', 'tests']) {
+  for (const file of ['functions', 'portal-content.html', 'legacy-releases.mjs', 'releases.mjs', 'firebase.json', '.firebaserc', 'package.json', 'tests']) {
     await assert.rejects(stat(new URL(`../_site/${file}`, import.meta.url)), { code: 'ENOENT' });
   }
   assert.equal(JSON.parse(await readFile(new URL('../_site/portal-version.json', import.meta.url))).version, '1.2.1');
@@ -52,4 +53,9 @@ test('vista previa sirve capturas y PDFs con el tipo correcto y conserva /pair',
   const response = await fetch(`${origin}/pair/${'ab'.repeat(24)}`);
   assert.equal(response.status, 200);
   assert.match(await response.text(), /href="\/pair-base.css"/);
+  for (const path of ['/functions/portal-content.html', '/portal-content.html', '/tools/legacy-releases.mjs']) {
+    assert.equal((await fetch(origin + path)).status, 404, path);
+  }
+  const login = await (await fetch(origin + '/')).text();
+  assert.doesNotMatch(login, /data-download|Nova Star|Cartón Lleno/);
 });

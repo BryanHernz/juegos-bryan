@@ -10,12 +10,17 @@ import { createHttpApp } from './http';
 import { cleanupTvPairings } from './tv/cleanup';
 import { firestoreStore } from './tv/firestore';
 import { PairingService } from './tv/pairing';
+import { ReleaseService } from './releases/service';
+import { releaseStorage } from './releases/storage';
+import { portalTemplate } from './releases/portal';
 
 const codeSecret = defineSecret('TV_PAIRING_CODE_SECRET');
 const portalUrl = defineString('NEXO_PORTAL_URL', {
   description: 'HTTPS origin of Nexo; no path, query, or trailing page name.',
 });
 const region = defineString('NEXO_FUNCTIONS_REGION', { default: 'southamerica-west1' });
+const releasesBucket = defineString('NEXO_RELEASES_BUCKET', { default: '',
+  description: 'Dedicated private release bucket; empty keeps releases fail-closed.' });
 
 let handler: ReturnType<typeof createHttpApp>;
 onInit(() => {
@@ -30,7 +35,11 @@ function apiHandler() {
     auth: getAuth(),
     codeSecret: codeSecret.value(),
     portalUrl: portalUrl.value(),
-  }));
+  }), { portalTemplate, releases: new ReleaseService({
+    auth: getAuth(),
+    access: async uid => (await getFirestore().doc(`access/${uid}`).get()).data(),
+    storage: releaseStorage(() => releasesBucket.value()),
+  }) });
   return handler;
 }
 

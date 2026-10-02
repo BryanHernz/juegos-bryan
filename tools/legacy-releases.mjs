@@ -1,0 +1,48 @@
+export const APPS = [
+  {
+    id: 'nova-star', name: 'Nova Star', repo: 'BryanHernz/nova-star-versiones',
+    web: {
+      url: '', label: 'Web',
+      description: 'Próximamente. Nova Star Web aún no tiene una URL oficial disponible.'
+    },
+    companion: {
+      url: 'https://nova-star-bd0d9.web.app/', label: 'Micrófono / Companion',
+      description: 'Usa el teléfono como micrófono para acompañar a Nova Star en PC o TV. No es Nova Star Web.'
+    },
+    snapshot: {
+      tag_name: 'v1.0.27', published_at: '2026-10-01T20:02:11Z',
+      html_url: 'https://github.com/BryanHernz/nova-star-versiones/releases/tag/v1.0.27',
+      body: '- Corregida la actualización automática en Windows.\n- Mejorada la estabilidad del inicio con Nexo y la vinculación de TV.\n- Nova Star confirma que el instalador de Windows está ejecutándose antes de cerrarse; si no puede iniciarlo, permanece abierta para reintentar.',
+      assets: [
+        ['NovaStar-telefono.apk', 61984436], ['NovaStar-tele.apk', 51726636],
+        ['NovaStar-1.0.27-windows-installer.exe', 44411009],
+        ['NovaStar-1.0.27-windows-x64.zip', 61700962],
+        ['NovaStar-1.0.27-arm64-v8a.apk', 61984436],
+        ['NovaStar-1.0.27-armeabi-v7a.apk', 51726636],
+        ['NovaStar-1.0.27-x86_64.apk', 71798432]
+      ]
+    }
+  },
+  {
+    id: 'carton-lleno', name: 'Cartón Lleno', repo: 'BryanHernz/carton-lleno-versiones',
+    web: {
+      url: '', label: 'Web',
+      description: 'Próximamente. Cartón Lleno Web aún no tiene una URL oficial disponible.'
+    },
+    snapshot: {
+      tag_name: 'v1.0.42', published_at: '2026-10-01T16:21:40Z',
+      html_url: 'https://github.com/BryanHernz/carton-lleno-versiones/releases/tag/v1.0.42',
+      body: '- Cartón Lleno ahora funciona con tu cuenta de Nexo, la misma de Nova Star.\n- En el teléfono y en Windows se inicia sesión con correo y contraseña, y la sesión queda guardada.\n- La tele se vincula escaneando un QR con el teléfono: la contraseña nunca pasa por la tele.\n- Tus partidas y preferencias se guardan en la nube y se ven en todos tus equipos.\n- Sin internet se sigue jugando hasta 7 días desde la última vez que se comprobó tu cuenta.',
+      assets: [
+        ['CartonLleno-windows-instalador.exe', 39204055],
+        ['CartonLleno-1.0.42-instalador.exe', 39204055],
+        ['CartonLleno-telefono.apk', 58915329], ['CartonLleno-tele.apk', 54899827],
+        ['CartonLleno-1.0.42-arm64-v8a.apk', 58915329],
+        ['CartonLleno-1.0.42-armeabi-v7a.apk', 54899827],
+        ['CartonLleno-1.0.42-x86_64.apk', 61274620]
+      ]
+    }
+  }
+];
+
+export const SNAPSHOT_CHECKED_AT = '2026-10-01';

@@ -11,7 +11,7 @@
   },
   "scripts": {
     "test": "vitest run",
-    "build": "tsc",
+    "build": "tsc && node bundle-portal.mjs",
     "lint": "eslint src tests *.mjs",
     "deploy:cleanup": "node deploy-cleanup.mjs --deploy",
     "verify:cleanup": "node deploy-cleanup.mjs --verify",

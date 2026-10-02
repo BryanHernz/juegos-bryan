@@ -2,7 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 const read = file => readFileSync(new URL(`../${file}`, import.meta.url), 'utf8');
-const html = read('index.html');
+import { portalHtml } from './portal-fixture.mjs';
+const html = portalHtml();
 const css = read('styles.css');
 const motion = read('motion.mjs');
 const hero = html.slice(html.indexOf('id="inicio"'), html.indexOf('id="nova-star"'));
@@ -31,7 +32,7 @@ test('las capas animadas preservan la perspectiva de los dispositivos', () => {
 });
 test('sin controles manuales de movimiento y con aviso de accesibilidad', () => {
   assert.doesNotMatch(html, /data-motion-toggle|data-motion-label|Animaciones activas|Pausar animaciones/);
-  assert.match(hero, /data-motion-status hidden role="status"/);
+  assert.match(hero, /data-motion-status(?:="")? hidden(?:="")? role="status"/);
 });
 test('las descargas no son capas parallax', () => {
   for (const tag of html.matchAll(/<(?:a|button)\b[^>]*>/g)) {

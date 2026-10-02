@@ -6,7 +6,8 @@ import { initExperience } from '../experience.mjs';
 import { initMotion } from '../motion.mjs';
 
 const read = file => readFileSync(new URL(`../${file}`, import.meta.url), 'utf8');
-const html = read('index.html');
+import { portalHtml } from './portal-fixture.mjs';
+const html = portalHtml();
 
 test('el monograma SVG coincide en navbar, hero, pie y favicon', () => {
   const dom = new JSDOM(html);
