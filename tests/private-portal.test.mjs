@@ -64,6 +64,7 @@ test('Nova autorizada aparece; Cartón, sus enlaces y sus pantallas se retiran',
   assert.equal(g.document.querySelector('[data-product="carton-lleno"]'), null);
   assert.doesNotMatch(g.document.getElementById('portal-content').textContent, /Cartón Lleno/);
   assert.equal(g.document.querySelectorAll('[data-web]').length, 0);
+  assert.doesNotMatch(g.document.querySelector('.downloads-intro').textContent, /web|próximamente/i);
 });
 test('Cartón autorizada conserva CTA, sin Nova ni ayuda del micrófono', async t => {
   const g = gate(t, { record: { active: true, apps: { cartonLleno: true } } }); await g.session(user);
@@ -156,5 +157,5 @@ test('el nuevo gate no se incluye en pairing y el build copia sus dependencias i
 
 test('los módulos del nuevo gate evitan la configuración pública cacheada', () => {
   assert.match(readFileSync(new URL('../portal-gate.mjs', import.meta.url), 'utf8'), /config\.mjs\?v=private-v2/);
-  assert.match(html, /app\.js\?v=private-v2/);
+  assert.match(html, /app\.js\?v=private-v3/);
 });

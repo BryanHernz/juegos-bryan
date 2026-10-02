@@ -6,6 +6,8 @@ export function allowedApps(keys) {
 }
 
 export function restrictProducts(document, apps) {
+  const downloadsIntro = document.querySelector('.downloads-intro > p');
+  if (downloadsIntro) downloadsIntro.textContent = 'Elige Windows, Android o Android TV / Google TV.';
   const first = apps[0]?.id;
   for (const link of document.querySelectorAll('.header-cta, .scroll-cue')) link.setAttribute('href', `#${first}`);
   const allowed = new Set(apps.map(app => app.id));
