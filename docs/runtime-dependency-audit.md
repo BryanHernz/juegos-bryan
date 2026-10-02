@@ -60,8 +60,9 @@ Pairing comprobado sin crear basura: POST incompleto devuelve 400; rewrite
 
 EXE instalados: Nova `1.0.30+1032`, Cartón `1.0.43+45`. Se verificaron metadata
 de archivos y contratos de selección updater/QR mediante código/tests y la API
-real. No se repitió una actualización/instalación desde la UI durante el cierre;
-las transiciones Windows/TV/teléfono están verificadas previamente por el usuario.
+real. Tras privatizar, el usuario confirmó «Buscar actualizaciones» en ambas
+instalaciones y catálogo/QR de Cartón sin errores. No se reinstalaron apps;
+las transiciones Windows/TV/teléfono estaban verificadas previamente por el usuario.
 
 ## Cambios locales y límites
 

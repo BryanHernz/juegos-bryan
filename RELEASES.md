@@ -89,6 +89,9 @@ ejecuta analyze/tests y publica/verifica sin compilar. Modos `DryRun`,
 `-DownloadsVerified`, confirmación del operador tras comprobar la API real.
 Ver `RELEASE.md` de cada app para comandos completos. No automatizamos el login
 de la cuenta ni su aprobación de las descargas, ni almacenamos credenciales.
+Si Flutter reescribe sólo los finales de línea de sus registrantes generados,
+se restauran sus bytes iniciales desde memoria; cualquier cambio de contenido
+permanece visible y detiene la publicación. No se restaura código de la app.
 
 ## Voces independientes
 

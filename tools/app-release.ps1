@@ -18,6 +18,22 @@ function Assert-Clean {
 if((& node --version) -notmatch '^v22\.') {throw 'Usa Node 22 para el publicador Nexo.'}
 Assert-Exit 'Node'
 Assert-Clean
+# Flutter can rewrite generated registrants with LF on a CRLF checkout. Keep
+# their original bytes in memory; restore only if content is identical modulo
+# line endings. Any substantive change remains visible and stops publication.
+$generated=@{}
+foreach($relative in @(
+  'linux/flutter/generated_plugin_registrant.cc',
+  'linux/flutter/generated_plugin_registrant.h',
+  'linux/flutter/generated_plugins.cmake',
+  'macos/Flutter/GeneratedPluginRegistrant.swift',
+  'windows/flutter/generated_plugin_registrant.cc',
+  'windows/flutter/generated_plugin_registrant.h',
+  'windows/flutter/generated_plugins.cmake'
+)) {
+  $file=Join-Path $root $relative
+  if(Test-Path -LiteralPath $file -PathType Leaf){$generated[$file]=[IO.File]::ReadAllBytes($file)}
+}
 if($Mode -eq 'PublishHistory' -and -not $DownloadsVerified) {
   throw 'Primero verifica API/descargas completas y hashes con la cuenta real. Después usa -DownloadsVerified.'
 }
@@ -29,7 +45,16 @@ try {
   Assert-Exit 'flutter analyze'
   & flutter test
   Assert-Exit 'flutter test'
-} finally {Pop-Location}
+} finally {
+  Pop-Location
+  foreach($file in $generated.Keys) {
+    if(-not(Test-Path -LiteralPath $file -PathType Leaf)){continue}
+    $after=[IO.File]::ReadAllBytes($file)
+    $beforeText=[Text.Encoding]::UTF8.GetString($generated[$file]).Replace("`r`n","`n")
+    $afterText=[Text.Encoding]::UTF8.GetString($after).Replace("`r`n","`n")
+    if($beforeText -ceq $afterText){[IO.File]::WriteAllBytes($file,$generated[$file])}
+  }
+}
 Assert-Clean
 $publisher=Join-Path $PSScriptRoot 'publish-release.mjs'
 $bucket='nova-star-bd0d9-nexo-releases'
