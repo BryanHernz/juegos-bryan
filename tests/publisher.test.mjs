@@ -181,14 +181,22 @@ test('GitHub prepares a draft, preserves alias names and activates only after pr
     commands.push(args);
     if (args[0] === 'api') {
       if (args[1] === `repos/${f.plan.repo}`) return { stdout: JSON.stringify({ private: true, full_name: f.plan.repo }) };
+      if (args[1].includes('/releases?')) return { stdout: JSON.stringify(release ? [release] : []) };
+      if (args[1] === `repos/${f.plan.repo}/releases` && args.includes('POST')) {
+        const input = JSON.parse(await readFile(args[args.indexOf('--input') + 1]));
+        assert.equal(input.draft, true); assert.equal(input.body, f.plan.notes);
+        release = { id: 100, tag_name: input.tag_name, draft: true, prerelease: false };
+        return { stdout: JSON.stringify(release) };
+      }
+      if (args.includes('PATCH')) {
+        assert.equal(args[1], `repos/${f.plan.repo}/releases/100`);
+        assert.ok(f.rows.has('releases/novaStar/latest.json'));
+        assert.ok(args.includes('make_latest=true')); release.draft = false; latest = release;
+        return { stdout: JSON.stringify(release) };
+      }
       if (args[1].endsWith('/latest')) return { stdout: JSON.stringify(latest) };
       if (args[1].includes('/assets?')) return { stdout: JSON.stringify(uploaded) };
-      if (!release) throw Object.assign(new Error('not found'), { stderr: 'HTTP 404' });
-      return { stdout: JSON.stringify(release) };
-    }
-    if (args[1] === 'create') {
-      assert.ok(args.includes('--draft'));
-      release = { id: 100, tag_name: 'v1.0.28', draft: true, prerelease: false };
+      throw new Error('Draft lookup by tag is not supported');
     }
     if (args[1] === 'upload') {
       assert.ok(release.draft); assert.ok(!args.includes('--clobber'));
@@ -202,16 +210,99 @@ test('GitHub prepares a draft, preserves alias names and activates only after pr
       const expected = [...f.plan.assets, ...f.plan.compatibility].find(a => (a.filename ?? a.fileName) === name);
       await writeFile(path.join(directory, name), await readFile(expected.localPath));
     }
-    if (args[1] === 'edit') {
-      assert.ok(f.rows.has('releases/novaStar/latest.json'));
-      assert.ok(args.includes('--latest')); release.draft = false; latest = release;
-    }
     return { stdout: '' };
   });
   const options = { storage: f.storage, github: adapter, mode: 'publish' };
   await publish(f.plan, options); assert.equal(release.draft, false); assert.equal(uploaded.length, 5);
   const writes = f.writes(); await publish(f.plan, { ...options, mode: 'verify' });
-  assert.equal(f.writes(), writes); assert.equal(commands.filter(args => args[1] === 'edit').length, 1);
+  assert.equal(f.writes(), writes); assert.equal(commands.filter(args => args.includes('PATCH')).length, 1);
+  assert.equal(commands.filter(args => args.includes('POST')).length, 1);
+  assert.ok(commands.every(args => !args[1].includes('/releases/tags/')));
+});
+
+async function draftFixture(t, initial, { paginated = false, interruptCreation = false } = {}) {
+  const f = await fixture(t), commands = [];
+  let release = initial, creates = 0;
+  const files = [...f.plan.assets.map(a => ({ ...a, fileName: a.filename })), ...f.plan.compatibility];
+  const run = async args => {
+    commands.push(args);
+    if (args[0] === 'api') {
+      if (args[1] === `repos/${f.plan.repo}`) return { stdout: JSON.stringify({ private: true, full_name: f.plan.repo }) };
+      if (args[1].includes('/releases?')) {
+        const rows = paginated && args[1].endsWith('page=1') ? Array.from({ length: 100 }, (_, i) => ({ id: i + 1, tag_name: 'v0.0.0' })) : release ? [release] : [];
+        return { stdout: JSON.stringify(rows) };
+      }
+      if (args.includes('POST')) {
+        creates++;
+        const body = JSON.parse(await readFile(args[args.indexOf('--input') + 1]));
+        assert.equal(body.draft, true); assert.equal(body.tag_name, 'v1.0.28');
+        release = { id: 907, tag_name: body.tag_name, draft: true, prerelease: false };
+        if (interruptCreation) throw Object.assign(new Error('Response interrupted'), { code: 'ECONNRESET' });
+        return { stdout: JSON.stringify(release) };
+      }
+      if (args[1].endsWith('/latest')) return { stdout: JSON.stringify({ tag_name: 'v1.0.28' }) };
+      if (args[1].includes('/assets?')) {
+        assert.ok(args[1].includes(`/releases/${release.id}/assets?`));
+        return { stdout: JSON.stringify(files.map(f => ({ name: f.fileName, size: f.size, state: 'uploaded' }))) };
+      }
+      throw new Error('Unexpected request; tag lookup must never locate drafts');
+    }
+    assert.equal(args[1], 'download');
+    const name = args[args.indexOf('--pattern') + 1], dir = args[args.indexOf('--dir') + 1];
+    await writeFile(path.join(dir, name), await readFile(files.find(f => f.fileName === name).localPath));
+    return { stdout: '' };
+  };
+  return { ...f, run, commands, creates: () => creates };
+}
+
+test('missing release creates one draft and retains the creation response ID', async t => {
+  const f = await draftFixture(t, null), adapter = githubAdapter(f.run);
+  assert.equal(await adapter.ensure(f.plan, 'publish'), 907);
+  assert.equal(await adapter.ensure(f.plan, 'publish'), 907);
+  assert.equal(f.creates(), 1);
+});
+
+test('existing draft resumes the same ID and never creates a duplicate', async t => {
+  const f = await draftFixture(t, { id: 888, tag_name: 'v1.0.28', draft: true, prerelease: false });
+  assert.equal(await githubAdapter(f.run).ensure(f.plan, 'publish'), 888);
+  assert.equal(await githubAdapter(f.run).ensure(f.plan, 'publish'), 888);
+  assert.equal(f.creates(), 0);
+});
+
+test('existing published release is reused and its assets verified read-only', async t => {
+  const f = await draftFixture(t, { id: 777, tag_name: 'v1.0.28', draft: false, prerelease: false });
+  const adapter = githubAdapter(f.run);
+  assert.equal(await adapter.ensure(f.plan, 'verify'), 777); await adapter.activate(f.plan, 'verify');
+  assert.equal(await adapter.ensure(f.plan, 'publish'), 777); await adapter.activate(f.plan, 'publish');
+  assert.equal(f.creates(), 0); assert.ok(!f.commands.some(a => a.includes('PATCH')));
+});
+
+test('draft lookup covers later list pages before deciding to create', async t => {
+  const f = await draftFixture(t, { id: 666, tag_name: 'v1.0.28', draft: true, prerelease: false }, { paginated: true });
+  assert.equal(await githubAdapter(f.run).ensure(f.plan, 'publish'), 666); assert.equal(f.creates(), 0);
+  assert.ok(f.commands.some(a => a[1].endsWith('page=2')));
+});
+
+test('retry after an interrupted draft creation finds it instead of creating again', async t => {
+  const f = await draftFixture(t, null, { interruptCreation: true });
+  await assert.rejects(githubAdapter(f.run).ensure(f.plan, 'publish'), /Response interrupted/);
+  assert.equal(await githubAdapter(f.run).ensure(f.plan, 'publish'), 907);
+  assert.equal(f.creates(), 1);
+});
+
+test('ambiguous duplicate drafts and list failures fail closed without creation', async t => {
+  const f = await fixture(t), draft = { id: 99, tag_name: 'v1.0.28', draft: true, prerelease: false };
+  for (const listed of [[draft, { ...draft, id: 100 }], null]) {
+    const commands = [];
+    const adapter = githubAdapter(async args => {
+      commands.push(args);
+      if (args[1] === `repos/${f.plan.repo}`) return { stdout: JSON.stringify({ private: true, full_name: f.plan.repo }) };
+      if (listed === null) throw Object.assign(new Error('network'), { code: 'ECONNRESET' });
+      return { stdout: JSON.stringify(listed) };
+    });
+    await assert.rejects(adapter.ensure(f.plan, 'publish'));
+    assert.ok(commands.every(a => !a.includes('POST')));
+  }
 });
 
 test('historical publishing refuses public or unexpected repos before any release mutation', async t => {

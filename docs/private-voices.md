@@ -2,7 +2,8 @@
 
 > Evidencia de la importación inicial. API y cliente Cartón 1.0.43 ya usan Nexo;
 > GitHub es privado. Estado y procedimiento vigente: [RELEASES.md](../RELEASES.md).
-> El permiso de reemplazo del catálogo sigue pendiente y limitado a ese objeto.
+> El permiso de reemplazo del catálogo se aplicó el 2026-10-02,
+> limitado exclusivamente a ese objeto.
 
 Las voces tienen su propio catálogo; no pertenecen a una versión de la app y
 no se incorporan a los manifests ni a los punteros `latest` de releases.
@@ -149,7 +150,7 @@ interrumpida. No se borran ZIPs ni se retiran voces automáticamente.
 Una carrera o permiso insuficiente aborta el reemplazo del catálogo, sin
 sobrescribir ZIPs ni exponer paquetes todavía no referenciados.
 
-## IAM existente y permiso pendiente para futuras actualizaciones
+## IAM existente y permiso aprobado para actualizaciones
 
 - Runtime `870971438774-compute@developer.gserviceaccount.com`: rol custom
   `nexoReleaseRead` (`storage.objects.get`) en este bucket, limitado a `releases/`.
@@ -164,7 +165,11 @@ sobrescribir ZIPs ni exponer paquetes todavía no referenciados.
   actual de `nexoReleaseLatestReplace` permite únicamente los dos latest de
   las apps; no se reutilizan ni modifican esos punteros.
 
-Propuesta exacta para la fase de aprobación IAM, **no ejecutada aquí**:
+Binding exacto aprobado. Antes de aplicarlo, leer la política vigente y verificar
+que `nexoReleaseLatestReplace` contiene únicamente `storage.objects.delete`.
+La sesión que ejecuta el cambio necesita `storage.buckets.getIamPolicy` y
+`storage.buckets.setIamPolicy`; iniciar sesión no concede esos permisos.
+El binding siguiente se aplicó y verificó el 2026-10-02:
 
 ```sh
 gcloud storage buckets add-iam-policy-binding gs://nova-star-bd0d9-nexo-releases \
@@ -174,9 +179,21 @@ gcloud storage buckets add-iam-policy-binding gs://nova-star-bd0d9-nexo-releases
 ```
 
 No roles amplios de proyecto, nuevas cuentas de servicio, secretos o claves.
-No se altera la política existente durante la importación.
+Después, verificar que la condición se limita al objeto exacto y que todos los
+bindings anteriores siguen iguales. No se otorga reemplazo a ningún otro
+objeto. El publicador sigue usando impersonación, sin claves nuevas.
 
-## Activación pendiente
+La cuenta operadora era propietaria del proyecto, pero el bucket no conservaba
+el acceso adicional de los propietarios mediante convenience values. Owner
+no incluye intrínsecamente los permisos IAM del bucket; iniciar sesión de
+nuevo no solucionaba el rechazo. Para aplicar el binding se autorizó un rol
+temporal con sólo `storage.buckets.getIamPolicy` y
+`storage.buckets.setIamPolicy`, condicionado al bucket exacto y a una hora de
+vigencia. Se retiró el binding temporal, se eliminó su rol y se comprobó que
+IAM del proyecto volvió al estado anterior antes de publicar.
+[Referencia oficial de roles básicos en Storage](https://docs.cloud.google.com/storage/docs/access-control/iam-roles#basic-roles).
+
+## Activación inicial (histórico)
 
 Después de revisar inventario/código: integrar y desplegar exclusivamente
 `functions:nexo:api`. No se necesita Hosting, cleanup, Scheduler, Firestore

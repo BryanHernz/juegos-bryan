@@ -10,6 +10,26 @@ manifests son inmutables. Nunca reemplazar bytes de una versión ya publicada.
 
 ## Contrato y publicación
 
+### Runtime de publicación
+
+Usar **Node 22.x** para publicar/verificar aplicaciones y voces. El flujo
+integrado `tools/app-release.ps1` exige esa versión; el runtime comprobado es
+Node 22.23.3 con npm 11.17.0. No usar el Node 24 del sistema para este flujo.
+En este equipo se puede seleccionar el runtime existente sin reinstalar Node:
+
+```powershell
+$nexoRuntime = 'C:\Users\Bryan\.codex\.chatgpt-projects\g-p-6abd539839c4819180a510454646b37f\runtime'
+$env:Path = "$nexoRuntime\npm11-bin;$nexoRuntime\node-v22.23.3-win-x64;$env:Path"
+node --version
+npm --version
+```
+
+El `engines >=22` de la raíz corresponde al portal; no amplía el contrato del
+publicador integrado ni el runtime Node 22 de Functions. Los SDK instalados
+`@google-cloud/storage` 8.2.0 y `teeny-request` 11.0.1 admiten Node >=22, pero
+eso no demuestra la compatibilidad completa de publicación con Node 24 o
+futuras versiones. Se mantiene Node 22 hasta validar ese flujo por separado.
+
 ```text
 releases/{app}/{version}/assets/{assetId}/{sha256}/{filename}
 releases/{app}/{version}/support/{sha256}/{filename}
@@ -73,7 +93,14 @@ npm run releases:verify -- C:\artefactos\release-input.json nova-star-bd0d9-nexo
 
 El adaptador comprueba que el repositorio esperado sea privado antes de crear
 un draft/subir y antes de activarlo. Nunca usa clobber ni cambia visibilidad.
-Un draft incompleto puede reanudarse; no borrar ni sobrescribir assets históricos.
+Antes de crear un draft, lista todas las páginas de releases autenticadas y
+busca por `tag_name`, incluyendo drafts. Un draft existente se reanuda; uno
+publicado se reutiliza y verifica. La creación devuelve su ID, que se conserva
+para verificar assets y publicar por ID: no se usa `/releases/tags/{tag}` para
+localizar drafts. Un reintento tras una respuesta de creación interrumpida
+vuelve a listar antes de crear. Si ya hay varios releases con el mismo tag,
+se detiene para revisión manual; no elige uno ni borra duplicados. No borrar
+ni sobrescribir assets históricos.
 La API entrega URLs V4 válidas cinco minutos y atadas a generación. Se solicitan
 nuevas al vencer; no se persisten en manifests, HTML, localStorage ni logs.
 Referencia: [signed URLs de Cloud Storage](https://docs.cloud.google.com/storage/docs/access-control/signed-urls).
@@ -116,5 +143,23 @@ Para actualizar, fijar `expectedCatalogSha256` del catálogo vigente; ZIPs nuevo
 son inmutables y el catálogo usa CAS. Verify tras publish y probar descarga
 real desde la API. Una voz nueva no requiere recompilar/desplegar apps/backend.
 Reemplazar el catálogo necesita delete **exclusivamente** en el objeto
-`releases/cartonLleno/voices/catalog.json`; ese permiso aún requiere aprobación,
-no se amplió IAM durante el cierre. Ver [docs/private-voices.md](docs/private-voices.md).
+`releases/cartonLleno/voices/catalog.json`, con condición `OnlyCartonVoiceCatalog`.
+El binding fue aplicado y verificado el 2026-10-02. Los bindings de latest
+conservan sus dos objetos exactos; el resto del bucket no recibió permisos
+adicionales de reemplazo. No ampliar esas condiciones para publicar una voz.
+Ver [docs/private-voices.md](docs/private-voices.md).
+
+## Warning de streams del SDK
+
+Con Node 22.23.3 se reproduce `MaxListenersExceededWarning` (11 listeners
+`error`/`close` sobre `PassThrough`) leyendo objetos pequeños, antes de subir
+ZIPs. El stack apunta a `teeny-request` 11.0.1, `build/src/index.js:194`, donde
+su pipeline se combina con el pipeline de descarga/validación de
+`@google-cloud/storage` 8.2.0. Las publicaciones son secuenciales y cada lectura
+crea su propio stream; no reutilizamos streams de subida entre objetos.
+
+Queda pendiente revisar una corrección del SDK y validar su actualización.
+No se cambia el límite de listeners, no se suprimen warnings y no se retiran
+handlers internos del proveedor. El warning no sustituye la comprobación de
+tamaño, SHA256 y generación: cualquier fallo de esas comprobaciones aborta.
+[Node documenta que pipeline puede conservar listeners tras completarse](https://nodejs.org/docs/latest-v22.x/api/stream.html#streampipelinesource-transforms-destination-callback).

@@ -261,7 +261,7 @@ export async function cloudAdapter(bucketName) {
   };
 }
 export function githubAdapter(run = args => exec('gh', args, { maxBuffer: 1024 * 1024 })) {
-  const drafts = new Set();
+  const releases = new Map();
   const assertPrivate = async plan => {
     const repo = JSON.parse((await run(['api', `repos/${plan.repo}`])).stdout);
     if (repo.private !== true || repo.full_name !== plan.repo) fail('Historical releases require the expected private repository');
@@ -269,23 +269,31 @@ export function githubAdapter(run = args => exec('gh', args, { maxBuffer: 1024 *
   return { async ensure(plan, mode) {
     if (mode === 'publish') await assertPrivate(plan);
     const tag = `v${plan.version}`;
-    const view = async () => JSON.parse((await run(['api', `repos/${plan.repo}/releases/tags/${tag}`])).stdout);
-    let release;
-    try { release = await view(); }
-    catch (error) {
-      // Only a confirmed 404 permits creation. Authentication/network failures stop.
-      if (!String(error.stderr).includes('HTTP 404') || mode !== 'publish') throw error;
+    // The tag endpoint excludes drafts. Scan every authenticated list page so
+    // retries resume an existing draft, even after an interrupted creation.
+    const matches = [];
+    for (let page = 1; ; page++) {
+      const listed = JSON.parse((await run(['api', `repos/${plan.repo}/releases?per_page=100&page=${page}`])).stdout);
+      if (!Array.isArray(listed)) fail('Invalid GitHub release list');
+      matches.push(...listed.filter(r => r.tag_name === tag));
+      if (listed.length < 100) break;
+    }
+    if (matches.length > 1) fail('Multiple GitHub releases share this tag; review manually before publishing');
+    let release = matches[0];
+    if (!release) {
+      if (mode !== 'publish') fail('GitHub release missing');
       const directory = await mkdtemp(path.join(tmpdir(), 'nexo-release-notes-'));
       try {
-        const notes = path.join(directory, 'notes.md');
+        const input = path.join(directory, 'release.json');
         const { writeFile } = await import('node:fs/promises');
-        await writeFile(notes, plan.notes, 'utf8');
-        await run(['release', 'create', tag, '--repo', plan.repo, '--title', tag, '--notes-file', notes, '--draft']);
+        await writeFile(input, jsonBytes({ tag_name: tag, name: tag, body: plan.notes, draft: true, prerelease: false }));
+        // Creation returns the draft ID directly; no second lookup by tag.
+        release = JSON.parse((await run(['api', `repos/${plan.repo}/releases`, '--method', 'POST', '--input', input])).stdout);
       } finally { await removeTemporary(directory); }
-      release = await view();
     }
-    if ((release.draft && mode !== 'publish') || release.prerelease || release.tag_name !== tag || !Number.isSafeInteger(release.id)) fail('Invalid GitHub transition release');
-    if (release.draft) drafts.add(`${plan.repo}:${tag}`);
+    if ((release.draft && mode !== 'publish') || release.prerelease || release.tag_name !== tag ||
+      !Number.isSafeInteger(release.id) || release.id < 1 || typeof release.draft !== 'boolean') fail('Invalid GitHub transition release');
+    releases.set(`${plan.repo}:${tag}`, { id: release.id, draft: release.draft });
     try {
       const latest = JSON.parse((await run(['api', `repos/${plan.repo}/releases/latest`])).stdout);
       const latestVersion = latest.tag_name?.replace(/^v/, '');
@@ -327,13 +335,17 @@ export function githubAdapter(run = args => exec('gh', args, { maxBuffer: 1024 *
         if ((await readdir(directory)).length !== 1 || await hashFile(path.join(directory, file.fileName)) !== file.sha256) fail('GitHub artifact SHA256 mismatch');
       } finally { await removeTemporary(directory); }
     }
+    return release.id;
   }, async activate(plan, mode) {
     if (mode === 'publish') await assertPrivate(plan);
     const tag = `v${plan.version}`;
-    if (mode === 'publish' && drafts.has(`${plan.repo}:${tag}`)) {
-      await run(['release', 'edit', tag, '--repo', plan.repo, '--draft=false', '--latest']);
-      const published = JSON.parse((await run(['api', `repos/${plan.repo}/releases/tags/${tag}`])).stdout);
-      if (published.draft || published.prerelease) fail('GitHub release activation failed');
+    const release = releases.get(`${plan.repo}:${tag}`);
+    if (mode === 'publish' && !release) fail('GitHub release must be verified before activation');
+    if (mode === 'publish' && release.draft) {
+      const published = JSON.parse((await run(['api', `repos/${plan.repo}/releases/${release.id}`,
+        '--method', 'PATCH', '--field', 'draft=false', '--raw-field', 'make_latest=true'])).stdout);
+      if (published.id !== release.id || published.tag_name !== tag || published.draft !== false || published.prerelease) fail('GitHub release activation failed');
+      releases.set(`${plan.repo}:${tag}`, { id: release.id, draft: false });
     }
     const latest = JSON.parse((await run(['api', `repos/${plan.repo}/releases/latest`])).stdout);
     if (latest.tag_name !== tag) fail('GitHub latest verification failed');
