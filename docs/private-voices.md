@@ -1,5 +1,9 @@
 # Voces privadas de Cartón Lleno
 
+> Evidencia de la importación inicial. API y cliente Cartón 1.0.43 ya usan Nexo;
+> GitHub es privado. Estado y procedimiento vigente: [RELEASES.md](../RELEASES.md).
+> El permiso de reemplazo del catálogo sigue pendiente y limitado a ese objeto.
+
 Las voces tienen su propio catálogo; no pertenecen a una versión de la app y
 no se incorporan a los manifests ni a los punteros `latest` de releases.
 

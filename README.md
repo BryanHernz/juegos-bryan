@@ -31,11 +31,18 @@ Vista previa: http://127.0.0.1:8080/ . El servidor solo escucha en la máquina l
 
 ## Distribución privada
 
+Manuales vigentes: [DEPLOY.md](DEPLOY.md), [RELEASES.md](RELEASES.md),
+[OPERATIONS.md](OPERATIONS.md). API, portal y voces están en producción.
+Nova actual: 1.0.30+1032; Cartón: 1.0.43+45; ambos repositorios de releases son
+privados y conservan releases/tags/assets. Los documentos de migración enlazados
+abajo son evidencia histórica de sus fases, no instrucciones pendientes actuales.
+[Auditoría final de runtime e histórico](docs/runtime-dependency-audit.md).
+
 [Voces privadas de Cartón Lleno: catálogo independiente, importación,
 API y publicación sin recompilar](docs/private-voices.md). El publicador
 ofrece `voices:dry-run`, `voices:verify` y `voices:publish`; no modifica
-GitHub ni los manifests/latest de las apps. La activación de la API requiere
-una aprobación y deploy posterior únicamente de `functions:nexo:api`.
+GitHub ni los manifests/latest de las apps. La API de voces está activa; para
+reemplazar el catálogo falta aprobar el permiso limitado a ese objeto.
 
 [Arquitectura, contratos, publicación y decisiones antes de deploy](docs/private-release-distribution.md).
 
@@ -45,9 +52,9 @@ Auth/access y filtrar productos. No se incluye ese contenido en `_site`.
 `config.mjs` contiene únicamente identificadores de productos. Auth comparte
 la configuración de pairing; la URL del backend permanece igual.
 
-Los repositorios públicos `BryanHernz/nova-star-versiones` y
-`BryanHernz/carton-lleno-versiones`, releases 1.0.27/1.0.42, aliases y updater
-antiguo quedan intactos. Sus snapshots anteriores están en
+Los repositorios privados `BryanHernz/nova-star-versiones` y
+`BryanHernz/carton-lleno-versiones` conservan el histórico, aliases y assets
+intactos. Sus snapshots anteriores están en
 `tools/legacy-releases.mjs`, fuera del build de Hosting. El portal no usa esos
 snapshots ni caché de GitHub para saltarse permisos.
 
@@ -66,7 +73,7 @@ Cada botón solicita una URL firmada de cinco minutos mediante el backend.
 El ID token sólo viaja en Authorization; ningún token o enlace firmado se guarda
 por código propio en localStorage. Ante falta de sesión/acceso/red, falla cerrado.
 El bucket privado y las releases oficiales ya están provisionados/importados.
-La nueva API y el portal privado aún no se desplegaron. No existe fallback público del portal.
+La API y el portal privado están en producción. No existe fallback público del portal.
 
 | Plataforma | Nova Star | Cartón Lleno |
 | --- | --- | --- |
@@ -116,10 +123,8 @@ Cerrar sesión invalida las respuestas pendientes. Firebase conserva la sesión
 con la misma persistencia del portal; el código no guarda tokens ni contraseñas.
 
 El build incluye esta pantalla y sus módulos. `/pair/**` conserva su rewrite y
-su flujo independiente. La API existente alcanza: este cambio sólo necesita un
-futuro deploy de `hosting:portal`, **no realizado aquí**. Después de publicar y
-verificar la ruta, habrá que reemplazar el QR de Cartón Lleno en su propio repo
-por la URL estable; esta tarea no modifica la aplicación ni privatiza GitHub.
+su flujo independiente. Las rutas ya están publicadas y el QR de Cartón Lleno
+1.0.43 apunta a Nexo. No se necesita Functions para actualizar esta pantalla.
 
 ## Vinculación web de TV en Nexo
 
@@ -131,4 +136,8 @@ El único inicio de sesión ofrecido es email/password para cuentas existentes; 
 
 La pantalla contempla éxito, sesión inválida (401), código incorrecto o falta de acceso (403), enlace inexistente (404), ya aprobado/consumido (409), expirado (410), bloqueo por intentos (429) y errores de red. Solo distingue los errores 403 si recibe los códigos conocidos `incorrect_code` o `app_access_denied`; otros 403 muestran un mensaje neutro. El backend conserva la decisión sobre los permisos de cada app.
 
-`npm run build` copia exclusivamente los archivos públicos a `_site/`. `firebase.json` prepara únicamente el sitio **nexo-hub**, con la reescritura `/pair/**` a `/pair.html`; no se ha ejecutado ningún deploy. La lógica de pairing y la configuración Hosting permanecen iguales y el Hosting de Nova Star no se modifica. La ruta de vinculación está destinada a `https://nexo-hub.web.app`, origen permitido por el backend; una vista previa local puede mostrar la interfaz, pero las pruebas de aprobación usan dobles de Auth/API para evitar CORS y operaciones en producción. No se deben enviar credenciales reales para estas pruebas locales.
+`npm run build` copia exclusivamente los archivos públicos a `_site/`. El target
+Hosting `portal` apunta a **nexo-hub** y conserva `/pair/** -> /pair.html`.
+El Hosting de Nova Star permanece separado. Las pruebas locales de pairing usan
+dobles de Auth/API para evitar CORS y escrituras en producción; no enviar
+credenciales reales a una vista previa genérica.

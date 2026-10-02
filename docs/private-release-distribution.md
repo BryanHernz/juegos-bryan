@@ -1,5 +1,10 @@
 # Distribución privada de Nexo · contrato v1
 
+> Evidencia histórica de implementación/importación. El estado operativo vigente
+> y los comandos finales están en [RELEASES.md](../RELEASES.md),
+> [DEPLOY.md](../DEPLOY.md) y [OPERATIONS.md](../OPERATIONS.md).
+> API/portal/voces ya están activos; los repositorios de releases son privados.
+
 Rama: feature/private-release-distribution. Implementación sin commit, push ni deploy.
 Bucket privado provisionado e importación oficial completada el 2026-10-02 UTC.
 

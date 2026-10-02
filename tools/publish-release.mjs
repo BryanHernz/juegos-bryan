@@ -262,7 +262,12 @@ export async function cloudAdapter(bucketName) {
 }
 export function githubAdapter(run = args => exec('gh', args, { maxBuffer: 1024 * 1024 })) {
   const drafts = new Set();
+  const assertPrivate = async plan => {
+    const repo = JSON.parse((await run(['api', `repos/${plan.repo}`])).stdout);
+    if (repo.private !== true || repo.full_name !== plan.repo) fail('Historical releases require the expected private repository');
+  };
   return { async ensure(plan, mode) {
+    if (mode === 'publish') await assertPrivate(plan);
     const tag = `v${plan.version}`;
     const view = async () => JSON.parse((await run(['api', `repos/${plan.repo}/releases/tags/${tag}`])).stdout);
     let release;
@@ -323,6 +328,7 @@ export function githubAdapter(run = args => exec('gh', args, { maxBuffer: 1024 *
       } finally { await removeTemporary(directory); }
     }
   }, async activate(plan, mode) {
+    if (mode === 'publish') await assertPrivate(plan);
     const tag = `v${plan.version}`;
     if (mode === 'publish' && drafts.has(`${plan.repo}:${tag}`)) {
       await run(['release', 'edit', tag, '--repo', plan.repo, '--draft=false', '--latest']);

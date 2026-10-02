@@ -180,6 +180,7 @@ test('GitHub prepares a draft, preserves alias names and activates only after pr
   const adapter = githubAdapter(async args => {
     commands.push(args);
     if (args[0] === 'api') {
+      if (args[1] === `repos/${f.plan.repo}`) return { stdout: JSON.stringify({ private: true, full_name: f.plan.repo }) };
       if (args[1].endsWith('/latest')) return { stdout: JSON.stringify(latest) };
       if (args[1].includes('/assets?')) return { stdout: JSON.stringify(uploaded) };
       if (!release) throw Object.assign(new Error('not found'), { stderr: 'HTTP 404' });
@@ -211,4 +212,15 @@ test('GitHub prepares a draft, preserves alias names and activates only after pr
   await publish(f.plan, options); assert.equal(release.draft, false); assert.equal(uploaded.length, 5);
   const writes = f.writes(); await publish(f.plan, { ...options, mode: 'verify' });
   assert.equal(f.writes(), writes); assert.equal(commands.filter(args => args[1] === 'edit').length, 1);
+});
+
+test('historical publishing refuses public or unexpected repos before any release mutation', async t => {
+  const f = await fixture(t);
+  for (const metadata of [{private:false,full_name:f.plan.repo},{private:true,full_name:'other/repo'}]) {
+    const commands=[];
+    const adapter=githubAdapter(async args=>{commands.push(args);return {stdout:JSON.stringify(metadata)};});
+    await assert.rejects(adapter.ensure(f.plan,'publish'),/private repository/);
+    await assert.rejects(adapter.activate(f.plan,'publish'),/private repository/);
+    assert.ok(commands.every(args=>args[0]==='api'&&args[1]===`repos/${f.plan.repo}`));
+  }
 });
