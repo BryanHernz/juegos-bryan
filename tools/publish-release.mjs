@@ -246,6 +246,13 @@ export async function cloudAdapter(bucketName) {
               versionCode: asset.versionCode === null ? 'none' : String(asset.versionCode) } : { purpose: 'support' }),
             originalName: asset.filename, releasedAt: asset.releasedAt } } });
     },
+    async uploadVoice(object, voice) {
+      await bucket.upload(voice.localPath, { destination: object, validation: 'crc32c',
+        preconditionOpts: { ifGenerationMatch: 0 },
+        metadata: { contentType: 'application/zip', cacheControl: 'private, no-store',
+          metadata: { sha256: voice.sha256, app: 'cartonLleno', purpose: 'voice',
+            voiceId: voice.id, voiceVersion: voice.version, originalName: voice.filename } } });
+    },
     async write(object, bytes, expectedGeneration) {
       await bucket.file(object).save(bytes, { resumable: false, validation: 'crc32c',
         preconditionOpts: { ifGenerationMatch: expectedGeneration },

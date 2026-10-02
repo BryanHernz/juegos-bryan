@@ -31,6 +31,12 @@ Vista previa: http://127.0.0.1:8080/ . El servidor solo escucha en la máquina l
 
 ## Distribución privada
 
+[Voces privadas de Cartón Lleno: catálogo independiente, importación,
+API y publicación sin recompilar](docs/private-voices.md). El publicador
+ofrece `voices:dry-run`, `voices:verify` y `voices:publish`; no modifica
+GitHub ni los manifests/latest de las apps. La activación de la API requiere
+una aprobación y deploy posterior únicamente de `functions:nexo:api`.
+
 [Arquitectura, contratos, publicación y decisiones antes de deploy](docs/private-release-distribution.md).
 
 `index.html` entrega sólo el login Nexo. El contenido visual aprobado está en

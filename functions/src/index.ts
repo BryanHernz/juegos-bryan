@@ -13,6 +13,7 @@ import { PairingService } from './tv/pairing';
 import { ReleaseService } from './releases/service';
 import { releaseStorage } from './releases/storage';
 import { portalTemplate } from './releases/portal';
+import { VoiceService } from './voices/service';
 
 const codeSecret = defineSecret('TV_PAIRING_CODE_SECRET');
 const portalUrl = defineString('NEXO_PORTAL_URL', {
@@ -39,7 +40,7 @@ function apiHandler() {
     auth: getAuth(),
     access: async uid => (await getFirestore().doc(`access/${uid}`).get()).data(),
     storage: releaseStorage(() => releasesBucket.value()),
-  }) });
+  }), voices: new VoiceService(releaseStorage(() => releasesBucket.value())) });
   return handler;
 }
 
