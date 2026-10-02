@@ -52,6 +52,46 @@ describe('TV pairing HTTP API with injected Auth and local Firestore double', ()
   let f: ReturnType<typeof fixture>;
   beforeEach(() => { f = fixture(); });
 
+  it.each(['novaStar', 'cartonLleno'])('metadata exposes only app/status/expiry for %s without writes', async (app) => {
+    const p = await f.create(app);
+    const before = new Map(f.rows);
+    for (let i = 0; i < 2; i++) {
+      const response = await request(f.app).get(`${BASE}/${p.pairingId}/metadata`).set('Origin', PORTAL);
+      expect(response.status).toBe(200);
+      expect(response.headers['cache-control']).toBe('no-store');
+      expect(response.body).toEqual({ app, status: 'pending', expiresAt: p.expiresAt });
+    }
+    expect(f.rows).toEqual(before);
+    expect(f.auth.verifyIdToken).not.toHaveBeenCalled();
+    expect(f.auth.createCustomToken).not.toHaveBeenCalled();
+  });
+
+  it('reading approved metadata does not consume or sign; consumed and expired are read-only', async () => {
+    const p = await f.create();
+    await f.approve(p.pairingId, p.code);
+    const before = new Map(f.rows);
+    expect((await request(f.app).get(`${BASE}/${p.pairingId}/metadata`)).body.status).toBe('approved');
+    expect(f.rows).toEqual(before);
+    expect(f.auth.createCustomToken).not.toHaveBeenCalled();
+    f.advance(PAIRING_TTL_MS);
+    expect((await request(f.app).get(`${BASE}/${p.pairingId}/metadata`)).body.status).toBe('expired');
+    const row = f.rows.get(`tvPairings/${p.pairingId}`)!;
+    f.rows.set(`tvPairings/${p.pairingId}`, { ...row, status: 'consumed' });
+    const consumed = new Map(f.rows);
+    const response = await request(f.app).get(`${BASE}/${p.pairingId}/metadata`);
+    expect(response.body).toEqual({ app: 'cartonLleno', status: 'consumed', expiresAt: p.expiresAt });
+    expect(f.rows).toEqual(consumed);
+    expect(f.auth.createCustomToken).not.toHaveBeenCalled();
+  });
+
+  it('metadata rejects malformed id, unknown pairing, query params and foreign origin', async () => {
+    const p = await f.create();
+    expect((await request(f.app).get(`${BASE}/invalid/metadata`)).status).toBe(400);
+    expect((await request(f.app).get(`${BASE}/${'ab'.repeat(24)}/metadata`)).status).toBe(404);
+    expect((await request(f.app).get(`${BASE}/${p.pairingId}/metadata?app=novaStar`)).status).toBe(400);
+    expect((await request(f.app).get(`${BASE}/${p.pairingId}/metadata`).set('Origin', 'https://other.test')).status).toBe(403);
+  });
+
   it.each(['cartonLleno', 'novaStar'])('creates %s without login', async (appId) => {
     const p = await f.create(appId);
     expect(p.app).toBe(appId);

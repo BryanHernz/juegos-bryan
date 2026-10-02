@@ -1,4 +1,5 @@
 import { initExperience } from './experience.mjs';
+import { initMotion } from './motion.mjs';
 import { connectPortal } from './portal-auth.mjs?v=private-v2';
 import { initPortalGate } from './portal-gate.mjs?v=private-v3';
 import { createReleaseClient } from './private-releases.mjs';
@@ -55,9 +56,13 @@ export async function initDownloads({ document, window, apps, user, fetchImpl = 
 }
 
 if (typeof document !== 'undefined') {
+  const disposeLoginMotion = initMotion();
   document.getElementById('portal-retry').addEventListener('click', () => window.location.reload());
   connectPortal().then(auth => initPortalGate({ document, window, auth,
     onAuthorized: context => {
+      // Rescan the newly mounted portal; do not leave a controller bound only
+      // to the login's screenshots.
+      disposeLoginMotion?.();
       initExperience();
       void initDownloads({ document, window, ...context });
     },

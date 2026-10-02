@@ -66,6 +66,13 @@ export function createHttpApp(service: PairingService, options: HttpOptions = {}
     } catch (error) { next(error); }
   });
 
+  app.get('/api/v1/tv/pairings/:pairingId/metadata', async (req, res, next) => {
+    try {
+      if (Object.keys(req.query).length) throw new ApiError(400, 'query_forbidden');
+      res.json(await service.metadata(pairingId(req.params.pairingId)));
+    } catch (error) { next(error); }
+  });
+
   app.get('/api/v1/tv/pairings/:pairingId', async (req, res, next) => {
     try {
       if (Object.hasOwn(req.query, 'pollToken')) throw new ApiError(400, 'poll_token_query_forbidden');

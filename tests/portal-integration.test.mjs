@@ -58,5 +58,5 @@ test('vista previa sirve capturas y PDFs con el tipo correcto y conserva /pair',
     assert.equal((await fetch(origin + path)).status, 404, path);
   }
   const login = await (await fetch(origin + '/')).text();
-  assert.doesNotMatch(login, /data-download|Nova Star|Cartón Lleno/);
+  assert.doesNotMatch(login, /data-download|downloadEndpoint|recommendations|X-Goog-Signature/);
 });

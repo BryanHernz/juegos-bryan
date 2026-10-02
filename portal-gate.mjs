@@ -6,10 +6,22 @@ export function allowedApps(keys) {
 }
 
 export function restrictProducts(document, apps) {
+  // Presentation only: keep the authenticated server template and its access gate.
+  for (const cta of document.querySelectorAll('.header .header-cta')) cta.remove();
+  const logout = document.getElementById('portal-logout');
+  logout?.classList.remove('button', 'primary');
+  logout?.classList.add('quiet-action');
+  for (const button of document.querySelectorAll('[data-download="tv"]')) {
+    const label = button.querySelector('strong') ?? button.querySelector(':scope > span');
+    if (!label || label.querySelector('.platform-subline')) continue;
+    label.firstChild.textContent = 'Android TV';
+    const line = document.createElement('span'); line.className = 'platform-subline'; line.textContent = '/ Google TV';
+    label.insertBefore(line, label.querySelector('small'));
+  }
   const downloadsIntro = document.querySelector('.downloads-intro > p');
   if (downloadsIntro) downloadsIntro.textContent = 'Elige Windows, Android o Android TV / Google TV.';
   const first = apps[0]?.id;
-  for (const link of document.querySelectorAll('.header-cta, .scroll-cue')) link.setAttribute('href', `#${first}`);
+  for (const link of document.querySelectorAll('.scroll-cue')) link.setAttribute('href', `#${first}`);
   const allowed = new Set(apps.map(app => app.id));
   for (const app of APPS.filter(app => !allowed.has(app.id))) {
     for (const node of document.querySelectorAll(`[data-app="${app.id}"], [data-product="${app.id}"], a[href="#${app.id}"]`)) node.remove();
@@ -80,8 +92,14 @@ export function initPortalGate({ document, window, auth, onAuthorized, reload = 
     const button = form.querySelector('button'); button.disabled = true;
     const password = form.elements.password.value;
     form.elements.password.value = '';
+    message.removeAttribute('data-error');
+    for (const input of form.querySelectorAll('input')) input.removeAttribute('aria-invalid');
     try { await auth.signIn(form.elements.email.value.trim(), password); }
-    catch { message.textContent = 'No se pudo iniciar sesión. Revisa tus datos e inténtalo nuevamente.'; }
+    catch {
+      message.textContent = 'No se pudo iniciar sesión. Revisa tus datos e inténtalo nuevamente.';
+      message.dataset.error = 'true';
+      for (const input of form.querySelectorAll('input')) input.setAttribute('aria-invalid', 'true');
+    }
     finally { button.disabled = false; }
   });
   const signOut = async () => { ++revision; closed('Sesión cerrada.'); await auth.signOut(); reload(); };

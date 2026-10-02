@@ -46,7 +46,7 @@ test('sin sesión muestra login; sin JavaScript el contenido permanece oculto', 
   assert.equal(g.document.getElementById('portal-login-form').hidden, false);
   assert.equal(g.document.querySelectorAll('a[href*="github.com"]').length, 0);
   assert.doesNotMatch(html, /data-web|Web · Próximamente|signup|signInAnonymously/);
-  assert.doesNotMatch(html, /data-download|data-app|Nova Star|Cartón Lleno/);
+  assert.doesNotMatch(html, /data-download|data-app|downloadEndpoint|recommendations|X-Goog-Signature/);
 });
 test('la API que deniega contenido nunca monta el portal ni una respuesta tardía de otra sesión', async t => {
   const g = gate(t);
@@ -69,7 +69,8 @@ test('Nova autorizada aparece; Cartón, sus enlaces y sus pantallas se retiran',
 test('Cartón autorizada conserva CTA, sin Nova ni ayuda del micrófono', async t => {
   const g = gate(t, { record: { active: true, apps: { cartonLleno: true } } }); await g.session(user);
   assert.equal(g.document.getElementById('nova-star'), null);
-  assert.equal(g.document.querySelector('.header-inner > .header-cta').getAttribute('href'), '#carton-lleno');
+  assert.equal(g.document.querySelector('.header-inner > .header-cta'), null);
+  assert.equal(g.document.querySelector('.scroll-cue').getAttribute('href'), '#carton-lleno');
   assert.doesNotMatch(g.document.getElementById('portal-content').textContent, /Nova Star/);
 });
 test('la API es la única autoridad; apps inválidas y errores de red fallan cerrados', async t => {

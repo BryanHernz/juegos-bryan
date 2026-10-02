@@ -15,6 +15,8 @@ const MESSAGES = Object.freeze({
   'approval-denied': 'No se pudo autorizar la vinculación. Revisa el código y el acceso de tu cuenta.',
   'not-found': 'No encontramos este dispositivo. Abre un nuevo QR desde la TV.',
   'already-used': 'Este dispositivo ya fue aprobado o el enlace ya se usó. Revisa la TV o abre un nuevo QR.',
+  consumed: 'Este enlace ya se utilizó para vincular el dispositivo. Revisa tu televisor.',
+  'metadata-error': 'No pudimos cargar el dispositivo. Revisa tu conexión y vuelve a cargar la página.',
   expired: 'El enlace de vinculación expiró. Abre un nuevo QR desde la TV.',
   locked: 'La vinculación está bloqueada por demasiados intentos. Abre un nuevo QR desde la TV.',
   'session-invalid': 'Tu sesión no es válida. Vuelve a iniciar sesión.',
@@ -25,7 +27,7 @@ const MESSAGES = Object.freeze({
   'config-error': 'No pudimos cargar el inicio de sesión. Revisa tu conexión y vuelve a cargar esta página.',
   'logout-error': 'No pudimos cerrar la sesión. Revisa tu conexión e inténtalo de nuevo.',
 });
-const TERMINAL = new Set(['success', 'invalid-route', 'not-found', 'already-used', 'expired', 'locked', 'config-error']);
+const TERMINAL = new Set(['success', 'invalid-route', 'not-found', 'already-used', 'consumed', 'expired', 'locked', 'config-error', 'metadata-error']);
 const BUSY = new Set(['checking', 'signing-in', 'linking']);
 const AUTH_INVALID = new Set(['auth/user-token-expired', 'auth/invalid-user-token',
   'auth/user-disabled', 'auth/user-not-found']);
@@ -43,6 +45,23 @@ export function pairingIdFromPath(pathname) {
   return /^\/pair\/([a-f0-9]{48})\/?$/.exec(pathname)?.[1] ?? null;
 }
 
+export async function loadPairingMetadata(id, { fetchImpl = globalThis.fetch, apiOrigin = PAIRING_API_ORIGIN } = {}) {
+  if (!/^[a-f0-9]{48}$/.test(id)) throw Object.assign(new Error('invalid_pairing'), { status: 400 });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 15000);
+  try {
+    const response = await fetchImpl(`${apiOrigin}/api/v1/tv/pairings/${id}/metadata`, {
+      cache: 'no-store', credentials: 'omit', referrerPolicy: 'no-referrer', signal: controller.signal,
+    });
+    if (response.status !== 200) throw Object.assign(new Error('metadata_unavailable'), { status: response.status });
+    const data = await response.json();
+    if (!data || typeof data.app !== 'string' || !['pending', 'approved', 'consumed', 'expired'].includes(data.status) ||
+      !Number.isFinite(Date.parse(data.expiresAt))) throw new Error('invalid_metadata');
+    // Unknown apps retain neutral presentation. Never persist the response.
+    return { app: data.app, status: data.status, expiresAt: data.expiresAt };
+  } finally { clearTimeout(timeout); }
+}
+
 export function approvalFailure(status, detail) {
   if (status === 401) return 'session-invalid';
   if (status === 403) {
@@ -54,7 +73,7 @@ export function approvalFailure(status, detail) {
 }
 
 export function createPairingFlow({ pathname, auth, fetchImpl = globalThis.fetch,
-  apiOrigin = PAIRING_API_ORIGIN, timeoutMs = 15000 }) {
+  apiOrigin = PAIRING_API_ORIGIN, timeoutMs = 15000, loadMetadata }) {
   const id = pairingIdFromPath(pathname);
   const listeners = new Set();
   let user = null;
@@ -63,9 +82,12 @@ export function createPairingFlow({ pathname, auth, fetchImpl = globalThis.fetch
   let unsubscribe;
   let phase = id ? 'checking' : 'invalid-route';
   let destroyed = false;
+  let app = null;
+  let metadataPending = Boolean(loadMetadata);
+  let metadataTerminal;
 
   function snapshot() {
-    return Object.freeze({ phase, message: MESSAGES[phase], email: user?.email ?? '',
+    return Object.freeze({ phase, app, message: MESSAGES[phase], email: user?.email ?? '',
       authenticated: Boolean(user), busy: BUSY.has(phase), terminal: TERMINAL.has(phase) });
   }
   function emit(next) {
@@ -81,6 +103,7 @@ export function createPairingFlow({ pathname, auth, fetchImpl = globalThis.fetch
       revision++;
       requestAbort?.abort();
     }
+    if (metadataPending || metadataTerminal) { emit(metadataTerminal ?? 'checking'); return; }
     if (changed || phase === 'checking' || phase === 'signing-in') {
       emit(user ? 'code-entry' : 'login-required');
     } else {
@@ -104,7 +127,21 @@ export function createPairingFlow({ pathname, auth, fetchImpl = globalThis.fetch
     },
     start() {
       if (!id || !auth || unsubscribe) return;
-      unsubscribe = auth.subscribe(setUser, () => emit('config-error'));
+      unsubscribe = auth.subscribe(setUser, () => { metadataTerminal = 'config-error'; emit('config-error'); });
+      if (loadMetadata) {
+        void loadMetadata(id).then(data => {
+          if (destroyed || metadataTerminal === 'config-error') return;
+          app = data.app;
+          metadataPending = false;
+          metadataTerminal = ({ approved: 'already-used', consumed: 'consumed', expired: 'expired' })[data.status];
+          emit(metadataTerminal ?? (user ? 'code-entry' : 'login-required'));
+        }).catch(error => {
+          if (destroyed) return;
+          metadataPending = false;
+          metadataTerminal = error?.status === 404 ? 'not-found' : 'metadata-error';
+          emit(metadataTerminal);
+        });
+      }
     },
     failInitialization() { emit('config-error'); },
     async signIn(email, password) {
@@ -125,7 +162,7 @@ export function createPairingFlow({ pathname, auth, fetchImpl = globalThis.fetch
       try {
         await auth.signOut();
         user = null;
-        emit('login-required');
+        emit(metadataTerminal ?? 'login-required');
       } catch { emit('logout-error'); }
     },
     async approve(code) {

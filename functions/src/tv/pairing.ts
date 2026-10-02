@@ -90,6 +90,18 @@ export class PairingService {
     }
   }
 
+  async metadata(id: string) {
+    // The random 192-bit QR id is the only lookup key. This public read exposes
+    // presentation metadata only; it never approves, consumes or signs tokens.
+    return this.deps.store.transaction(async (tx) => {
+      const record = await tx.getPairing(id);
+      if (!record) throw new ApiError(404, 'pairing_not_found');
+      const status = record.status === 'consumed' ? 'consumed' :
+        record.expiresAt.toMillis() <= this.now() ? 'expired' : record.status;
+      return { app: record.app, status, expiresAt: record.expiresAt.toDate().toISOString() };
+    });
+  }
+
   private live(record: PairingRecord | undefined): PairingRecord {
     if (!record) throw new ApiError(404, 'pairing_not_found');
     if (record.expiresAt.toMillis() <= this.now()) throw new ApiError(410, 'pairing_expired');
