@@ -29,7 +29,8 @@ test('Hosting usa el target portal asociado a nexo-hub y publica solo archivos e
   assert.equal(config.hosting.site, undefined);
   assert.deepEqual(rc.targets['nova-star-bd0d9'].hosting.portal, ['nexo-hub']);
   assert.equal(config.hosting.public, '_site');
-  assert.deepEqual(config.hosting.rewrites, [{ source: '/pair/**', destination: '/pair.html' }]);
+  assert.deepEqual(config.hosting.rewrites.filter(rule => rule.source.startsWith('/pair')),
+    [{ source: '/pair/**', destination: '/pair.html' }]);
   assert.ok(PUBLIC_FILES.includes('pair.html'));
   assert.ok(PUBLIC_FILES.includes('pair-config.mjs'));
   assert.ok(PUBLIC_FILES.every(file => !file.includes('/') && !file.startsWith('.') && !file.includes('package')));

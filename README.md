@@ -89,6 +89,32 @@ El workflow de `main` ejecuta exclusivamente CI (`npm ci`, pruebas, check y buil
 
 Las pruebas de pairing usan dobles de Auth/API; no crean ni consumen pairings en producción. La comprobación local y el build no equivalen a un deploy público ni validan la instalación de EXE/APK.
 
+## Enlaces estables de instalación en teléfonos
+
+Las rutas preparadas para QR son `https://nexo-hub.web.app/download/cartonLleno`
+y `https://nexo-hub.web.app/download/novaStar`. Reutilizan la apariencia del login
+actual y Firebase Auth email/password, sin registro ni autenticación anónima.
+Una sesión existente continúa automáticamente; sin sesión se solicita login.
+
+Cada intento consulta `GET /api/v1/portal` con el ID token y comprueba que la app
+solicitada esté autorizada. Luego consulta su release `latest`, selecciona
+`recommendations.phone`, solicita `POST /api/v1/releases/:app/:version/download/:assetId`
+y abre la URL temporal de Storage. Nunca se utiliza GitHub ni se monta el HTML
+del catálogo en esta pantalla. Acceso denegado muestra un estado 403; una app
+desconocida no tiene rewrite y recibe el 404 de Hosting. La página también
+rechaza rutas inválidas antes de inicializar Auth.
+
+La URL firmada no se incorpora al HTML, enlaces, almacenamiento o logs. No se
+reutiliza: «Volver a descargar» vuelve a comprobar permisos, latest y firma.
+Cerrar sesión invalida las respuestas pendientes. Firebase conserva la sesión
+con la misma persistencia del portal; el código no guarda tokens ni contraseñas.
+
+El build incluye esta pantalla y sus módulos. `/pair/**` conserva su rewrite y
+su flujo independiente. La API existente alcanza: este cambio sólo necesita un
+futuro deploy de `hosting:portal`, **no realizado aquí**. Después de publicar y
+verificar la ruta, habrá que reemplazar el QR de Cartón Lleno en su propio repo
+por la URL estable; esta tarea no modifica la aplicación ni privatiza GitHub.
+
 ## Vinculación web de TV en Nexo
 
 La pantalla `/pair/:pairingId` usa la identidad NEXO y conserva los colores del portal. El identificador es el valor opaco de 48 caracteres hexadecimales que entrega el backend. La pantalla no crea pairings: solicita el código de seis dígitos de la TV y aprueba el pairing existente.

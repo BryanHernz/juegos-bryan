@@ -3,9 +3,29 @@
     "target": "portal",
     "public": "_site",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-    "rewrites": [{ "source": "/pair/**", "destination": "/pair.html" }],
+    "rewrites": [
+      { "source": "/pair/**", "destination": "/pair.html" },
+      { "source": "/download/cartonLleno", "destination": "/download.html" },
+      { "source": "/download/cartonLleno/", "destination": "/download.html" },
+      { "source": "/download/novaStar", "destination": "/download.html" },
+      { "source": "/download/novaStar/", "destination": "/download.html" }
+    ],
     "headers": [{
       "source": "/pair/**",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Referrer-Policy", "value": "no-referrer" }
+      ]
+    }, {
+      "source": "/download/**",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Referrer-Policy", "value": "no-referrer" }
+      ]
+    }, {
+      "source": "/download.html",
       "headers": [
         { "key": "Cache-Control", "value": "no-store" },
         { "key": "X-Frame-Options", "value": "DENY" },

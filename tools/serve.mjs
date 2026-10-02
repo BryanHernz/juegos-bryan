@@ -3,6 +3,7 @@ import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { PUBLIC_FILES } from './build.mjs';
+import { appFromDownloadPath } from '../download.mjs';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const port = Number(process.env.PORT || 8080);
 const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8',
@@ -16,6 +17,7 @@ export function createPreviewServer() {
       let pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
       if (pathname.startsWith('/juegos-bryan/')) pathname = pathname.slice('/juegos-bryan'.length);
       if (pathname.startsWith('/pair/')) pathname = '/pair.html';
+      if (appFromDownloadPath(pathname)) pathname = '/download.html';
       if (pathname.endsWith('/')) pathname += 'index.html';
       const target = path.resolve(root, '.' + pathname);
       if (!target.startsWith(root + path.sep) || pathname.split('/').some(p => p.startsWith('.'))) {

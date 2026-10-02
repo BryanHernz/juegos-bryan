@@ -11,7 +11,7 @@
     "test": "node --test tests/*.test.mjs",
     "preview": "node tools/serve.mjs",
     "build": "node tools/build.mjs",
-    "check": "node --check app.js && node --check experience.mjs && node --check motion.mjs && node --check releases.mjs && node --check portal-auth.mjs && node --check portal-gate.mjs && node --check private-releases.mjs && node --check pairing.mjs && node --check pair.mjs && node --check pair-auth.mjs && node --check pair-config.mjs && node --check tools/serve.mjs && node --check tools/build.mjs && node --check tools/publish-release.mjs",
+    "check": "node --check app.js && node --check experience.mjs && node --check motion.mjs && node --check releases.mjs && node --check portal-auth.mjs && node --check portal-gate.mjs && node --check private-releases.mjs && node --check download.mjs && node --check download-page.mjs && node --check pairing.mjs && node --check pair.mjs && node --check pair-auth.mjs && node --check pair-config.mjs && node --check tools/serve.mjs && node --check tools/build.mjs && node --check tools/publish-release.mjs",
     "releases:dry-run": "node tools/publish-release.mjs --dry-run",
     "releases:verify": "node tools/publish-release.mjs --verify",
     "releases:publish": "node tools/publish-release.mjs --publish",

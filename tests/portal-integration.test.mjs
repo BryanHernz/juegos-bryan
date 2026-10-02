@@ -23,6 +23,7 @@ test('build contiene el portal, pairing, capturas y todos los assets sin archivo
   const count = await buildSite();
   assert.ok(count >= 28);
   for (const file of ['index.html', 'styles.css', 'motion.mjs', 'experience.mjs',
+    'download.html', 'download.mjs', 'download-page.mjs',
     'pair.html', 'pair-base.css', 'pair.css', 'pair.mjs', 'pairing.mjs', 'pair-auth.mjs', 'pair-config.mjs',
     'assets/screens/nova-library.webp', 'assets/screens/nova-duet.webp',
     'assets/screens/carton-75.webp', 'assets/screens/carton-remote.webp',
