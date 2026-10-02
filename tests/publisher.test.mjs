@@ -85,6 +85,33 @@ test('publish is immutable/idempotent and verify is read-only, with exact bytes 
   assert.doesNotMatch(JSON.stringify(manifest), /signedUrl|https:|localPath/);
   for (const asset of manifest.assets) assert.equal(asset.sha256, await hashFile(f.plan.assets.find(a => a.id === asset.id).localPath));
 });
+
+test('private publication and verification never call GitHub and reuse generations/latest', async t => {
+  const f = await fixture(t);
+  const github = { ensure: async () => { throw new Error('GitHub forbidden'); },
+    activate: async () => { throw new Error('GitHub forbidden'); } };
+  const options = { storage: f.storage, github, mode: 'publish-private' };
+  assert.equal((await publish(f.plan, options)).verified, true);
+  const writes = f.writes(), latest = f.rows.get('releases/novaStar/latest.json');
+  await publish(f.plan, options);
+  await publish(f.plan, { ...options, mode: 'verify-private' });
+  assert.equal(f.writes(), writes);
+  assert.equal(f.rows.get('releases/novaStar/latest.json'), latest);
+  assert.ok([...f.rows.keys()].every(key => key.startsWith('releases/novaStar/')));
+});
+
+test('private verification never writes missing objects and publication checks integrity/CAS', async t => {
+  const f = await fixture(t), options = { storage: f.storage, mode: 'verify-private' };
+  await assert.rejects(publish(f.plan, options), /missing/);
+  assert.equal(f.writes(), 0);
+  const write = f.storage.write;
+  f.storage.write = async (key, ...args) => {
+    if (key.endsWith('latest.json')) f.rows.set(key, { generation: '999', bytes: Buffer.from('{}') });
+    return write(key, ...args);
+  };
+  await assert.rejects(publish(f.plan, { ...options, mode: 'publish-private' }), /precondition/);
+  assert.equal(f.rows.get('releases/novaStar/latest.json').generation, '999');
+});
 test('hash mismatch, missing updater compatibility, duplicate platforms and private bucket failure abort', async t => {
   const f = await fixture(t);
   await assert.rejects(prepare({ ...f.data, assets: f.data.assets.map(a => ({ ...a, sha256: '0'.repeat(64) })) }, f.directory), /mismatch/);

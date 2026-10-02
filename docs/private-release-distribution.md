@@ -143,6 +143,19 @@ Comandos desde la raíz:
 - npm run releases:verify -- input.json nova-star-bd0d9-nexo-releases
 - npm run releases:publish -- input.json nova-star-bd0d9-nexo-releases
 
+Publicación exclusivamente privada (sin consultar, crear, subir, etiquetar ni
+activar releases de GitHub):
+
+- npm run releases:dry-run -- input.json
+- npm run releases:publish:private -- input.json nova-star-bd0d9-nexo-releases
+- npm run releases:verify:private -- input.json nova-star-bd0d9-nexo-releases
+
+Estos modos usan el mismo contrato, verificación SHA256 local/remota, objetos y
+manifest inmutables e `ifGenerationMatch` para actualizar `latest`. Una repetición
+idéntica reutiliza todas las generaciones, incluido `latest`; `verify:private`
+no escribe. No instancian el adaptador GitHub. Sólo cambia el puntero de la app
+del input; no hay deploy, recompilación, IAM ni modificación de las otras apps.
+
 import verifica GitHub en modo sólo lectura y nunca ejecuta activate/upload/edit.
 publish es para releases futuras aprobadas: puede preparar un draft y activarlo
 sólo después de verificar Storage/latest. Sin clobber ni modificación de assets

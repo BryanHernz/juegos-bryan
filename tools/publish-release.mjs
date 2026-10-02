@@ -81,7 +81,9 @@ function manifestFrom(plan, generations) {
 // Injected adapters keep dry-run fully offline and make interruption/retries
 // testable. No object/release deletion, compilation, IAM mutation or --clobber.
 export async function publish(plan, { mode, storage, github, now = () => new Date().toISOString() }) {
-  if (!['dry-run', 'verify', 'publish', 'import-existing'].includes(mode)) fail('Invalid mode');
+  if (!['dry-run', 'verify', 'publish', 'import-existing', 'publish-private', 'verify-private'].includes(mode)) fail('Invalid mode');
+  const privateOnly = mode === 'publish-private' || mode === 'verify-private';
+  const readOnly = mode === 'verify' || mode === 'verify-private';
   if (mode === 'dry-run') return {
     mode, app: plan.app, version: plan.version, repo: plan.repo,
     artifacts: plan.assets.map(a => ({ filename: a.filename, size: a.size, sha256: a.sha256, object: artifactPath(plan, a) })),
@@ -98,13 +100,13 @@ export async function publish(plan, { mode, storage, github, now = () => new Dat
       !/^[1-9]\d*$/.test(old.manifestGeneration)) fail('Invalid current latest pointer');
     if (compareVersions(plan.version, old.version) < 0) fail('Refusing latest downgrade');
   }
-  await github.ensure(plan, mode === 'import-existing' ? 'verify' : mode);
+  if (!privateOnly) await github.ensure(plan, mode === 'import-existing' ? 'verify' : mode);
   const generations = [];
   for (const asset of plan.assets) {
     const object = artifactPath(plan, asset);
     let existing = await storage.readMetadata(object);
     if (!existing) {
-      if (mode === 'verify') fail('Private artifact missing');
+      if (readOnly) fail('Private artifact missing');
       // Rehash immediately before uploading, then verify remote bytes, not only metadata.
       if (await hashFile(asset.localPath) !== asset.sha256) fail('Local artifact changed');
       await storage.upload(object, { ...asset, app: plan.app, version: plan.version,
@@ -121,7 +123,7 @@ export async function publish(plan, { mode, storage, github, now = () => new Dat
     const object = `releases/${plan.app}/${plan.version}/support/${file.sha256}/${file.fileName}`;
     let existing = await storage.readMetadata(object);
     if (!existing) {
-      if (mode === 'verify') fail('Private support artifact missing');
+      if (readOnly) fail('Private support artifact missing');
       if (await hashFile(file.localPath) !== file.sha256) fail('Local support artifact changed');
       await storage.upload(object, { ...file, filename: file.fileName, app: plan.app,
         version: plan.version, build: plan.build, releasedAt: plan.releasedAt });
@@ -136,7 +138,7 @@ export async function publish(plan, { mode, storage, github, now = () => new Dat
   const bytes = jsonBytes(manifest);
   let stored = await storage.read(manifestPath);
   if (!stored) {
-    if (mode === 'verify') fail('Private manifest missing');
+    if (readOnly) fail('Private manifest missing');
     await storage.write(manifestPath, bytes, 0);
     stored = await storage.read(manifestPath);
   }
@@ -147,7 +149,7 @@ export async function publish(plan, { mode, storage, github, now = () => new Dat
   const matches = old && old.version === pointer.version && old.manifestSha256 === pointer.manifestSha256 &&
     old.manifestGeneration === pointer.manifestGeneration;
   if (!matches) {
-    if (mode === 'verify') fail('Latest does not identify the verified manifest');
+    if (readOnly) fail('Latest does not identify the verified manifest');
     // Compare-and-swap prevents concurrent publishers from silently overwriting latest.
     await storage.write(latestPath, jsonBytes(pointer), oldLatest?.generation ?? 0);
   }
@@ -155,7 +157,7 @@ export async function publish(plan, { mode, storage, github, now = () => new Dat
   const final = checked && JSON.parse(checked.bytes);
   if (!final || final.version !== pointer.version || final.manifestSha256 !== pointer.manifestSha256 ||
     final.manifestGeneration !== pointer.manifestGeneration) fail('Latest verification failed');
-  if (mode !== 'import-existing') await github.activate?.(plan, mode);
+  if (!privateOnly && mode !== 'import-existing') await github.activate?.(plan, mode);
   return { mode, app: plan.app, version: plan.version, verified: true, artifacts: generations.length,
     supportArtifacts: plan.compatibility.length, manifest: manifestPath, latest: latestPath };
 }
@@ -316,13 +318,14 @@ export function githubAdapter(run = args => exec('gh', args, { maxBuffer: 1024 *
 export async function main(args) {
   const [modeFlag, inputPath, bucketName, ...extra] = args;
   const mode = modeFlag?.replace(/^--/, '');
-  if (!['dry-run', 'verify', 'publish', 'import-existing'].includes(mode) || !inputPath || extra.length ||
+  if (!['dry-run', 'verify', 'publish', 'import-existing', 'publish-private', 'verify-private'].includes(mode) || !inputPath || extra.length ||
     (mode !== 'dry-run' && !/^[a-z0-9][a-z0-9._-]{2,221}$/.test(bucketName ?? ''))) {
-    fail('Usage: node tools/publish-release.mjs --dry-run|--verify|--publish|--import-existing input.json [private-bucket]');
+    fail('Usage: node tools/publish-release.mjs --dry-run|--verify|--publish|--import-existing|--publish-private|--verify-private input.json [private-bucket]');
   }
   const plan = await prepare(JSON.parse(await readFile(inputPath, 'utf8')), path.dirname(path.resolve(inputPath)));
   const storage = mode === 'dry-run' ? undefined : await cloudAdapter(bucketName);
-  const result = await publish(plan, { mode, storage, github: mode === 'dry-run' ? undefined : githubAdapter() });
+  const result = await publish(plan, { mode, storage,
+    github: ['dry-run', 'publish-private', 'verify-private'].includes(mode) ? undefined : githubAdapter() });
   console.log(JSON.stringify(result, null, 2));
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
